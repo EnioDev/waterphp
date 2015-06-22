@@ -1,9 +1,9 @@
 If you want to use the crud example, you must
 create the database and user's table as bellow:
-___________________________________________________
 
+==============
 MYSQL Example:
-___________________________________________________
+==============
 
 CREATE DATABASE water;
 USE water;
