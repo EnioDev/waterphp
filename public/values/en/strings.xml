@@ -1,0 +1,46 @@
+<strings>
+    <user>
+        <messages>
+            <welcome>Welcome</welcome>
+            <create>The user has been created with success.</create>
+            <update>The user has been updated with success.</update>
+        </messages>
+
+        <buttons>
+            <create>Create</create>
+            <update>Update</update>
+            <edit>Edit</edit>
+            <remove>Remove</remove>
+            <login>Login</login>
+            <register>Register</register>
+            <cancel>Cancel</cancel>
+        </buttons>
+
+        <errors>
+            <name_string>The name is required and should be a text.</name_string>
+            <name_length>The name must be between 5 to 30 characters.</name_length>
+            <email>Type a valid email.</email>
+            <password_filter>The password must contain only letters, numbers and _(underscore).</password_filter>
+            <password_length>The password must be between 6 to 20 characters.</password_length>
+            <insert>Sorry! Could not create the user.</insert>
+            <update>Sorry! Could not update the user.</update>
+            <delete>Sorry! Could not remove the user.</delete>
+        </errors>
+
+        <fields>
+            <name>Name</name>
+            <email>Email</email>
+            <password>Password</password>
+        </fields>
+
+        <register>
+            <title>Please Sign Up</title>
+        </register>
+
+        <login>
+            <title>Please Sign in</title>
+            <error>The user has not been found!</error>
+            <first>Is your first time?</first>
+        </login>
+    </user>
+</strings>
