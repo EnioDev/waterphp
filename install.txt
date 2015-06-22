@@ -1,5 +1,5 @@
 If you want to use the crud example, you must
-create the database and user table as bellow:
+create the database and user's table as bellow:
 ___________________________________________________
 
 MYSQL Example:
