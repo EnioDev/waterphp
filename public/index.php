@@ -1,73 +1,72 @@
 <?php
 
 /*
- * Defines directory separator.
+ * Define o separador de diretório usado no SO.
  */
 define('DS', DIRECTORY_SEPARATOR);
 
 /*
- * Defines root directory of the project (absolute path).
+ * Define o caminho absoluto do diretório raiz da aplicação, no qual foi instalado o framework.
  */
-define('ROOT_DIR', dirname(__DIR__) . DS);
+define('ROOT', dirname(__DIR__) . DS);
 
 /*
- * Defines app directory of the project (absolute path).
+ * Define o caminho absoluto do diretório que contém as classes que compõem a aplicação.
  */
-define('APP_DIR', ROOT_DIR . 'app' . DS);
+define('APP', ROOT . 'app' . DS);
 
 /*
- * Defines values directory of the project (absolute path),
- * used to make application translation.
+ * Define o caminho absoluto do diretório que contém os valores usados para fazer a tradução da aplicação.
  */
-define('VALUES_DIR', ROOT_DIR . 'public' . DS . 'values' . DS);
+define('VALUES', ROOT . 'public' . DS . 'values' . DS);
 
 /*
- * Defines URL parts.
+ * Define as partes que compõem a URL base.
  */
-define('URL_PROTOCOL', 'http://');
-define('URL_DOMAIN', $_SERVER['HTTP_HOST']);
-define('URL_SUB_FOLDER', str_replace('public', '', dirname($_SERVER['SCRIPT_NAME'])));
+define('PROTOCOL', 'http://');
+define('DOMAIN', $_SERVER['HTTP_HOST']);
+define('SUB_FOLDER', str_replace('public', '', dirname($_SERVER['SCRIPT_NAME'])));
 
 /*
- * Defines base URL of the project (like http://localhost/water).
+ * Define a URL base do projeto (ex: http://localhost/water).
  */
-define('BASE_URL', URL_PROTOCOL . URL_DOMAIN . URL_SUB_FOLDER);
+define('BASE_URL', PROTOCOL . DOMAIN . SUB_FOLDER);
 
 /*
- * Defines URL for public folder.
+ * Define a URL para acessar o diretório público da aplicação.
  */
 define('PUBLIC_URL', BASE_URL . 'public' . DS);
 
 /*
- * Loads user configuration file.
+ * Carrega o arquivo de configuração da aplicação.
  */
-require APP_DIR . 'config' . DS . 'config.php';
+require APP . 'config' . DS . 'config.php';
 
 /*
- * Configures error's reporting (php.ini).
+ * Configura a exibição de erros no php.ini.
  */
 error_reporting(E_ALL);
 ini_set('display_errors', DEBUG_MODE);
 
 /*
- * Defines session's lifetime (php.ini).
+ * Configura o tempo para expirar a sessão do usuário no php.ini.
  */
 ini_set('session.gc_maxlifetime', SESSION_MAX_LIFETIME);
 ini_set('session.gc_probability', 1); // Ex: probability / divisor = 1 (100%)
 ini_set('session.gc_divisor', 1);
 
 /*
- * Configures mail server to send emails (php.ini).
+ * Configura o nome e a porta do servidor de envio de email no php.ini.
  */
 ini_set('SMTP', MAIL_SMTP_HOST);
 ini_set('smtp_port', MAIL_SMTP_PORT);
 
 /*
- * Loads autoload class file.
+ * Inclui o arquivo usado para carregar as classes automaticamente.
  */
-require APP_DIR . 'autoload.php';
+require APP . 'autoload.php';
 
 /*
- * Starts the application.
+ * Inicializa a aplicação.
  */
 $app = new core\App();
