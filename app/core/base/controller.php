@@ -70,9 +70,9 @@ abstract class Controller {
             $$table = $this->model()->all();
         }
 
-        require APP_DIR . $this->viewPath('template/header');
-        require APP_DIR . $this->viewPath($name);
-        require APP_DIR . $this->viewPath('template/footer');
+        require APP . $this->viewPath('template/header');
+        require APP . $this->viewPath($name);
+        require APP . $this->viewPath('template/footer');
     }
 
     private function viewPath($name)

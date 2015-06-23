@@ -10,7 +10,7 @@ class Db
     {
 		if (!isset(self::$instance)) {
 			try {
-				self::$instance = new \PDO(DB_DRIVE . ':host=' . DB_HOST . '; dbname=' . DB_NAME . '; charset=' . DB_CHARSET, DB_USER, DB_PASSWORD);
+				self::$instance = new \PDO(DB_DRIVER . ':host=' . DB_HOST . '; port=' .DB_PORT. '; dbname=' . DB_NAME . '; charset=' . DB_CHARSET, DB_USER, DB_PASSWORD);
 				self::$instance->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 				self::$instance->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_OBJ);
 			} catch (\PDOException $e) {

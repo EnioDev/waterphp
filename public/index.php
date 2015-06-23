@@ -37,6 +37,13 @@ define('BASE_URL', PROTOCOL . DOMAIN . SUB_FOLDER);
  */
 define('PUBLIC_URL', BASE_URL . 'public' . DS);
 
+#DEBUG:
+#echo ROOT . '<br>';
+#echo APP . '<br>';
+#echo VALUES . '<br>';
+#echo BASE_URL . '<br>';
+#echo PUBLIC_URL . '<br>';
+
 /*
  * Carrega o arquivo de configuração da aplicação.
  */
@@ -51,6 +58,7 @@ ini_set('display_errors', DEBUG_MODE);
 /*
  * Configura o tempo para expirar a sessão do usuário no php.ini.
  */
+ini_set('session.save_path', DS.'tmp');
 ini_set('session.gc_maxlifetime', SESSION_MAX_LIFETIME);
 ini_set('session.gc_probability', 1); // Ex: probability / divisor = 1 (100%)
 ini_set('session.gc_divisor', 1);

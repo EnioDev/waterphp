@@ -5,24 +5,26 @@
  * DEBUG MODE
  * --------------------------------------------------------------------------
  *
- * You can active or disable debug mode to help you with development.
- * 0 or false = Disabled
- * 1 or true = Enabled
+ * Você pode ativar ou desativar o modo de depuração. É aconselhável
+ * desativar em ambiente de produção.
+ * 0 ou false = Desativado
+ * 1 ou true = Ativado
  *
  */
-define('DEBUG_MODE', 0);
+define('DEBUG_MODE', 1);
 
 /*
  * --------------------------------------------------------------------------
  * LANGUAGE
  * --------------------------------------------------------------------------
  *
- * You can set the application language, like 'en', 'pt-br'.
- * For more information see the HTML structure for the attribute "lang"
- * used in "meta tag" at HTML header.
- * If you want to use internacionalization (i18n), you need define
- * strings.xml file contents in "public/values/language" folder to make
- * application translation.
+ * Você pode definir o idioma da aplicação, como 'en' ou 'pt-br'.
+ * Para mais informações consulte o atributo "lang" usado na meta tag do
+ * cabeçalho HTML e siga os mesmos padrões de nomenclatura.
+ *
+ * Para fazer a internacionalização da aplicação, defina o arquivo
+ * "strings.xml" dentro da pasta com os respectivos idiomas em
+ * "public/values". Veja o exemplo dado com o framework. =)
  *
  */
 define('APP_LANGUAGE', 'en');
@@ -32,10 +34,10 @@ define('APP_LANGUAGE', 'en');
  * SESSION
  * --------------------------------------------------------------------------
  *
- * You can set SESSION_MAX_LIFETIME in seconds to stop the application if
- * the user is inactive over this time.
- * If you want to stop the application even that the user is active,
- * you can set SESSION_TIMEOUT in seconds to do that.
+ * Você pode definir SESSION_MAX_LIFETIME em segundos para interromper a
+ * sessão do usuário caso ele esteja inativo.
+ * Você pode definir SESSION_TIMEOUT em segundos para interromper a
+ * sessão do usuário mesmo que ele esteja ativo.
  *
  */
 define('SESSION_MAX_LIFETIME', '7200');
@@ -46,10 +48,8 @@ define('SESSION_TIMEOUT', '0');
  * CONTROLLER
  * --------------------------------------------------------------------------
  *
- * You must set the controller name to use as default route if no
- * controller name is given on the url.
- * Default is "Home" controller, but if you want to define other,
- * you are able to do that.
+ * Você deve definir o controlador padrão para ser executado caso nenhum
+ * controlador tenha sido informado na url.
  *
  */
 define('DEFAULT_CONTROLLER', 'Home');
@@ -59,28 +59,32 @@ define('DEFAULT_CONTROLLER', 'Home');
  * ENCRYPTION
  * --------------------------------------------------------------------------
  *
- * If you use the Encryption class, you must set an encryption key.
+ * Se você deseja usar a classe de criptografia para criptografar dados como
+ * senhas por exemplo, você deve definir uma chave contendo os caracteres
+ * desejados.
  *
- * PS: If you are using the "crud example", you must be logged in before
- * you change the key. Then, before you log off, you must edit the user's
- * password to encrypt again.
+ * Obs: Se estiver usando a aplicação de exemplo e alterar esta chave, você
+ * deve redefinir a senha de todos os usuários cadastrados. Talvez você tenha
+ * que registrar um novo usuário para conseguir efetuar o login e redefinir
+ * os demais.
  *
  */
-define('ENCRYPTION_KEY', 'RxRe4g50fxD33dx049xrg432pp030Tix');
+define('ENCRYPTION_KEY', 'your_secret_key');
 
 /*
  * --------------------------------------------------------------------------
- * DATABASE
+ * DATABASE CONNECTION
  * --------------------------------------------------------------------------
  *
- * Here you can define the settings needed to access your database.
+ * Aqui você pode definir as configurações para conexão com seu banco.
  *
- * If you want to use the "crud example", please consult the installation
- * guide (install.txt) in your project root directory.
+ * Obs: Para usar a aplicação de exemplo, consulte o arquivo "install.txt"
+ * na raiz do projeto.
  *
  */
-define('DB_DRIVE'   , 'mysql');
+define('DB_DRIVER'  , 'mysql');
 define('DB_HOST'    , 'localhost');
+define('DB_PORT'    , '5432');
 define('DB_NAME'    , 'water');
 define('DB_USER'    , 'root');
 define('DB_PASSWORD', 'root');
@@ -91,16 +95,13 @@ define('DB_CHARSET' , 'utf8');
  * MAIL
  * --------------------------------------------------------------------------
  *
- * If you want to use the Mail class, you need define these constants:
+ * Aqui você pode definir as configurações para conexão com um servidor
+ * de envio de emails.
  *
- * MAIL_IS_HTML = set true if you want to use HTML format.
- * MAIL_CHARSET = you can define the email charset (like utf-8 or iso-8859-1).
- * MAIL_FROM = the email address of the user who is sending the message.
- * MAIL_SMTP_HOST = the hostname of your email server.
- * MAIL_SMTP_PORT = the port of your email server.
- *
- * PS: This class methods will work in your "localhost" if you have a
- * email server configured.
+ * Obs: O envio de emails através do servidor local (localhost) não irá
+ * funcionar se este não estiver configurado como um servidor SMTP.
+ * Talvez você tenha que testar as funcionalidades da classe "Mail"
+ * através de um serviço de hospedagem.
  *
  */
 
