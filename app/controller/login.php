@@ -1,10 +1,12 @@
 <?php namespace controller;
 
 use core\base\Controller;
+use core\base\View;
 use core\base\Auth;
 use core\base\Request;
 use core\base\Session;
 use core\base\Encryption;
+use core\base\String;
 use model\User;
 
 class Login extends Controller {
@@ -26,7 +28,7 @@ class Login extends Controller {
                 ],
                 'values' => [
                     $input['email'],
-                    Encryption::make($input['password'])
+                    Encryption::encode($input['password'])
                 ]
             ];
 
@@ -36,11 +38,11 @@ class Login extends Controller {
                 Auth::make($user);
                 header('Location: ' . BASE_URL . 'user');
             } else {
-                $this->view('user/login', ['error' => $this->strings()->user->login->error]);
+                View::load('user/login', ['error' => String::values()->user->login->error]);
             }
         } else {
             Session::stop();
-            $this->view('user/login');
+            View::load('user/login');
         }
     }
 }

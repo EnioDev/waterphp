@@ -2,7 +2,7 @@
 
 /*
  * --------------------------------------------------------------------------
- * DEBUG MODE
+ * MODO DE DEPURAÇÃO
  * --------------------------------------------------------------------------
  *
  * Você pode ativar ou desativar o modo de depuração. É aconselhável
@@ -11,11 +11,11 @@
  * 1 ou true = Ativado
  *
  */
-define('DEBUG_MODE', 1);
+define('DEBUG_MODE', 0);
 
 /*
  * --------------------------------------------------------------------------
- * LANGUAGE
+ * IDIOMA
  * --------------------------------------------------------------------------
  *
  * Você pode definir o idioma da aplicação, como 'en' ou 'pt-br'.
@@ -27,17 +27,17 @@ define('DEBUG_MODE', 1);
  * "public/values". Veja o exemplo dado com o framework. =)
  *
  */
-define('APP_LANGUAGE', 'en');
+define('APP_LANGUAGE', 'pt-br');
 
 /*
  * --------------------------------------------------------------------------
- * SESSION
+ * SESSÃO
  * --------------------------------------------------------------------------
  *
- * Você pode definir SESSION_MAX_LIFETIME em segundos para interromper a
- * sessão do usuário caso ele esteja inativo.
- * Você pode definir SESSION_TIMEOUT em segundos para interromper a
- * sessão do usuário mesmo que ele esteja ativo.
+ * Você pode definir o tempo máximo que a aplicação deve aguardar pela
+ * atividade do usuário que se encontra inativo, antes da sessão expirar.
+ * Se desejar interromper a sessão após um tempo determinado mesmo que o
+ * usuário esteja em atividade, você pode definir o "timeout".
  *
  */
 define('SESSION_MAX_LIFETIME', '7200');
@@ -45,18 +45,18 @@ define('SESSION_TIMEOUT', '0');
 
 /*
  * ---------------------------------------------------------------------------
- * CONTROLLER
+ * CONTROLADOR
  * --------------------------------------------------------------------------
  *
  * Você deve definir o controlador padrão para ser executado caso nenhum
  * controlador tenha sido informado na url.
  *
  */
-define('DEFAULT_CONTROLLER', 'Home');
+define('CONTROLLER_INDEX', 'Home');
 
 /*
  * --------------------------------------------------------------------------
- * ENCRYPTION
+ * CRIPTOGRAFIA
  * --------------------------------------------------------------------------
  *
  * Se você deseja usar a classe de criptografia para criptografar dados como
@@ -73,7 +73,7 @@ define('ENCRYPTION_KEY', 'your_secret_key');
 
 /*
  * --------------------------------------------------------------------------
- * DATABASE CONNECTION
+ * BANCO DE DADOS
  * --------------------------------------------------------------------------
  *
  * Aqui você pode definir as configurações para conexão com seu banco.
@@ -92,7 +92,7 @@ define('DB_CHARSET' , 'utf8');
 
 /*
  * --------------------------------------------------------------------------
- * MAIL
+ * E-MAIL
  * --------------------------------------------------------------------------
  *
  * Aqui você pode definir as configurações para conexão com um servidor

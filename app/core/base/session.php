@@ -10,11 +10,14 @@ final class Session {
 
     public static function stop()
     {
-        // Removes all session variables.
-        session_unset();
+        if (isset($_SESSION['app_session_time']))
+        {
+            // Remove todas as variáveis definidas na sessão.
+            session_unset();
 
-        // Destroys the session.
-        session_destroy();
+            // Destroi a sessão do usuário.
+            session_destroy();
+        }
     }
 
     private static function timeout()
@@ -28,7 +31,7 @@ final class Session {
             }
         } else {
             $_SESSION['app_session_time']  = time();
-            $_SESSION['app_session_token'] = Encryption::make(md5(uniqid(rand(), true)));
+            $_SESSION['app_session_token'] = Encryption::encode(md5(uniqid(rand(), true)));
         }
         return false;
     }
@@ -36,7 +39,7 @@ final class Session {
     public static function token()
     {
         if (isset($_SESSION['app_session_token'])) {
-            return Encryption::undo($_SESSION['app_session_token']);
+            return Encryption::decode($_SESSION['app_session_token']);
         }
         return null;
     }

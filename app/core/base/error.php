@@ -1,49 +1,78 @@
 <?php namespace core\base;
 
-// TODO: Melhorar tratamento de erro. Criar handler para tratar erros e exceções.
-class Error extends Controller {
-
-    private $title;
-    private $message;
-    private $template;
-    private $debug;
-    private $type;
-
-    public function __construct($type = 0)
+final class Error
+{
+    public function waterErrorHandler($code, $message, $filename, $line)
     {
-        $this->title = 'Unknowing Error';
-        $this->message = 'Sorry! A unknowing error occurred.';
-        $this->template = 'error/default';
-        $this->debug = ini_get('display_errors');
-        $this->type = $type;
-    }
+        $debug = ini_get('display_errors');
+        $image = 'images/fire.png';
 
-    public function show()
-    {
-        $this->index();
-    }
+        switch ($code)
+        {
+            case E_ERROR:
+            case E_USER_ERROR:
+                $title = 'Fatal Error';
+                $debug = true;
+                Session::stop();
+                break;
 
-    public function index()
-    {
-        // Debug mode needs be set in application config file.
-        if ($this->debug or !$this->type) {
-            $this->view($this->template, ['title' => $this->title, 'message' => $this->message]);
-            exit;
+            case E_PARSE:
+                $title = 'Parse Error';
+                $debug = true;
+                Session::stop();
+                break;
+
+            case E_WARNING:
+            case E_USER_WARNING:
+                $title = 'Warning';
+                $image = 'images/attention.png';
+                break;
+
+            case E_NOTICE:
+            case E_USER_NOTICE:
+                $title = 'Notice';
+                $image = 'images/attention.png';
+                break;
+
+            default:
+                $title = 'Unknowing Error';
         }
+
+        $data = [
+            'title'=> $title,
+            'code' => $code,
+            'message' => $message,
+            'filename' => $filename,
+            'line' => $line,
+            'image' => $image
+        ];
+
+        // TODO: A view deve abrir em outra pagina quando for um erro.
+        if ($debug) { View::load('template/error', $data); }
+
+        return true;
     }
 
-    public function setTitle($title)
+    public function waterShutdownHandler()
     {
-        $this->title = $title;
+        $e = error_get_last();
+        if (count($e) == 0 or $e['type'] == '') {
+            return false;
+        }
+        return $this->waterErrorHandler($e['type'], $e['message'], $e['file'], $e['line']);
     }
 
-    public function setMessage($message)
+    public function waterExceptionHandler($e)
     {
-        $this->message = $message;
-    }
+        $data = [
+            'title' => 'Exception',
+            'code' => $e->getCode(),
+            'message' => $e->getMessage(),
+            'filename' => $e->getFile(),
+            'line' => $e->getLine(),
+            'image' => 'images/attention.png'
+        ];
 
-    public function setTemplate($view)
-    {
-        $this->template = $view;
+        View::load('template/error', $data);
     }
 }

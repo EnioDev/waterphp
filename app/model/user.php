@@ -8,11 +8,11 @@ class User extends Model {
     protected $table = 'users';
 
     // @Override
-    protected $pk = 'id';
+    protected $primary_key = 'id';
 
-    // You should define the table column names as constants if
-    // you want to use them in your controller.
-    // It is a good practice! =)
+    // Você pode mapear o nome dos campos na tabela usando
+    // constantes e acessá-los posteriormente no controlador.
+    // Isto é uma boa prática! =)
     const COLUMN_NAME   = 'name';
     const COLUMN_EMAIL  = 'email';
     const COLUMN_PASSWD = 'password';

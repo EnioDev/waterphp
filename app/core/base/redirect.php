@@ -1,22 +1,20 @@
 <?php namespace core\base;
 
+// TODO: A classe não está em uso. Testar o uso da classe para exibir os erros.
 final class Redirect
 {
     public static function to($view, $data = [])
     {
-        $url = BASE_URL . $view;
+        $url = BASE_URL;
 
-        // Gets info about user's SO and Browser.
         $userAgent = $_SERVER['HTTP_USER_AGENT'];
 
         $ch = curl_init();
 
         if (isset($_COOKIE['PHPSESSID']))
         {
-            // Stores de session's info.
-            $strCookie = 'PHPSESSID=' . $_COOKIE['PHPSESSID'] . '; path=/'; //session_save_path();
+            $strCookie = 'PHPSESSID=' . $_COOKIE['PHPSESSID'] . '; path=' . session_save_path();
 
-            // Close the session with user data.
             session_write_close();
 
             curl_setopt($ch, CURLOPT_COOKIE, $strCookie );
@@ -33,7 +31,7 @@ final class Redirect
 
         curl_exec($ch);
 
-        $url = curl_getinfo($ch, CURLINFO_EFFECTIVE_URL);
+        // echo curl_getinfo($ch, CURLINFO_EFFECTIVE_URL);
 
         curl_close($ch);
     }

@@ -1,27 +1,43 @@
 <?php
 
 /*
- * Define o separador de diretório usado no SO.
+ * ==============================================================
+ * DEFINIÇÃO DAS CONSTANTES:
+ * ==============================================================
+ */
+
+/*
+ * Define o separador de diretório usado pelo Sistema Operacional.
  */
 define('DS', DIRECTORY_SEPARATOR);
 
 /*
- * Define o caminho absoluto do diretório raiz da aplicação, no qual foi instalado o framework.
+ * Define o caminho completo para o diretório raiz onde está instalado o framework.
  */
-define('ROOT', dirname(__DIR__) . DS);
+define('ROOT_PATH', dirname(__DIR__) . DS);
 
 /*
- * Define o caminho absoluto do diretório que contém as classes que compõem a aplicação.
+ * Define o caminho completo para o diretório da aplicação.
  */
-define('APP', ROOT . 'app' . DS);
+define('APP_PATH', ROOT_PATH . 'app' . DS);
 
 /*
- * Define o caminho absoluto do diretório que contém os valores usados para fazer a tradução da aplicação.
+ * Define o caminho completo para o diretório que contém as views.
  */
-define('VALUES', ROOT . 'public' . DS . 'values' . DS);
+define('VIEW_PATH', APP_PATH . 'view' . DS);
 
 /*
- * Define as partes que compõem a URL base.
+ * Define o caminho completo para o diretório que contém os controladores.
+ */
+define('CONTROLLER_PATH', APP_PATH . 'controller' . DS);
+
+/*
+ * Define o caminho completo para o diretório que contém os arquivos usados para tradução.
+ */
+define('VALUES_PATH', ROOT_PATH . 'public' . DS . 'values' . DS);
+
+/*
+ * Define as partes que compõem a URL.
  */
 define('PROTOCOL', 'http://');
 define('DOMAIN', $_SERVER['HTTP_HOST']);
@@ -33,48 +49,68 @@ define('SUB_FOLDER', str_replace('public', '', dirname($_SERVER['SCRIPT_NAME']))
 define('BASE_URL', PROTOCOL . DOMAIN . SUB_FOLDER);
 
 /*
- * Define a URL para acessar o diretório público da aplicação.
+ * Define a URL para o diretório público da aplicação.
  */
 define('PUBLIC_URL', BASE_URL . 'public' . DS);
 
-#DEBUG:
-#echo ROOT . '<br>';
-#echo APP . '<br>';
-#echo VALUES . '<br>';
-#echo BASE_URL . '<br>';
-#echo PUBLIC_URL . '<br>';
+# DEBUG:
+# echo ROOT_PATH . '<br>';
+# echo APP_PATH . '<br>';
+# echo VIEW_PATH . '<br>';
+# echo VALUES_PATH . '<br>';
+# echo BASE_URL . '<br>';
+# echo PUBLIC_URL . '<br>';
 
 /*
- * Carrega o arquivo de configuração da aplicação.
+ * ==============================================================
+ * CONFIGURAÇÃO DA APLICAÇÃO:
+ * ==============================================================
  */
-require APP . 'config' . DS . 'config.php';
 
 /*
- * Configura a exibição de erros no php.ini.
+ * Carrega o arquivo de configuração da aplicação (definido pelo usuário).
  */
-error_reporting(E_ALL);
-ini_set('display_errors', DEBUG_MODE);
+require_once APP_PATH . 'config' . DS . 'config.php';
 
 /*
- * Configura o tempo para expirar a sessão do usuário no php.ini.
+ * Inclui o arquivo para carregar as classes automaticamente.
  */
+require_once APP_PATH . 'autoload.php';
+
+/*
+ * Configura o tempo para expirar a sessão do usuário.
+ */
+// TODO: Validar no windows.
 ini_set('session.save_path', DS.'tmp');
 ini_set('session.gc_maxlifetime', SESSION_MAX_LIFETIME);
 ini_set('session.gc_probability', 1); // Ex: probability / divisor = 1 (100%)
 ini_set('session.gc_divisor', 1);
 
 /*
- * Configura o nome e a porta do servidor de envio de email no php.ini.
+ * Configura o nome e a porta do servidor de envio de emails.
  */
 ini_set('SMTP', MAIL_SMTP_HOST);
 ini_set('smtp_port', MAIL_SMTP_PORT);
 
 /*
- * Inclui o arquivo usado para carregar as classes automaticamente.
+ * Configura o modo de exibição de erros.
  */
-require APP . 'autoload.php';
+error_reporting(E_ALL);
+ini_set('display_errors', DEBUG_MODE);
 
 /*
- * Inicializa a aplicação.
+ * Define os "handlers" para tratar os erros e as exceções.
  */
-$app = new core\App();
+$error = new core\base\Error();
+
+set_error_handler([&$error, 'waterErrorHandler']);
+set_exception_handler([&$error, 'waterExceptionHandler']);
+register_shutdown_function([&$error, 'waterShutdownHandler']);
+
+/*
+ * ==============================================================
+ * INICIALIZA A APLICAÇÃO:
+ * ==============================================================
+ */
+
+new core\App();

@@ -1,14 +1,14 @@
 <?php namespace core\contracts;
 
-interface Crud
+interface ICrud
 {
     function insert($data);
 
-    function update($key, $data);
+    function update($id, $data);
 
-    function delete($key);
+    function delete($id);
 
-    function find($key);
+    function find($id);
 
     function where($args);
 

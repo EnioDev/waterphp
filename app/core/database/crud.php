@@ -1,22 +1,20 @@
 <?php namespace core\database;
 
-use core\contracts\Crud as CrudContract;
+use core\contracts\ICrud;
 
-class Crud extends Db implements CrudContract
+class Crud extends Db implements ICrud
 {
     protected $table;
-    protected $pk;
+    protected $primary_key;
 
     /**
-     * Creates a new row in a database table.
+     * Insere um novo registro na tabela.
      *
      * @param  array $data
      * @return bool
      */
 	public final function insert($data)
     {
-        $result = false;
-
         $fields = implode(',', $data['fields']);
         $total  = count($data['fields']);
 
@@ -33,25 +31,18 @@ class Crud extends Db implements CrudContract
         }
 		$stmt = parent::prepare($sql);
 
-        try {
-            $result = $stmt->execute($data['values']);
-        } catch (\PDOException $e) {
-            parent::showErrorDetail($e);
-        }
-		return $result;
+        return $stmt->execute($data['values']);
     }
-    
+
     /**
-     * Updates the specified row in a database table.
+     * Atualiza um registro específico na tabela.
      *
-     * @param  int   $key
+     * @param  int   $id
      * @param  array $data
      * @return bool
      */
-	public final function update($key, $data)
+	public final function update($id, $data)
     {
-        $result = false;
-
         $total = count($data['fields']);
 
         $sql = "UPDATE " . $this->table . " SET ";
@@ -64,77 +55,56 @@ class Crud extends Db implements CrudContract
             }
         }
         $sql .= " WHERE ";
-        $sql .= $this->pk . " = ?";
+        $sql .= $this->primary_key . " = ?";
 
 		$stmt = parent::prepare($sql);
 
-        array_push($data['values'], $key);
+        array_push($data['values'], $id);
 
-        try {
-            $result = $stmt->execute($data['values']);
-        } catch (\PDOException $e) {
-            parent::showErrorDetail($e);
-        }
-        return $result;
+        return $stmt->execute($data['values']);
     }
 
     /**
-     * Removes the specified row in a database table.
+     * Remove um registro específico da tabela.
      *
-     * @param  int  $key
+     * @param  int  $id
      * @return bool
      */
-    public final function delete($key)
+    public final function delete($id)
     {
-        $result = false;
-
         $sql = "DELETE FROM " . $this->table . " WHERE id = :id";
 
         $stmt = parent::prepare($sql);
-        $stmt->bindParam(':id', $key, parent::paramType($key));
+        $stmt->bindParam(':id', $id, parent::paramType($id));
 
-        try {
-            $result = $stmt->execute();
-        } catch (\PDOException $e) {
-            parent::showErrorDetail($e);
-        }
-        return $result;
+        return $stmt->execute();
     }
-    
+
     /**
-     * Retrieves the specified row from database table.
+     * Busca um registro específico na tabela.
      *
-     * @param  int  $key
+     * @param  int  $id
      * @return mixed
      */
-	public final function find($key)
+	public final function find($id)
     {
-        $result = false;
-
         $sql = "SELECT * FROM " . $this->table . " WHERE id = :id";
 
         $stmt = parent::prepare($sql);
-        $stmt->bindParam(':id', $key, parent::paramType($key));
+        $stmt->bindParam(':id', $id, parent::paramType($id));
         $stmt->execute();
 
-        try {
-            $result = $stmt->fetch();
-        } catch (\PDOException $e) {
-            parent::showErrorDetail($e);
-        }
-        return $result;
+        return $stmt->fetch();
 	}
 
     /**
-     * Retrieves a row from database table with specified arguments.
+     * Busca por registros na tabela de acordo com os argumentos informados.
      *
      * @param  array $args
      * @return mixed
      */
     public final function where($args)
     {
-        $result = false;
-
         $sql = "SELECT * FROM " . $this->table . " WHERE 1 = 1";
 
         foreach ($args['fields'] as $field) {
@@ -144,33 +114,21 @@ class Crud extends Db implements CrudContract
         $stmt = parent::prepare($sql);
         $stmt->execute($args['values']);
 
-        try {
-            $result = $stmt->fetch();
-        } catch (\PDOException $e) {
-            parent::showErrorDetail($e);
-        }
-        return $result;
+        return $stmt->fetch();
     }
 
     /**
-     * Retrieves all data from database table.
+     * Retorna todos os dados da tabela.
      *
      * @return mixed
      */
 	public final function all()
     {
-        $result = false;
-
 		$sql = "SELECT * FROM " . $this->table;
 
 		$stmt = parent::prepare($sql);
 		$stmt->execute();
 
-        try {
-            $result = $stmt->fetchAll();
-        } catch (\PDOException $e) {
-            parent::showErrorDetail($e);
-        }
-        return $result;
+        return $stmt->fetchAll();
 	}
 }

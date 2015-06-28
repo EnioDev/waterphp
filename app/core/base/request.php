@@ -28,4 +28,9 @@ final class Request
         }
         return null;
     }
+
+    public static function old($key)
+    {
+        return self::get($key);
+    }
 }
