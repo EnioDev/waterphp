@@ -5,7 +5,7 @@ final class Error
     public function waterErrorHandler($code, $message, $filename, $line)
     {
         $debug = ini_get('display_errors');
-        $image = 'images/fire.png';
+        $stop = false;
 
         switch ($code)
         {
@@ -13,42 +13,39 @@ final class Error
             case E_USER_ERROR:
                 $title = 'Fatal Error';
                 $debug = true;
-                Session::stop();
+                $stop = true;
                 break;
 
             case E_PARSE:
                 $title = 'Parse Error';
                 $debug = true;
-                Session::stop();
+                $stop = true;
                 break;
 
             case E_WARNING:
             case E_USER_WARNING:
                 $title = 'Warning';
-                $image = 'images/attention.png';
                 break;
 
             case E_NOTICE:
             case E_USER_NOTICE:
                 $title = 'Notice';
-                $image = 'images/attention.png';
                 break;
 
             default:
                 $title = 'Unknowing Error';
         }
 
-        $data = [
-            'title'=> $title,
-            'code' => $code,
-            'message' => $message,
-            'filename' => $filename,
-            'line' => $line,
-            'image' => $image
-        ];
+        $_SESSION['app_error_title'] = $title;
+        $_SESSION['app_error_code'] = $code;
+        $_SESSION['app_error_message'] = $message;
+        $_SESSION['app_error_filename'] = $filename;
+        $_SESSION['app_error_line'] = $line;
+        $_SESSION['app_error_stop'] = $stop;
 
-        // TODO: A view deve abrir em outra pagina quando for um erro.
-        if ($debug) { View::load('template/error', $data); }
+        if ($debug) {
+            Redirect::to(BASE_URL . 'debug/error');
+        }
 
         return true;
     }
@@ -64,15 +61,12 @@ final class Error
 
     public function waterExceptionHandler($e)
     {
-        $data = [
-            'title' => 'Exception',
-            'code' => $e->getCode(),
-            'message' => $e->getMessage(),
-            'filename' => $e->getFile(),
-            'line' => $e->getLine(),
-            'image' => 'images/attention.png'
-        ];
+        $_SESSION['app_error_title'] = 'Exception';
+        $_SESSION['app_error_code'] = $e->getCode();
+        $_SESSION['app_error_message'] = $e->getMessage();
+        $_SESSION['app_error_filename'] = $e->getFile();
+        $_SESSION['app_error_line'] = $e->getLine();
 
-        View::load('template/error', $data);
+        Redirect::to(BASE_URL . 'debug/error');
     }
 }

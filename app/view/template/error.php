@@ -3,7 +3,7 @@
 <body class="padding-20">
     <div class="container">
         <div class="well text-center">
-            <img src="<?php echo PUBLIC_URL . $image; ?>" />
+            <img src="<?php echo PUBLIC_URL . 'images/attention.png'; ?>" />
             <h1><?php echo $title; ?></h1>
             <div class="alert alert-danger text-left">
                 <?php
