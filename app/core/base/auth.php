@@ -7,8 +7,8 @@ final class Auth
     }
 
     public static function user() {
-        if (isset($_SESSION['app_authenticated_user'])) {
-            return unserialize(Encryption::decode($_SESSION['app_authenticated_user']));
+        if (Session::get('app_authenticated_user')) {
+            return unserialize(Encryption::decode(Session::get('app_authenticated_user')));
         }
         return null;
     }

@@ -1,6 +1,7 @@
 <?php namespace controller;
 
 use core\base\Auth;
+use core\base\Redirect;
 use core\base\View;
 use core\base\Request;
 use core\base\Controller;
@@ -45,7 +46,7 @@ class User extends Controller
         // usuário está autenticado, caso contrário, você
         // pode redirecioná-lo para outra página.
         if (!Auth::user() and !$this->register) {
-            header('Location: ' . BASE_URL . 'login');
+            Redirect::to(BASE_URL . 'login');
             exit;
         }
 
