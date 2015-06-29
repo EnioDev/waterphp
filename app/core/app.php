@@ -1,18 +1,13 @@
 <?php namespace core;
 
 use core\base\Session;
-use core\base\Error;
-use core\utils\Url;
+use core\base\View;
+use core\base\Url;
 
 final class App {
 
-    use Url;
-
     public function __construct()
     {
-        $this->splitUrl();
-
-        // Starts the session before executing controller/action.
         if (!Session::start()) {
             header('Location: ' . BASE_URL);
         } else {
@@ -22,53 +17,41 @@ final class App {
     
     private function load() 
     {
-        // Check for controller: no controller given? Then load default controller.
-        if (!$this->url_controller) 
+        // Se nenhum controlador foi informado executa o controlador padrão.
+        if (!Url::getController()) 
         {
-            $this->loadDefaultController();
-        } 
-        else if ($this->checkController($this->url_controller))
+            $controller = 'controller\\' . strtolower(CONTROLLER_INDEX);
+            $controller = new $controller();
+            $controller->index();
+        }
+        else if (file_exists(CONTROLLER_PATH . Url::getController() . '.php'))
         {
-            $controller = 'controller\\' . $this->url_controller;
+            // TODO: Tentar fazer a chamada do controlador mesmo que o nome do arquivo use CamelCase.
+            $controller = 'controller\\' . Url::getController();
             $controller = new $controller();
 
-            // Check for method: does this method exist in the controller?
-            if (method_exists($controller, $this->url_method)) {
-
-                if (!empty($this->url_params)) {
-                    // Call the method and pass arguments to it.
-                    call_user_func_array(array($controller, $this->url_method), $this->url_params);
+            // Verifica se o método existe no controlador informado.
+            if (method_exists($controller, Url::getMethod()))
+            {
+                // Verifica se algum parâmetro foi informado antes de executar o método.
+                if (count(Url::getParams()) > 0) {
+                    call_user_func_array(array($controller, Url::getMethod()), Url::getParams());
+                // Senão executa o método sem nenhum parâmetro.
                 } else {
-                    // If no parameters are given, just call the method without parameters.
-                    $controller->{$this->url_method}();
+                    $controller->{Url::getMethod()}();
                 }
-
             } else {
-                if (strlen($this->url_method) == 0) {
-                    // No action defined: call the default index() method of a selected controller.
+                // Se nenhum método foi informado, então executa o método "index" do controlador.
+                if (strlen(Url::getMethod()) == 0) {
                     $controller->index();
+                // Se o método informado não existe, então exibe a página de erro 404.
                 } else {
-                    $error = new Error();
-                    $error->setTemplate('error/404');
-                    $error->show();
+                    View::load('template/404');
                 }
             }
+        // Se o controlador informado não existe, então exibe a página de erro 404.
         } else {
-            $error = new Error();
-            $error->setTemplate('error/404');
-            $error->show();
+            View::load('template/404');
         }
-    }
-    
-    private function loadDefaultController()
-    {
-        $controller = 'controller\\' . strtolower(DEFAULT_CONTROLLER);
-        $controller = new $controller();
-        $controller->index();
-    }
-    
-    private function checkController($controller) 
-    {
-        return file_exists(APP_DIR . 'controller' . DS . $controller . '.php');
     }
 }

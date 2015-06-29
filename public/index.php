@@ -1,73 +1,116 @@
 <?php
 
 /*
- * Defines directory separator.
+ * ==============================================================
+ * DEFINIÇÃO DAS CONSTANTES:
+ * ==============================================================
+ */
+
+/*
+ * Define o separador de diretório usado pelo Sistema Operacional.
  */
 define('DS', DIRECTORY_SEPARATOR);
 
 /*
- * Defines root directory of the project (absolute path).
+ * Define o caminho completo para o diretório raiz onde está instalado o framework.
  */
-define('ROOT_DIR', dirname(__DIR__) . DS);
+define('ROOT_PATH', dirname(__DIR__) . DS);
 
 /*
- * Defines app directory of the project (absolute path).
+ * Define o caminho completo para o diretório da aplicação.
  */
-define('APP_DIR', ROOT_DIR . 'app' . DS);
+define('APP_PATH', ROOT_PATH . 'app' . DS);
 
 /*
- * Defines values directory of the project (absolute path),
- * used to make application translation.
+ * Define o caminho completo para o diretório que contém as views.
  */
-define('VALUES_DIR', ROOT_DIR . 'public' . DS . 'values' . DS);
+define('VIEW_PATH', APP_PATH . 'view' . DS);
 
 /*
- * Defines URL parts.
+ * Define o caminho completo para o diretório que contém os controladores.
  */
-define('URL_PROTOCOL', 'http://');
-define('URL_DOMAIN', $_SERVER['HTTP_HOST']);
-define('URL_SUB_FOLDER', str_replace('public', '', dirname($_SERVER['SCRIPT_NAME'])));
+define('CONTROLLER_PATH', APP_PATH . 'controller' . DS);
 
 /*
- * Defines base URL of the project (like http://localhost/water).
+ * Define o caminho completo para o diretório que contém os arquivos usados para tradução.
  */
-define('BASE_URL', URL_PROTOCOL . URL_DOMAIN . URL_SUB_FOLDER);
+define('VALUES_PATH', ROOT_PATH . 'public' . DS . 'values' . DS);
 
 /*
- * Defines URL for public folder.
+ * Define as partes que compõem a URL.
+ */
+define('PROTOCOL', 'http://');
+define('DOMAIN', $_SERVER['HTTP_HOST']);
+define('SUB_FOLDER', str_replace('public', '', dirname($_SERVER['SCRIPT_NAME'])));
+
+/*
+ * Define a URL base do projeto (ex: http://localhost/water).
+ */
+define('BASE_URL', PROTOCOL . DOMAIN . SUB_FOLDER);
+
+/*
+ * Define a URL para o diretório público da aplicação.
  */
 define('PUBLIC_URL', BASE_URL . 'public' . DS);
 
-/*
- * Loads user configuration file.
- */
-require APP_DIR . 'config' . DS . 'config.php';
+# DEBUG:
+# echo ROOT_PATH . '<br>';
+# echo APP_PATH . '<br>';
+# echo VIEW_PATH . '<br>';
+# echo VALUES_PATH . '<br>';
+# echo BASE_URL . '<br>';
+# echo PUBLIC_URL . '<br>';
 
 /*
- * Configures error's reporting (php.ini).
+ * ==============================================================
+ * CONFIGURAÇÃO DA APLICAÇÃO:
+ * ==============================================================
  */
-error_reporting(E_ALL);
-ini_set('display_errors', DEBUG_MODE);
 
 /*
- * Defines session's lifetime (php.ini).
+ * Carrega o arquivo de configuração da aplicação (definido pelo usuário).
  */
+require_once APP_PATH . 'config' . DS . 'config.php';
+
+/*
+ * Inclui o arquivo para carregar as classes automaticamente.
+ */
+require_once APP_PATH . 'autoload.php';
+
+/*
+ * Configura o tempo para expirar a sessão do usuário.
+ */
+// TODO: Validar no windows.
+ini_set('session.save_path', DS.'tmp');
 ini_set('session.gc_maxlifetime', SESSION_MAX_LIFETIME);
 ini_set('session.gc_probability', 1); // Ex: probability / divisor = 1 (100%)
 ini_set('session.gc_divisor', 1);
 
 /*
- * Configures mail server to send emails (php.ini).
+ * Configura o nome e a porta do servidor de envio de emails.
  */
 ini_set('SMTP', MAIL_SMTP_HOST);
 ini_set('smtp_port', MAIL_SMTP_PORT);
 
 /*
- * Loads autoload class file.
+ * Configura o modo de exibição de erros.
  */
-require APP_DIR . 'autoload.php';
+error_reporting(E_ALL);
+ini_set('display_errors', DEBUG_MODE);
 
 /*
- * Starts the application.
+ * Define os "handlers" para tratar os erros e as exceções.
  */
-$app = new core\App();
+$error = new core\base\Error();
+
+set_error_handler([&$error, 'waterErrorHandler']);
+set_exception_handler([&$error, 'waterExceptionHandler']);
+register_shutdown_function([&$error, 'waterShutdownHandler']);
+
+/*
+ * ==============================================================
+ * INICIALIZA A APLICAÇÃO:
+ * ==============================================================
+ */
+
+new core\App();

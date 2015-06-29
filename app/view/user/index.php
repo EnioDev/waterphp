@@ -1,4 +1,5 @@
-<!-- view/template/header.php -->
+<?php $app::template('template/header'); ?>
+
 <body>
     <div class="container">
         <nav class="navbar navbar-inverse">
@@ -44,38 +45,42 @@
 
             if (isset($errors) and count($errors) > 0)
             {
-                $id = $this->old('id');
-                $name = $this->old('name');
-                $email = $this->old('email');
-                $password = $this->old('password');
+                $id = $app::old('id');
+                $name = $app::old('name');
+                $email = $app::old('email');
+                $password = $app::old('password');
             }
 
-            // TODO: Verificar se dá para melhorar a chamada das funções na view sem o $this.
-            $submit = ($id) ? $this->strings()->user->buttons->update : $this->strings()->user->buttons->create;
+            $submit = $app::values()->user->buttons->create;
+            if ($id) {
+                $submit = $app::values()->user->buttons->update;
+            }
         ?>
 
         <form class="form-horizontal" role="form" method="POST" action="<?php echo BASE_URL; ?>user/store">
 
-            <input type="hidden" name="_token" value="<?php echo $this->token(); ?>">
+            <input type="hidden" name="_token" value="<?php echo $app::token(); ?>">
             <input type="hidden" name="id" value="<?php echo $id; ?>">
 
             <div class="form-group">
-                <label class="col-md-1 control-label"><?php echo $this->strings()->user->fields->name; ?>:</label>
-                <div class="col-md-3">
+                <div class="col-md-4">
+                    <label class="control-label"><?php echo $app::values()->user->fields->name; ?>:</label>
                     <input type="text" class="form-control" name="name" value="<?php echo $name; ?>">
                 </div>
-                <label class="col-md-1 control-label"><?php echo $this->strings()->user->fields->email; ?>:</label>
-                <div class="col-md-4">
+
+                <div class="col-md-5">
+                    <label class="control-label"><?php echo $app::values()->user->fields->email; ?>:</label>
                     <input type="text" class="form-control" name="email" value="<?php echo $email; ?>">
                 </div>
-                <label class="col-md-1 control-label"><?php echo $this->strings()->user->fields->password; ?>:</label>
-                <div class="col-md-2">
+
+                <div class="col-md-3">
+                    <label class="control-label"><?php echo $app::values()->user->fields->password; ?>:</label>
                     <input type="password" class="form-control" name="password" value="<?php echo $password; ?>">
                 </div>
             </div>
             <input type="submit" class="btn btn-primary" name="submit" value="<?php echo $submit; ?>">
             <?php if ($id) : ?>
-                <a href="<?php echo BASE_URL; ?>user" class="btn btn-danger"><?php echo $this->strings()->user->buttons->cancel; ?></a>
+                <a href="<?php echo BASE_URL; ?>user" class="btn btn-danger"><?php echo $app::values()->user->buttons->cancel; ?></a>
             <?php endif; ?>
         </form>
         <br><br>
@@ -84,8 +89,8 @@
             <thead>
             <tr>
                 <th>#</th>
-                <th><?php echo $this->strings()->user->fields->name; ?>:</th>
-                <th><?php echo $this->strings()->user->fields->email; ?>:</th>
+                <th><?php echo $app::values()->user->fields->name; ?>:</th>
+                <th><?php echo $app::values()->user->fields->email; ?>:</th>
                 <th>&nbsp;</th>
             </tr>
             </thead>
@@ -95,15 +100,15 @@
                 <tr>
                     <form method="POST" action="<?php echo BASE_URL; ?>user/destroy">
 
-                        <input type="hidden" name="_token" value="<?php echo $this->token(); ?>">
+                        <input type="hidden" name="_token" value="<?php echo $app::token(); ?>">
                         <input type="hidden" name="id" value="<?php echo $user->id; ?>">
 
                         <td><?php echo $user->id; ?></td>
                         <td><?php echo htmlspecialchars($user->name); ?></td>
                         <td><?php echo htmlspecialchars($user->email); ?></td>
                         <td>
-                            <a href="<?php echo BASE_URL; ?>user/edit/<?php echo $user->id; ?>" class="btn btn-sm btn-default"><?php echo $this->strings()->user->buttons->edit; ?></a>
-                            <input type="submit" value="<?php echo $this->strings()->user->buttons->remove; ?>" class="btn btn-sm btn-danger">
+                            <a href="<?php echo BASE_URL; ?>user/edit/<?php echo $user->id; ?>" class="btn btn-sm btn-default"><?php echo $app::values()->user->buttons->edit; ?></a>
+                            <input type="submit" value="<?php echo $app::values()->user->buttons->remove; ?>" class="btn btn-sm btn-danger">
                         </td>
                     </form>
                 </tr>
@@ -111,4 +116,4 @@
             </tbody>
         </table>
     </div><!-- /Container -->
-<!-- view/template/footer.php -->
+<?php $app::template('template/footer'); ?>

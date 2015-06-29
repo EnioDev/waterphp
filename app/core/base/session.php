@@ -10,33 +10,36 @@ final class Session {
 
     public static function stop()
     {
-        // Removes all session variables.
-        session_unset();
+        if (self::get('app_session_time'))
+        {
+            // Remove todas as variáveis definidas na sessão.
+            session_unset();
 
-        // Destroys the session.
-        session_destroy();
+            // Destroi a sessão do usuário.
+            session_destroy();
+        }
     }
 
     private static function timeout()
     {
-        if (isset($_SESSION['app_session_time'])) {
+        if (self::get('app_session_time')) {
             if (SESSION_TIMEOUT > 0) {
-                if ($_SESSION['app_session_time'] < (time() - SESSION_TIMEOUT)) {
+                if (self::get('app_session_time') < (time() - SESSION_TIMEOUT)) {
                     self::stop();
                     return true;
                 }
             }
         } else {
             $_SESSION['app_session_time']  = time();
-            $_SESSION['app_session_token'] = Encryption::make(md5(uniqid(rand(), true)));
+            $_SESSION['app_session_token'] = Encryption::encode(md5(uniqid(rand(), true)));
         }
         return false;
     }
 
     public static function token()
     {
-        if (isset($_SESSION['app_session_token'])) {
-            return Encryption::undo($_SESSION['app_session_token']);
+        if (self::get('app_session_token')) {
+            return Encryption::decode(self::get('app_session_token'));
         }
         return null;
     }
@@ -47,5 +50,13 @@ final class Session {
             return true;
         }
         return false;
+    }
+
+    public static function get($key)
+    {
+        if (isset($_SESSION[$key])) {
+            return $_SESSION[$key];
+        }
+        return null;
     }
 }

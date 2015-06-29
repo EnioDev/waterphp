@@ -1,25 +1,25 @@
-# It was provided by MINI Framework.
-
-# Necessary to prevent problems when using a controller named "index" and having a root index.php
-# more here: http://httpd.apache.org/docs/2.2/content-negotiation.html.
+# Necessário para evitar problemas quando estiver usando um controlador nomeado "index" e um arquivo "root" index.php.
+# Veja mais: http://httpd.apache.org/docs/2.2/content-negotiation.html.
 Options -MultiViews
 
-# Activates URL rewriting (like myproject.com/controller/action/1/2/3).
+# Confirma o uso da reescrita de URL (como: meuprojeto.com/controlador/metodo/param1/param2/param3).
 RewriteEngine On
 
-# Prevent people from looking directly into folders.
+# Evita que pessoas pesquisem diretamente nas pastas.
 Options -Indexes
 
-# If the following conditions are true, then rewrite the URL:
-# If the requested filename is not a directory,
+# Verifica se as condições abaixo são verdadeiras:
+
+# Se o nome do arquivo solicitado não é um diretório.
 RewriteCond %{REQUEST_FILENAME} !-d
-# and if the requested filename is not a regular file that exists,
+# Se o nome do arquivo solicitado não é um arquivo regular existente.
 RewriteCond %{REQUEST_FILENAME} !-f
-# and if the requested filename is not a symbolic link,
+# Se o nome do arquivo solicitado não é um link simbólico.
 RewriteCond %{REQUEST_FILENAME} !-l
-# then rewrite the URL in the following way:
-# Take the whole request filename and provide it as the value of a
-# "url" query parameter to index.php. Append any query string from
-# the original URL as further query parameters (QSA), and stop
-# processing this .htaccess file (L).
-RewriteRule ^(.+)$ index.php?url=$1 [QSA,L]
+
+# Então reescreve a URL:
+
+# QSA: Query String Append
+# NC: Non Case
+# L: Last Rule
+RewriteRule ^(.+)$ index.php?url=$1 [QSA,NC,L]

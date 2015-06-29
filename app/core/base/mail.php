@@ -1,6 +1,6 @@
 <?php namespace core\base;
 
-class Mail {
+final class Mail {
 
     private $to;
     private $subject;
@@ -28,12 +28,12 @@ class Mail {
         }
 
         $this->headers[] = 'From: ' . MAIL_FROM;
-        //$this->headers[] = 'Return-path: ' . EMAIL_FROM; // Windows?
+        $this->headers[] = 'Return-path: ' . MAIL_FROM;
         $this->headers[] = 'Reply-to: ' . MAIL_FROM;
         $this->headers[] = 'X-Mailer: PHP/' . phpversion();
     }
 
-    public final function send()
+    public function send()
     {
         $accept = false;
         if (strlen($this->to) > 0) {

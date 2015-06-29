@@ -1,15 +1,14 @@
 <?php namespace core\base;
 
-// TODO: Tentar colocar a classe no namespace global.
 final class Auth
 {
     public static function make($user) {
-        $_SESSION['authenticated_user'] = Encryption::make(serialize($user));
+        $_SESSION['app_authenticated_user'] = Encryption::encode(serialize($user));
     }
 
     public static function user() {
-        if (isset($_SESSION['authenticated_user'])) {
-            return unserialize(Encryption::undo($_SESSION['authenticated_user']));
+        if (Session::get('app_authenticated_user')) {
+            return unserialize(Encryption::decode(Session::get('app_authenticated_user')));
         }
         return null;
     }
