@@ -4,7 +4,7 @@
         if (file_exists($file)) {
             require_once($file);
         } else {
-            echo 'The class name '. $className .' does not exists.';
+            echo 'The class name '. $className .' does not exist.';
             return false;
         }
         return true;

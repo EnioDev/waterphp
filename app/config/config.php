@@ -11,14 +11,15 @@
  * 1 ou true = Ativado
  *
  */
-define('DEBUG_MODE', 0);
+define('DEBUG_MODE', 1);
 
 /*
  * --------------------------------------------------------------------------
  * IDIOMA
  * --------------------------------------------------------------------------
  *
- * Você pode definir o idioma da aplicação, como 'en' ou 'pt-br'.
+ * Você pode definir o idioma da aplicação, como 'en' para inglês ou
+ * 'pt-br' para o português do Brasil.
  * Para mais informações consulte o atributo "lang" usado na meta tag do
  * cabeçalho HTML e siga os mesmos padrões de nomenclatura.
  *
@@ -35,13 +36,10 @@ define('APP_LANGUAGE', 'pt-br');
  * --------------------------------------------------------------------------
  *
  * Você pode definir o tempo máximo que a aplicação deve aguardar pela
- * atividade do usuário que se encontra inativo, antes da sessão expirar.
- * Se desejar interromper a sessão após um tempo determinado mesmo que o
- * usuário esteja em atividade, você pode definir o "timeout".
+ * ação do usuário que se encontra inativo, antes da sessão expirar.
  *
  */
 define('SESSION_MAX_LIFETIME', '7200');
-define('SESSION_TIMEOUT', '0');
 
 /*
  * ---------------------------------------------------------------------------

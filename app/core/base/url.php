@@ -10,21 +10,19 @@ final class Url
             $url = filter_var($url, FILTER_SANITIZE_URL);
             $url = explode('/', $url);
 
-            $controller = isset($url[0]) ? $url[0] : null;
-            $method = isset($url[1]) ? $url[1] : null;
+            $get = array();
+
+            $get['controller'] = $controller = isset($url[0]) ? $url[0] : null;
+            $get['method'] = isset($url[1]) ? $url[1] : null;
 
             unset($url[0], $url[1]);
 
-            $params = array_values($url);
+            $get['params'] = array_values($url);
 
             if ($type) {
-                return $$type;
+                return $get[$type];
             } else {
-                return [
-                    'controller' => $controller,
-                    'method' => $method,
-                    'params' => $params
-                ];
+                return $get;
             }
         }
     }

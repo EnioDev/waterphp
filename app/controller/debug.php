@@ -1,14 +1,15 @@
 <?php namespace controller;
 
+use core\base\Controller;
 use core\base\Redirect;
 use core\base\Session;
 use core\base\View;
 
-class Debug
+class Debug extends Controller
 {
     private $view;
 
-    public function error()
+    public function index()
     {
         $this->view = 'template/error';
 
@@ -24,7 +25,7 @@ class Debug
 
             View::load($this->view, $data);
 
-            if (Session::get('app_error_stop')) {
+            if (Session::get('app_error_fatal')) {
                 Session::stop();
             }
         } else {

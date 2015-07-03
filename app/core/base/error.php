@@ -41,10 +41,10 @@ final class Error
         $_SESSION['app_error_message'] = $message;
         $_SESSION['app_error_filename'] = $filename;
         $_SESSION['app_error_line'] = $line;
-        $_SESSION['app_error_stop'] = $stop;
+        $_SESSION['app_error_fatal'] = $stop;
 
         if ($debug) {
-            Redirect::to(BASE_URL . 'debug/error');
+            Redirect::to(BASE_URL . 'debug');
         }
 
         return true;
@@ -67,6 +67,6 @@ final class Error
         $_SESSION['app_error_filename'] = $e->getFile();
         $_SESSION['app_error_line'] = $e->getLine();
 
-        Redirect::to(BASE_URL . 'debug/error');
+        Redirect::to(BASE_URL . 'debug');
     }
 }
