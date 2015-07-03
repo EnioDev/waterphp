@@ -24,7 +24,7 @@ final class App {
             $controller = new $controller();
             $controller->index();
         }
-        else if (file_exists(CONTROLLER_PATH . Url::getController() . '.php'))
+        else //if (file_exists(CONTROLLER_PATH . Url::getController() . '.php'))
         {
             // TODO: Tentar fazer a chamada do controlador mesmo que o nome do arquivo use CamelCase.
             $controller = 'controller\\' . Url::getController();
@@ -50,8 +50,8 @@ final class App {
                 }
             }
         // Se o controlador informado não existe, então exibe a página de erro 404.
-        } else {
-            View::load('template/404');
-        }
+        } //else {
+            //View::load('template/404');
+        //}
     }
 }
