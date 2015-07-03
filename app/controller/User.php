@@ -125,6 +125,7 @@ class User extends Controller
 
     public function edit($id = null)
     {
+        $user = null;
         if ($id) {
             $user = $this->model()->find($id);
             $user->password = Encryption::decode($user->password);

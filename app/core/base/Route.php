@@ -1,14 +1,19 @@
 <?php namespace core\base;
 
-class Route {
+final class Route {
 
-    private function get($str, $controllerMethod)
+    private static $routes = [];
+
+    public function controller($index, $controllerMethod)
     {
-
+        self::$routes[$index] = $controllerMethod;
     }
 
-    private function controller($str, $controller)
+    public function getController($index)
     {
-
+        if (isset(self::$routes[$index])) {
+            return self::$routes[$index];
+        }
+        return null;
     }
 }

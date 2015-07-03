@@ -1,5 +1,6 @@
 <?php namespace core;
 
+use core\base\Route;
 use core\base\Session;
 use core\base\View;
 use core\base\Url;
@@ -15,43 +16,59 @@ final class App {
         }
     }
     
-    private function load() 
+    private function load()
     {
         // Se nenhum controlador foi informado executa o controlador padrão.
-        if (!Url::getController()) 
-        {
-            $controller = 'controller\\' . strtolower(CONTROLLER_INDEX);
+        if (!Url::getController()) {
+            $controller = 'controller\\' . CONTROLLER_INDEX;
             $controller = new $controller();
             $controller->index();
-        }
-        else //if (file_exists(CONTROLLER_PATH . Url::getController() . '.php'))
-        {
-            // TODO: Tentar fazer a chamada do controlador mesmo que o nome do arquivo use CamelCase.
-            $controller = 'controller\\' . Url::getController();
-            $controller = new $controller();
+        } else {
 
-            // Verifica se o método existe no controlador informado.
-            if (method_exists($controller, Url::getMethod()))
-            {
-                // Verifica se algum parâmetro foi informado antes de executar o método.
-                if (count(Url::getParams()) > 0) {
-                    call_user_func_array(array($controller, Url::getMethod()), Url::getParams());
-                // Senão executa o método sem nenhum parâmetro.
-                } else {
-                    $controller->{Url::getMethod()}();
-                }
-            } else {
-                // Se nenhum método foi informado, então executa o método "index" do controlador.
-                if (strlen(Url::getMethod()) == 0) {
-                    $controller->index();
-                // Se o método informado não existe, então exibe a página de erro 404.
-                } else {
-                    View::load('template/404');
-                }
+            $route = new Route();
+
+            $controller = Url::getController();
+            $method = Url::getMethod();
+            $params = Url::getParams();
+
+            if ($route->getController($controller)) {
+                $controller = $route->getController($controller);
             }
-        // Se o controlador informado não existe, então exibe a página de erro 404.
-        } //else {
-            //View::load('template/404');
-        //}
+
+            $m = explode('@', $controller);
+            if (is_array($m) and count($m) === 2) {
+                $controller = $m[0];
+                $method = $m[1];
+                $params = [];
+            }
+
+            if (file_exists(CONTROLLER_PATH . $controller . '.php'))
+            {
+                $controller = 'controller\\' . $controller;
+                $controller = new $controller();
+
+                // Verifica se o método existe no controlador informado.
+                if (method_exists($controller, $method)) {
+                    // Verifica se algum parâmetro foi informado antes de executar o método.
+                    if (count($params) > 0) {
+                        call_user_func_array(array($controller, $method), $params);
+                        // Senão executa o método sem nenhum parâmetro.
+                    } else {
+                        $controller->{$method}();
+                    }
+                } else {
+                    // Se nenhum método foi informado, então executa o método "index" do controlador.
+                    if (strlen($method) == 0) {
+                        $controller->index();
+                        // Se o método informado não existe, então exibe a página de erro 404.
+                    } else {
+                        View::load('template/404');
+                    }
+                }
+            // Se o controlador informado não existe, então exibe a página de erro 404.
+            } else {
+                View::load('template/404');
+            }
+        }
     }
 }

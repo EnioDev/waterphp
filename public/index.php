@@ -2,7 +2,7 @@
 
 /*
  * ==============================================================
- * DEFINE OS CAMINHOS DE DIRETÓRIOS DA APLICAÇÃO:
+ * DEFINE OS CAMINHOS DOS DIRETÓRIOS DA APLICAÇÃO:
  * ==============================================================
  */
 
@@ -12,6 +12,8 @@ define('ROOT_PATH', dirname(__DIR__) . DS);
 
 define('APP_PATH', ROOT_PATH . 'app' . DS);
 
+define('CONFIG_PATH', APP_PATH . 'config' . DS);
+
 define('VIEW_PATH', APP_PATH . 'view' . DS);
 
 define('CONTROLLER_PATH', APP_PATH . 'controller' . DS);
@@ -20,7 +22,7 @@ define('PUBLIC_PATH', ROOT_PATH . 'public' . DS);
 
 define('VALUES_PATH', PUBLIC_PATH . 'values' . DS);
 
-define('IMG_PATH', PUBLIC_PATH . 'img' . DS);
+define('IMAGES_PATH', PUBLIC_PATH . 'images' . DS);
 
 /*
  * ==============================================================
@@ -44,36 +46,12 @@ define('PUBLIC_URL', BASE_URL . 'public' . DS);
 
 /*
  * ==============================================================
- * DESCOMENTE PARA "DEBUG":
- * ==============================================================
- */
-
-# echo '<b>Paths</b>:' . '<br>';
-# echo ROOT_PATH . '<br>';
-# echo APP_PATH . '<br>';
-# echo VIEW_PATH . '<br>';
-# echo CONTROLLER_PATH . '<br>';
-# echo PUBLIC_PATH . '<br>';
-# echo VALUES_PATH . '<br>';
-# echo IMG_PATH . '<br><br>';
-# echo '<b>URLs</b>:' . '<br>';
-# echo BASE_URL . '<br>';
-# echo PUBLIC_URL . '<br>';
-
-/*
- * ==============================================================
- * CARREGA OS ARQUIVOS:
+ * CONFIGURA O TRATAMENTO DE ERROS DA APLICAÇÃO:
  * ==============================================================
  */
 
 require_once(APP_PATH . 'autoload.php');
-require_once(APP_PATH . 'config' . DS . 'config.php');
-
-/*
- * ==============================================================
- * CONFIGURA O TRATAMENTO DE ERROS DA APLICAÇÃO:
- * ==============================================================
- */
+require_once(CONFIG_PATH . 'config.php');
 
 error_reporting(E_ALL);
 ini_set('display_errors', DEBUG_MODE);
@@ -83,6 +61,25 @@ $error = new core\base\Error();
 set_error_handler([&$error, 'waterErrorHandler']);
 set_exception_handler([&$error, 'waterExceptionHandler']);
 register_shutdown_function([&$error, 'waterShutdownHandler']);
+
+/*
+ * ==============================================================
+ * DESCOMENTE PARA "DEBUG":
+ * ==============================================================
+ */
+
+# echo '<b>Paths</b>:' . '<br>';
+# echo ROOT_PATH . '<br>';
+# echo APP_PATH . '<br>';
+# echo CONFIG_PATH . '<br>';
+# echo VIEW_PATH . '<br>';
+# echo CONTROLLER_PATH . '<br>';
+# echo PUBLIC_PATH . '<br>';
+# echo VALUES_PATH . '<br>';
+# echo IMG_PATH . '<br><br>';
+# echo '<b>URLs</b>:' . '<br>';
+# echo BASE_URL . '<br>';
+# echo PUBLIC_URL . '<br>';
 
 /*
  * ==============================================================
@@ -105,6 +102,15 @@ define('SESSION_TIMEOUT', '0');
 
 ini_set('SMTP', MAIL_SMTP_HOST);
 ini_set('smtp_port', MAIL_SMTP_PORT);
+
+/*
+ * ==============================================================
+ * CARREGA AS ROTAS:
+ * ==============================================================
+ */
+
+$route = new core\base\Route();
+require_once(CONFIG_PATH . 'routes.php');
 
 /*
  * ==============================================================
