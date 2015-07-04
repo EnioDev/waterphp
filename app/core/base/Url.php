@@ -4,7 +4,7 @@ final class Url
 {
     private static function splitUrl($type = null)
     {
-        if (isset($_GET['url']))
+        if (self::get())
         {
             $url = trim($_GET['url'], '/');
             $url = filter_var($url, FILTER_SANITIZE_URL);
@@ -25,6 +25,17 @@ final class Url
                 return $get;
             }
         }
+        return null;
+    }
+
+    public static function get()
+    {
+        $url = null;
+        if (isset($_GET['url'])) {
+            $url = trim($_GET['url'], '/');
+            $url = filter_var($url, FILTER_SANITIZE_URL);
+        }
+        return $url;
     }
 
     public static function getController()

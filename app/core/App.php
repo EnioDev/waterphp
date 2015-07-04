@@ -31,14 +31,12 @@ final class App {
             $method = Url::getMethod();
             $params = Url::getParams();
 
-            if ($route->getController($controller)) {
-                $controller = $route->getController($controller);
+            if ($route->getController()) {
+                $controller = $route->getController();
             }
 
-            $m = explode('@', $controller);
-            if (is_array($m) and count($m) === 2) {
-                $controller = $m[0];
-                $method = $m[1];
+            if ($route->getMethod()) {
+                $method = $route->getMethod();
                 $params = [];
             }
 
