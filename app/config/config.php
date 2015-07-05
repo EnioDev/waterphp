@@ -5,30 +5,13 @@
  * MODO DE DEPURAÇÃO
  * --------------------------------------------------------------------------
  *
- * Você pode ativar ou desativar o modo de depuração. É aconselhável
- * desativar em ambiente de produção.
+ * Você pode ativar ou desativar o modo de depuração.
+ * É altamente aconselhável desativar em ambiente de produção.
  * 0 ou false = Desativado
  * 1 ou true = Ativado
  *
  */
-define('DEBUG_MODE', 1);
-
-/*
- * --------------------------------------------------------------------------
- * IDIOMA
- * --------------------------------------------------------------------------
- *
- * Você pode definir o idioma da aplicação, como 'en' para inglês ou
- * 'pt-br' para o português do Brasil.
- * Para mais informações consulte o atributo "lang" usado na meta tag do
- * cabeçalho HTML e siga os mesmos padrões de nomenclatura.
- *
- * Para fazer a internacionalização da aplicação, defina o arquivo
- * "strings.xml" dentro da pasta com os respectivos idiomas em
- * "public/values". Veja o exemplo dado com o framework. =)
- *
- */
-define('APP_LANGUAGE', 'pt-br');
+define('DEBUG_MODE', 0);
 
 /*
  * --------------------------------------------------------------------------
@@ -54,17 +37,34 @@ define('CONTROLLER_INDEX', 'Home');
 
 /*
  * --------------------------------------------------------------------------
+ * IDIOMA E TRADUÇÃO
+ * --------------------------------------------------------------------------
+ *
+ * Você pode definir o idioma da aplicação, como 'en' para inglês ou
+ * 'pt-br' para o português do Brasil.
+ * Para mais informações consulte o atributo "lang" usado na meta tag
+ * do cabeçalho HTML e siga os mesmos padrões de nomenclatura.
+ *
+ * Para fazer a tradução da aplicação para diferentes idiomas, defina
+ * o arquivo "strings.xml" em "public/values".
+ *
+ * Veja o exemplo dado com o framework. =)
+ *
+ */
+define('APP_LANGUAGE', 'pt-br');
+
+/*
+ * --------------------------------------------------------------------------
  * CRIPTOGRAFIA
  * --------------------------------------------------------------------------
  *
- * Se você deseja usar a classe de criptografia para criptografar dados como
- * senhas por exemplo, você deve definir uma chave contendo os caracteres
- * desejados.
+ * Para usar a sessão ou fazer autenticação do usuário você deve definir
+ * uma chave para sua aplicação criptografar os dados.
  *
- * Obs: Se estiver usando a aplicação de exemplo e alterar esta chave, você
- * deve redefinir a senha de todos os usuários cadastrados. Talvez você tenha
- * que registrar um novo usuário para conseguir efetuar o login e redefinir
- * os demais.
+ * Atenção: Se já estiver usando a aplicação de exemplo e alterar esta chave,
+ * você deve redefinir a senha de todos os usuários cadastrados. Talvez você
+ * tenha que registrar um novo usuário para conseguir efetuar o login e
+ * redefinir os demais.
  *
  */
 define('ENCRYPTION_KEY', 'your_secret_key');
@@ -74,10 +74,10 @@ define('ENCRYPTION_KEY', 'your_secret_key');
  * BANCO DE DADOS
  * --------------------------------------------------------------------------
  *
- * Aqui você pode definir as configurações para conexão com seu banco.
+ * Defina as configurações de conexão com o seu banco.
  *
  * Obs: Para usar a aplicação de exemplo, consulte o arquivo "install.txt"
- * na raiz do projeto.
+ * na raiz do projeto e veja como criar o banco e a tabela.
  *
  */
 define('DB_DRIVER'  , 'mysql');
@@ -93,11 +93,13 @@ define('DB_CHARSET' , 'utf8');
  * E-MAIL
  * --------------------------------------------------------------------------
  *
- * Aqui você pode definir as configurações para conexão com um servidor
- * de envio de emails.
+ * Se quiser enviar e-mails usando a classe "Mail" você deve definir as
+ * informações abaixo.
  *
- * Obs: O envio de emails através do servidor local (localhost) não irá
- * funcionar se este não estiver configurado como um servidor SMTP.
+ * Atenção: Caso sua aplicação esteja em seu servidor local, o envio
+ * de e-mails não irá funcionar se este não estiver configurado como um
+ * servidor SMTP.
+ *
  * Talvez você tenha que testar as funcionalidades da classe "Mail"
  * através de um serviço de hospedagem.
  *

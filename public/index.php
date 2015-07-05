@@ -26,26 +26,6 @@ define('IMAGES_PATH', PUBLIC_PATH . 'images' . DS);
 
 /*
  * ==============================================================
- * DEFINE AS URLs USADAS NA APLICAÇÃO:
- * ==============================================================
- */
-
-define('PROTOCOL', 'http://');
-define('DOMAIN', $_SERVER['HTTP_HOST']);
-define('SUB_FOLDER', str_replace('public', '', dirname($_SERVER['SCRIPT_NAME'])));
-
-/*
- * Define a URL base do projeto (ex: http://localhost/water).
- */
-define('BASE_URL', PROTOCOL . DOMAIN . SUB_FOLDER);
-
-/*
- * Define a URL para o diretório público da aplicação.
- */
-define('PUBLIC_URL', BASE_URL . 'public' . DS);
-
-/*
- * ==============================================================
  * CONFIGURA O TRATAMENTO DE ERROS DA APLICAÇÃO:
  * ==============================================================
  */
@@ -64,22 +44,24 @@ register_shutdown_function([&$error, 'waterShutdownHandler']);
 
 /*
  * ==============================================================
- * DESCOMENTE PARA "DEBUG":
+ * DEFINE AS URLs USADAS NA APLICAÇÃO:
  * ==============================================================
  */
 
-# echo '<b>Paths</b>:' . '<br>';
-# echo ROOT_PATH . '<br>';
-# echo APP_PATH . '<br>';
-# echo CONFIG_PATH . '<br>';
-# echo VIEW_PATH . '<br>';
-# echo CONTROLLER_PATH . '<br>';
-# echo PUBLIC_PATH . '<br>';
-# echo VALUES_PATH . '<br>';
-# echo IMG_PATH . '<br><br>';
-# echo '<b>URLs</b>:' . '<br>';
-# echo BASE_URL . '<br>';
-# echo PUBLIC_URL . '<br>';
+define('PROTOCOL', 'http://');
+define('DOMAIN', $_SERVER['HTTP_HOST']);
+define('SUB_FOLDER', str_replace('public', '', dirname($_SERVER['SCRIPT_NAME'])));
+
+/*
+ * Define a URL base do projeto.
+ * Ex: http://localhost/seuprojeto ou www.seuprojeto.com.
+ */
+define('BASE_URL', PROTOCOL . DOMAIN . SUB_FOLDER);
+
+/*
+ * Define a URL para o diretório público da aplicação.
+ */
+define('PUBLIC_URL', BASE_URL . 'public' . DS);
 
 /*
  * ==============================================================
@@ -92,11 +74,15 @@ ini_set('session.gc_maxlifetime', SESSION_MAX_LIFETIME);
 ini_set('session.gc_probability', 1); // Ex: probability / divisor = 1 (100%)
 ini_set('session.gc_divisor', 1);
 
+/*
+ * Somente definir o valor em segundos se desejar interromper
+ * a sessão mesmo que o usuário estiver ativo.
+ */
 define('SESSION_TIMEOUT', '0');
 
 /*
  * ==============================================================
- * CONFIGURA O ENVIO DE EMAIL:
+ * CONFIGURA O SERVIDOR SMTP:
  * ==============================================================
  */
 

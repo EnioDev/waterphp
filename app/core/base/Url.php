@@ -6,10 +6,7 @@ final class Url
     {
         if (self::get())
         {
-            $url = trim($_GET['url'], '/');
-            $url = filter_var($url, FILTER_SANITIZE_URL);
-            $url = explode('/', $url);
-
+            $url = explode('/', self::get());
             $get = array();
 
             $get['controller'] = $controller = isset($url[0]) ? $url[0] : null;
@@ -31,7 +28,8 @@ final class Url
     public static function get()
     {
         $url = null;
-        if (isset($_GET['url'])) {
+        if (isset($_GET['url']))
+        {
             $url = trim($_GET['url'], '/');
             $url = filter_var($url, FILTER_SANITIZE_URL);
         }
