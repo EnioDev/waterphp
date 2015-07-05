@@ -6,7 +6,7 @@
         <meta name="description" content="Water is a clean PHP Framework." />
         <meta name="author" content="Thomas J. Fazanaro"/>
 
-        <link rel="shortcut icon" href="<?= PUBLIC_URL . 'images/water.png'; ?>" >
+        <link rel="shortcut icon" href="<?= PUBLIC_URL . 'images/water.jpg'; ?>" >
 
         <link rel="stylesheet" href="<?= PUBLIC_URL; ?>css/bootstrap.min.css" />
         <link rel="stylesheet" href="<?= PUBLIC_URL; ?>css/signin.css" />
