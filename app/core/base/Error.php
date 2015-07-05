@@ -18,8 +18,6 @@ final class Error
 
             case E_PARSE:
                 $title = 'Parse Error';
-                $debug = true;
-                $stop = true;
                 break;
 
             case E_WARNING:
