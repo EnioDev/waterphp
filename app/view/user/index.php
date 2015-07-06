@@ -57,7 +57,7 @@
             }
         ?>
 
-        <form class="form-horizontal" role="form" method="POST" action="<?php echo $app::base_url('user/store'); ?>">
+        <form class="form-horizontal" role="form" method="POST" action="<?php echo $app::route('user_save'); ?>">
 
             <input type="hidden" name="_token" value="<?php echo $app::csrf_token(); ?>">
             <input type="hidden" name="id" value="<?php echo $id; ?>">
@@ -80,7 +80,7 @@
             </div>
             <input type="submit" class="btn btn-primary" name="submit" value="<?php echo $submit; ?>">
             <?php if ($id) : ?>
-                <a href="<?php echo $app::base_url('user'); ?>" class="btn btn-danger"><?php echo $app::strings()->user->buttons->cancel; ?></a>
+                <a href="<?php echo $app::route('user'); ?>" class="btn btn-danger"><?php echo $app::strings()->user->buttons->cancel; ?></a>
             <?php endif; ?>
         </form>
         <br><br>
@@ -98,7 +98,7 @@
             <tbody>
             <?php foreach($users as $user) : ?>
                 <tr>
-                    <form method="POST" action="<?php echo $app::base_url('user/destroy'); ?>">
+                    <form method="POST" action="<?php echo $app::route('user_remove'); ?>">
 
                         <input type="hidden" name="_token" value="<?php echo $app::csrf_token(); ?>">
                         <input type="hidden" name="id" value="<?php echo $user->id; ?>">
@@ -107,7 +107,7 @@
                         <td><?php echo htmlspecialchars($user->name); ?></td>
                         <td><?php echo htmlspecialchars($user->email); ?></td>
                         <td>
-                            <a href="<?php echo $app::base_url('user/edit/' . $user->id); ?>" class="btn btn-sm btn-default"><?php echo $app::strings()->user->buttons->edit; ?></a>
+                            <a href="<?php echo $app::route('user_edit', [$user->id]); ?>" class="btn btn-sm btn-default"><?php echo $app::strings()->user->buttons->edit; ?></a>
                             <input type="submit" value="<?php echo $app::strings()->user->buttons->remove; ?>" class="btn btn-sm btn-danger">
                         </td>
                     </form>

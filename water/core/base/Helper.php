@@ -22,10 +22,10 @@ final class Helper
         return View::load($view);
     }
 
-    public static function base_url($url = null)
+    public static function base_url($path = null)
     {
-        if ($url and is_string($url)) {
-            return BASE_URL . $url;
+        if ($path and is_string($path)) {
+            return BASE_URL . $path;
         }
         return BASE_URL;
     }
@@ -35,16 +35,16 @@ final class Helper
         if (is_string($name)) {
             if ($params and is_array($params) and count($params) > 0) {
                 $params = implode('/', $params);
-                return BASE_URL . $name . $params;
+                return BASE_URL . $name . DS . $params;
             }
             return BASE_URL . $name;
         }
     }
 
-    public static function asset($file)
+    public static function asset($resource)
     {
-        if ($file and is_string($file)) {
-            return PUBLIC_URL . $file;
+        if ($resource and is_string($resource)) {
+            return PUBLIC_URL . $resource;
         }
         return null;
     }
