@@ -22,7 +22,7 @@ final class Helper
         return View::load($view);
     }
 
-    public function base_url($url = null)
+    public static function base_url($url = null)
     {
         if ($url and is_string($url)) {
             return BASE_URL . $url;
@@ -30,7 +30,7 @@ final class Helper
         return BASE_URL;
     }
 
-    public function route($name, $params = null)
+    public static function route($name, $params = null)
     {
         if (is_string($name)) {
             if ($params and is_array($params) and count($params) > 0) {
