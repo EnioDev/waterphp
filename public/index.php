@@ -10,6 +10,8 @@ define('DS', DIRECTORY_SEPARATOR);
 
 define('ROOT_PATH', dirname(__DIR__) . DS);
 
+define('LIB_PATH', ROOT_PATH . 'water' . DS);
+
 define('APP_PATH', ROOT_PATH . 'app' . DS);
 
 define('CONFIG_PATH', APP_PATH . 'config' . DS);
@@ -30,11 +32,12 @@ define('IMAGES_PATH', PUBLIC_PATH . 'images' . DS);
  * ==============================================================
  */
 
-require_once(APP_PATH . 'autoload.php');
 require_once(CONFIG_PATH . 'config.php');
 
 error_reporting(E_ALL);
 ini_set('display_errors', DEBUG_MODE);
+
+require_once(LIB_PATH . 'autoload.php');
 
 $error = new core\base\Error();
 

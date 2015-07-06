@@ -18,19 +18,19 @@ final class Request
         return null;
     }
 
-    public static function get($key)
+    public static function get($name)
     {
         $input = self::all();
         if ($input) {
-            if (array_key_exists($key, $input)) {
-                return $input[$key];
+            if (array_key_exists($name, $input)) {
+                return $input[$name];
             }
         }
         return null;
     }
 
-    public static function old($key)
+    public static function old($name)
     {
-        return self::get($key);
+        return self::get($name);
     }
 }

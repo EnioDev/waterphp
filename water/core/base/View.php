@@ -6,11 +6,9 @@ final class View
     {
         $app = new Helper;
 
-        if ($data) {
-            if (is_array($data)) {
-                foreach ($data as $index => $value) {
-                    $$index = $value;
-                }
+        if ($data and is_array($data)) {
+            foreach ($data as $index => $value) {
+                $$index = $value;
             }
         }
         require_once(self::getFilename($view));

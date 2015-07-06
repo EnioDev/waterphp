@@ -1,7 +1,7 @@
 <?php namespace core\base;
 
-final class Session {
-
+final class Session
+{
     public static function start()
     {
         session_start();

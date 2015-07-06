@@ -8,8 +8,8 @@ class Model extends Crud
     // e definir o nome da tabela que será usado no modelo.
     protected $table = null;
 
-    // Você pode redefinir este atributo na classe filha caso
-    // o nome do campo chave primária na tabela seja diferente.
+    // Você DEVE redefinir este atributo na classe filha SE
+    // o nome do campo chave primária na tabela for diferente.
     protected $primary_key = 'id';
 
     public final function getTable()

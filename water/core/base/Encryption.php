@@ -1,6 +1,6 @@
 <?php namespace core\base;
 
-use \core\contracts\ICrypt;
+use core\contracts\ICrypt;
 
 final class Encryption implements ICrypt
 {

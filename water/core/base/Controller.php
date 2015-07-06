@@ -1,7 +1,7 @@
 <?php namespace core\base;
 
-abstract class Controller {
-
+abstract class Controller
+{
     private $model = null;
 
     function __construct($model = null)

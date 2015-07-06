@@ -2,6 +2,7 @@
 
 use core\base\Route;
 use core\base\Session;
+use core\base\Redirect;
 use core\base\View;
 use core\base\Url;
 
@@ -10,7 +11,7 @@ final class App {
     public function __construct()
     {
         if (!Session::start()) {
-            header('Location: ' . BASE_URL);
+            Redirect::to(BASE_URL);
         } else {
             $this->load();
         }
@@ -52,11 +53,11 @@ final class App {
                     if (strlen($method) == 0) {
                         $controller->index();
                     } else {
-                        View::load('template/404');
+                        View::load(PG404_VIEW);
                     }
                 }
             } else {
-                View::load('template/404');
+                View::load(PG404_VIEW);
             }
         }
     }

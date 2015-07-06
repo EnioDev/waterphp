@@ -7,12 +7,8 @@ use core\base\View;
 
 class Debug extends Controller
 {
-    private $view;
-
     public function index()
     {
-        $this->view = 'template/error';
-
         if (Session::get('app_error_message'))
         {
             $data = [
@@ -23,7 +19,7 @@ class Debug extends Controller
                 'line' => Session::get('app_error_line')
             ];
 
-            View::load($this->view, $data);
+            View::load(DEBUG_VIEW, $data);
 
             if (Session::get('app_error_fatal')) {
                 Session::stop();
