@@ -1,9 +1,9 @@
 <?php namespace controller;
 
-use core\base\Controller;
-use core\base\Redirect;
 use core\base\Session;
 use core\base\View;
+use core\base\Redirect;
+use core\base\Controller;
 
 class Debug extends Controller
 {
