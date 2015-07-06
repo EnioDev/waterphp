@@ -9,7 +9,7 @@
 
             <pre>You are in the <strong>/view/home/welcome.php</strong> file.</pre><br>
 
-            <a href="<?php echo $app::base_url('user'); ?>" class="btn btn-primary btn-lg">
+            <a href="<?php echo ($app::is_auth()) ? $app::base_url('user') : $app::base_url('login'); ?>" class="btn btn-primary btn-lg">
                 CRUD Example
             </a>
         </div>
