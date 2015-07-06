@@ -2,7 +2,7 @@
 
 final class Helper
 {
-    public static function values() {
+    public static function strings() {
         return String::values();
     }
 
@@ -10,27 +10,42 @@ final class Helper
         return Request::old($name);
     }
 
-    public static function token() {
+    public static function csrf_token() {
         return Session::token();
     }
 
-    public static function isAuth() {
+    public static function is_auth() {
         return (Auth::user()) ? true : false;
     }
 
-    public static function template($view) {
+    public static function view($view) {
         return View::load($view);
     }
 
-    public static function getPublic($filePath) {
-        return PUBLIC_URL . $filePath;
-    }
-
-    public static function baseUrl() {
+    public function base_url($url = null)
+    {
+        if ($url and is_string($url)) {
+            return BASE_URL . $url;
+        }
         return BASE_URL;
     }
 
-    public static function url($route) {
-        return BASE_URL . $route;
+    public function route($name, $params = null)
+    {
+        if (is_string($name)) {
+            if ($params and is_array($params) and count($params) > 0) {
+                $params = implode('/', $params);
+                return BASE_URL . $name . $params;
+            }
+            return BASE_URL . $name;
+        }
+    }
+
+    public static function asset($file)
+    {
+        if ($file and is_string($file)) {
+            return PUBLIC_URL . $file;
+        }
+        return null;
     }
 }

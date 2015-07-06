@@ -1,9 +1,9 @@
-<?php $app::template('template/header'); ?>
+<?php $app::view('template/header'); ?>
 
 <body class="padding-20">
     <div class="container">
         <div class="well text-center">
-            <img src="<?php echo PUBLIC_URL . 'images/attention.png'; ?>" />
+            <img src="<?php echo $app::asset('images/attention.png'); ?>" />
             <h1><?php echo $title; ?></h1>
             <div class="alert alert-danger text-left">
                 <?php
@@ -13,11 +13,11 @@
                     echo '<b>Line</b>: ' . $line;
                 ?>
             </div>
-            <a href="<?php echo BASE_URL . 'home' ?>" class="btn btn-default">
+            <a href="<?php echo $app::base_url('home'); ?>" class="btn btn-default">
                 <span class="glyphicon glyphicon-home"></span>
                 Home
             </a>
         </div>
     </div>
 
-<?php $app::template('template/footer'); ?>
+<?php $app::view('template/footer'); ?>

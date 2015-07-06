@@ -1,4 +1,4 @@
-<?php $app::template('template/header'); ?>
+<?php $app::view('template/header'); ?>
 
 <body>
     <div class="container">
@@ -15,8 +15,8 @@
                 </div>
                 <div id="navbar" class="collapse navbar-collapse">
                     <ul class="nav navbar-nav pull-right">
-                        <li><a href="<?php echo BASE_URL; ?>"><i class="glyphicon glyphicon-home"></i>&nbsp;Home</a></li>
-                        <li><a href="<?php echo BASE_URL . 'login'; ?>"><i class="glyphicon glyphicon-log-out"></i>&nbsp;Logout</a></li>
+                        <li><a href="<?php echo $app::base_url(); ?>"><i class="glyphicon glyphicon-home"></i>&nbsp;Home</a></li>
+                        <li><a href="<?php echo $app::base_url('login'); ?>"><i class="glyphicon glyphicon-log-out"></i>&nbsp;Logout</a></li>
                     </ul>
                 </div>
                 <!-- /.nav-collapse -->
@@ -51,36 +51,36 @@
                 $password = $app::old('password');
             }
 
-            $submit = $app::values()->user->buttons->create;
+            $submit = $app::strings()->user->buttons->create;
             if ($id) {
-                $submit = $app::values()->user->buttons->update;
+                $submit = $app::strings()->user->buttons->update;
             }
         ?>
 
-        <form class="form-horizontal" role="form" method="POST" action="<?php echo BASE_URL; ?>user/store">
+        <form class="form-horizontal" role="form" method="POST" action="<?php echo $app::base_url('user/store'); ?>">
 
-            <input type="hidden" name="_token" value="<?php echo $app::token(); ?>">
+            <input type="hidden" name="_token" value="<?php echo $app::csrf_token(); ?>">
             <input type="hidden" name="id" value="<?php echo $id; ?>">
 
             <div class="form-group">
                 <div class="col-md-4">
-                    <label class="control-label"><?php echo $app::values()->user->fields->name; ?>:</label>
+                    <label class="control-label"><?php echo $app::strings()->user->fields->name; ?>:</label>
                     <input type="text" class="form-control" name="name" value="<?php echo $name; ?>">
                 </div>
 
                 <div class="col-md-5">
-                    <label class="control-label"><?php echo $app::values()->user->fields->email; ?>:</label>
+                    <label class="control-label"><?php echo $app::strings()->user->fields->email; ?>:</label>
                     <input type="text" class="form-control" name="email" value="<?php echo $email; ?>">
                 </div>
 
                 <div class="col-md-3">
-                    <label class="control-label"><?php echo $app::values()->user->fields->password; ?>:</label>
+                    <label class="control-label"><?php echo $app::strings()->user->fields->password; ?>:</label>
                     <input type="password" class="form-control" name="password" value="<?php echo $password; ?>">
                 </div>
             </div>
             <input type="submit" class="btn btn-primary" name="submit" value="<?php echo $submit; ?>">
             <?php if ($id) : ?>
-                <a href="<?php echo BASE_URL; ?>user" class="btn btn-danger"><?php echo $app::values()->user->buttons->cancel; ?></a>
+                <a href="<?php echo $app::base_url('user'); ?>" class="btn btn-danger"><?php echo $app::strings()->user->buttons->cancel; ?></a>
             <?php endif; ?>
         </form>
         <br><br>
@@ -89,8 +89,8 @@
             <thead>
             <tr>
                 <th>#</th>
-                <th><?php echo $app::values()->user->fields->name; ?>:</th>
-                <th><?php echo $app::values()->user->fields->email; ?>:</th>
+                <th><?php echo $app::strings()->user->fields->name; ?>:</th>
+                <th><?php echo $app::strings()->user->fields->email; ?>:</th>
                 <th>&nbsp;</th>
             </tr>
             </thead>
@@ -98,17 +98,17 @@
             <tbody>
             <?php foreach($users as $user) : ?>
                 <tr>
-                    <form method="POST" action="<?php echo BASE_URL; ?>user/destroy">
+                    <form method="POST" action="<?php echo $app::base_url('user/destroy'); ?>">
 
-                        <input type="hidden" name="_token" value="<?php echo $app::token(); ?>">
+                        <input type="hidden" name="_token" value="<?php echo $app::csrf_token(); ?>">
                         <input type="hidden" name="id" value="<?php echo $user->id; ?>">
 
                         <td><?php echo $user->id; ?></td>
                         <td><?php echo htmlspecialchars($user->name); ?></td>
                         <td><?php echo htmlspecialchars($user->email); ?></td>
                         <td>
-                            <a href="<?php echo BASE_URL; ?>user/edit/<?php echo $user->id; ?>" class="btn btn-sm btn-default"><?php echo $app::values()->user->buttons->edit; ?></a>
-                            <input type="submit" value="<?php echo $app::values()->user->buttons->remove; ?>" class="btn btn-sm btn-danger">
+                            <a href="<?php echo $app::base_url('user/edit/' . $user->id); ?>" class="btn btn-sm btn-default"><?php echo $app::strings()->user->buttons->edit; ?></a>
+                            <input type="submit" value="<?php echo $app::strings()->user->buttons->remove; ?>" class="btn btn-sm btn-danger">
                         </td>
                     </form>
                 </tr>
@@ -116,4 +116,5 @@
             </tbody>
         </table>
     </div><!-- /Container -->
-<?php $app::template('template/footer'); ?>
+
+<?php $app::view('template/footer'); ?>
