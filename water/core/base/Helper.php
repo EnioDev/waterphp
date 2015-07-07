@@ -19,7 +19,7 @@ final class Helper
     }
 
     public static function old($name) {
-        return Request::old($name);
+        return Request::get($name);
     }
 
     public static function base_url($path = null)

@@ -28,9 +28,4 @@ final class Request
         }
         return null;
     }
-
-    public static function old($name)
-    {
-        return self::get($name);
-    }
 }
