@@ -2,24 +2,24 @@
 
 final class Helper
 {
+    public static function view($view) {
+        return View::load($view);
+    }
+
     public static function strings() {
         return String::values();
     }
 
-    public static function old($name) {
-        return Request::old($name);
+    public static function auth() {
+        return (Auth::user()) ? new Auth() : null;
     }
 
     public static function csrf_token() {
         return Session::token();
     }
 
-    public static function is_auth() {
-        return (Auth::user()) ? true : false;
-    }
-
-    public static function view($view) {
-        return View::load($view);
+    public static function old($name) {
+        return Request::old($name);
     }
 
     public static function base_url($path = null)
@@ -30,14 +30,14 @@ final class Helper
         return BASE_URL;
     }
 
-    public static function route($name, $params = null)
+    public static function route($routeName, $params = null)
     {
-        if (is_string($name)) {
+        if (is_string($routeName)) {
             if ($params and is_array($params) and count($params) > 0) {
                 $params = implode('/', $params);
-                return BASE_URL . $name . DS . $params;
+                return BASE_URL . $routeName . DS . $params;
             }
-            return BASE_URL . $name;
+            return BASE_URL . $routeName;
         }
     }
 
