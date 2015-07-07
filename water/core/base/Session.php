@@ -44,14 +44,6 @@ final class Session
         return null;
     }
 
-    public static function isToken($token)
-    {
-        if (self::token() === $token) {
-            return true;
-        }
-        return false;
-    }
-
     public static function get($key)
     {
         if (isset($_SESSION[$key])) {

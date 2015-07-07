@@ -8,9 +8,9 @@ abstract class Controller
     {
         $this->setModel($model);
 
-        $token = Request::get('_token');
+        $token = trim(Request::get('_token'));
         if ($token) {
-            if (!Session::isToken($token)) {
+            if (Session::token() != $token) {
                 throw new \Exception('The given token is not a valid token! Perhaps the session time is over.');
             }
         }
