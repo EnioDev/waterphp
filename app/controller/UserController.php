@@ -73,8 +73,6 @@ class UserController extends Controller
 
         if ($input)
         {
-            $id = $input['id'];
-
             // Filtrando os dados.
             $this->name = ucwords(strtolower(strip_tags($input['name'])));
             $this->email = strtolower(strip_tags(trim($input['email'])));
@@ -100,6 +98,7 @@ class UserController extends Controller
                 $user = null;
                 if ($input['submit'] == String::values()->user->buttons->update)
                 {
+                    $id = $input['id'];
                     $user = $this->model()->find($id);
                 }
 
