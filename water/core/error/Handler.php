@@ -1,13 +1,15 @@
-<?php namespace core\base;
+<?php namespace core\error;
 
-final class Error
+use core\base\Redirect;
+
+final class Handler
 {
     private $title = null;
     
     public function waterErrorHandler($code, $message, $filename, $line)
     {
-        $debug = ini_get('display_errors');
-        $stop = false;
+        $debug = DEBUG_MODE;
+        $exit = false;
         $exception = false;
 
         switch ($code)
@@ -15,13 +17,12 @@ final class Error
             case E_ERROR:
             case E_USER_ERROR:
                 $this->title = 'Fatal Error';
-                $debug = true;
-                $stop = true;
+                $exit = true;
                 break;
 
             case E_PARSE:
                 $this->title = 'Parse Error';
-                $debug = true;
+                $exit = true;
                 break;
 
             case E_WARNING:
@@ -38,6 +39,7 @@ final class Error
 
             default:
                 $this->title = 'Unknowing Error';
+                $exception = true;
         }
 
         $_SESSION['app_error_title'] = $this->title;
@@ -45,11 +47,11 @@ final class Error
         $_SESSION['app_error_message'] = $message;
         $_SESSION['app_error_filename'] = $filename;
         $_SESSION['app_error_line'] = $line;
-        $_SESSION['app_error_fatal'] = $stop;
+        $_SESSION['app_error_exit'] = $exit;
 
-        if ($debug and $exception) {
+        if (($debug and $exception)) {
             throw new \ErrorException($message, $code, 0, $filename, $line);
-        } else if ($debug) {
+        } else if ($exit) {
             Redirect::to(BASE_URL . 'debug');
         }
 

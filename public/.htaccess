@@ -1,3 +1,6 @@
+php_flag error_reporting E_ALL
+php_flag display_errors 1
+
 # Necessário para evitar problemas quando estiver usando um controlador nomeado "index" e um arquivo "root" index.php.
 # Veja mais: http://httpd.apache.org/docs/2.2/content-negotiation.html.
 Options -MultiViews

@@ -21,9 +21,9 @@ define('DEBUG_VIEW', 'template/debug');
 
 /*
  * Você pode definir seu próprio modelo de página de erro 404. Esta página
- * será exibida se um controlador ou método informado na URL não existir.
+ * será exibida caso o controlador ou método informado na URL não existir.
  */
-define('PG404_VIEW', 'template/404');
+define('ERR404_VIEW', 'template/404');
 
 /*
  * --------------------------------------------------------------------------

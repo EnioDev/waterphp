@@ -1,4 +1,4 @@
-<?php namespace controller;
+<?php namespace core\error;
 
 use core\base\Session;
 use core\base\View;
@@ -21,7 +21,7 @@ class Debug extends Controller
 
             View::load(DEBUG_VIEW, $data);
 
-            if (Session::get('app_error_fatal')) {
+            if (Session::get('app_error_exit')) {
                 Session::stop();
             }
         } else {

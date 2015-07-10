@@ -32,18 +32,13 @@ define('IMAGES_PATH', PUBLIC_PATH . 'images' . DS);
  * ==============================================================
  */
 
-require_once(CONFIG_PATH . 'config.php');
-
-error_reporting(E_ALL);
-ini_set('display_errors', DEBUG_MODE);
-
 require_once(LIB_PATH . 'autoload.php');
 
-$error = new core\base\Error();
+$handler = new core\error\Handler();
 
-set_error_handler([&$error, 'waterErrorHandler']);
-set_exception_handler([&$error, 'waterExceptionHandler']);
-register_shutdown_function([&$error, 'waterShutdownHandler']);
+set_error_handler([&$handler, 'waterErrorHandler']);
+set_exception_handler([&$handler, 'waterExceptionHandler']);
+register_shutdown_function([&$handler, 'waterShutdownHandler']);
 
 /*
  * ==============================================================
@@ -72,6 +67,8 @@ define('PUBLIC_URL', BASE_URL . 'public' . DS);
  * ==============================================================
  */
 
+require_once(CONFIG_PATH . 'config.php');
+
 ini_set('session.save_path', DS.'tmp'); // TODO: Validar no windows.
 ini_set('session.gc_maxlifetime', SESSION_MAX_LIFETIME);
 ini_set('session.gc_probability', 1); // Ex: probability / divisor = 1 (100%)
@@ -98,7 +95,7 @@ ini_set('smtp_port', MAIL_SMTP_PORT);
  * ==============================================================
  */
 
-$route = new core\base\Route();
+$route = new core\Route();
 require_once(CONFIG_PATH . 'routes.php');
 
 /*

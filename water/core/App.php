@@ -1,6 +1,5 @@
 <?php namespace core;
 
-use core\base\Route;
 use core\base\Session;
 use core\base\Redirect;
 use core\base\View;
@@ -37,9 +36,18 @@ final class App {
             $method = ($method) ? $method : Url::getMethod();
             $params = ($params) ? $params : Url::getParams();
 
-            if (file_exists(CONTROLLER_PATH . $controller . '.php'))
+            $namespace = 'controller\\';
+            $continue = file_exists(CONTROLLER_PATH . $controller . '.php');
+
+            if ($controller === 'debug') {
+                $namespace = 'core\\error\\';
+                $controller = ucfirst($controller);
+                $continue = file_exists(LIB_PATH . 'core' . DS . 'error' . DS . $controller . '.php');
+            }
+
+            if ($continue)
             {
-                $controller = 'controller\\' . $controller;
+                $controller = $namespace . $controller;
                 $controller = new $controller();
 
                 if (method_exists($controller, $method))
@@ -53,11 +61,11 @@ final class App {
                     if (strlen($method) == 0) {
                         $controller->index();
                     } else {
-                        View::load(PG404_VIEW);
+                        View::load(ERR404_VIEW);
                     }
                 }
             } else {
-                View::load(PG404_VIEW);
+                View::load(ERR404_VIEW);
             }
         }
     }
