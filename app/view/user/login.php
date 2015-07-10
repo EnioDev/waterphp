@@ -3,7 +3,7 @@
 <body>
     <div class="container">
         <div class="wrapper">
-            <form class="form-signin" action="<?php echo $app::base_url('login'); ?>" method="post">
+            <form class="form-signin" action="<?php echo $app::url('login'); ?>" method="post">
 
                 <h3 class="form-signin-heading"><?php echo $app::strings()->user->login->title; ?></h3>
 
@@ -15,7 +15,7 @@
 
                 <h5>
                     <?php echo $app::strings()->user->login->first . ' '; ?>
-                    <a href="<?php echo $app::base_url('register'); ?>">
+                    <a href="<?php echo $app::url('register'); ?>">
                         <?php echo $app::strings()->user->register->title; ?>
                     </a>
                 </h5>

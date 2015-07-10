@@ -8,7 +8,7 @@
             <div class="alert alert-danger">
                 This will be shown if the page (controller or method) does not exist.
             </div>
-            <a href="<?php echo $app::base_url(); ?>" class="btn btn-default">
+            <a href="<?php echo $app::url(); ?>" class="btn btn-default">
                 <span class="glyphicon glyphicon-home"></span>
                 Home
             </a>

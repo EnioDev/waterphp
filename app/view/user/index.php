@@ -15,8 +15,8 @@
                 </div>
                 <div id="navbar" class="collapse navbar-collapse">
                     <ul class="nav navbar-nav pull-right">
-                        <li><a href="<?php echo $app::base_url(); ?>"><i class="glyphicon glyphicon-home"></i>&nbsp;Home</a></li>
-                        <li><a href="<?php echo $app::base_url('login'); ?>"><i class="glyphicon glyphicon-log-out"></i>&nbsp;Logout</a></li>
+                        <li><a href="<?php echo $app::url(); ?>"><i class="glyphicon glyphicon-home"></i>&nbsp;Home</a></li>
+                        <li><a href="<?php echo $app::route('login'); ?>"><i class="glyphicon glyphicon-log-out"></i>&nbsp;Logout</a></li>
                     </ul>
                 </div>
                 <!-- /.nav-collapse -->
@@ -59,7 +59,7 @@
 
         <form class="form-horizontal" role="form" method="POST" action="<?php echo $app::route('user_save'); ?>">
 
-            <input type="hidden" name="_token" value="<?php echo $app::csrf_token(); ?>">
+            <input type="hidden" name="_token" value="<?php echo $app::token(); ?>">
             <input type="hidden" name="id" value="<?php echo $id; ?>">
 
             <div class="form-group">
@@ -100,7 +100,7 @@
                 <tr>
                     <form method="POST" action="<?php echo $app::route('user_remove'); ?>">
 
-                        <input type="hidden" name="_token" value="<?php echo $app::csrf_token(); ?>">
+                        <input type="hidden" name="_token" value="<?php echo $app::token(); ?>">
                         <input type="hidden" name="id" value="<?php echo $user->id; ?>">
 
                         <td><?php echo $user->id; ?></td>

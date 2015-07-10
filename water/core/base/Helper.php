@@ -2,27 +2,7 @@
 
 final class Helper
 {
-    public static function view($view) {
-        return View::load($view);
-    }
-
-    public static function strings() {
-        return String::values();
-    }
-
-    public static function auth() {
-        return (Auth::user()) ? new Auth() : null;
-    }
-
-    public static function csrf_token() {
-        return Session::token();
-    }
-
-    public static function old($name) {
-        return Request::get($name);
-    }
-
-    public static function base_url($path = null)
+    public static function url($path = null)
     {
         if ($path and is_string($path)) {
             return BASE_URL . $path;
@@ -47,5 +27,25 @@ final class Helper
             return PUBLIC_URL . $resource;
         }
         return null;
+    }
+
+    public static function view($view) {
+        return View::load($view);
+    }
+
+    public static function strings() {
+        return String::values();
+    }
+
+    public static function auth() {
+        return (Auth::user()) ? new Auth() : null;
+    }
+
+    public static function token() {
+        return Session::token();
+    }
+
+    public static function old($name) {
+        return Request::get($name);
     }
 }
