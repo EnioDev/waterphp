@@ -1,7 +1,7 @@
 <?php namespace controller;
 
 use core\base\Controller;
-use core\base\View;
+use core\utils\View;
 
 class Register extends Controller {
 

@@ -1,7 +1,7 @@
-<?php namespace core\base;
+<?php namespace core\utils;
 
-final class Mail {
-
+final class Mail
+{
     private $to;
     private $subject;
     private $message;
@@ -14,7 +14,7 @@ final class Mail {
         } else if (is_string($to)) {
             $this->to = trim($to);
         } else {
-            $this->to = '';
+            $this->to = null;
         }
 
         $this->subject = substr(trim($subject), 0, 70);
@@ -36,7 +36,7 @@ final class Mail {
     public function send()
     {
         $accept = false;
-        if (strlen($this->to) > 0) {
+        if ($this->to) {
             $accept = mail($this->to, $this->subject, $this->message, implode("\r\n", $this->headers), '-f' . MAIL_FROM);
         }
         return $accept;

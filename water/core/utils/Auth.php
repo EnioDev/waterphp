@@ -1,4 +1,4 @@
-<?php namespace core\base;
+<?php namespace core\utils;
 
 final class Auth
 {

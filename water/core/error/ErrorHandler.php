@@ -1,6 +1,6 @@
 <?php namespace core\error;
 
-use core\base\Redirect;
+use core\utils\Redirect;
 
 final class Handler
 {

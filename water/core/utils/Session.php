@@ -1,4 +1,4 @@
-<?php namespace core\base;
+<?php namespace core\utils;
 
 final class Session
 {
@@ -15,7 +15,7 @@ final class Session
             // Remove todas as variáveis definidas na sessão.
             session_unset();
 
-            // Destroi a sessão do usuário.
+            // Destrói a sessão do usuário.
             session_destroy();
         }
     }

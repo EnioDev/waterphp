@@ -1,5 +1,8 @@
 <?php namespace core\base;
 
+use core\utils\Request;
+use core\utils\Session;
+
 abstract class Controller
 {
     private $model = null;
@@ -8,9 +11,9 @@ abstract class Controller
     {
         $this->setModel($model);
 
-        $token = trim(Request::get('_token'));
+        $token = Request::get('_token');
         if ($token) {
-            if (Session::token() != $token) {
+            if (Session::token() != trim($token)) {
                 throw new \Exception('The given token is not a valid token! Perhaps the session time is over.');
             }
         }

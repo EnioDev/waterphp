@@ -1,12 +1,12 @@
 <?php namespace controller;
 
-use core\base\Auth;
-use core\base\Redirect;
-use core\base\View;
-use core\base\Request;
 use core\base\Controller;
-use core\base\Encryption;
-use core\base\String;
+use core\utils\Auth;
+use core\utils\Redirect;
+use core\utils\View;
+use core\utils\Request;
+use core\utils\Encryption;
+use core\utils\String;
 use model\User;
 
 class UserController extends Controller

@@ -34,11 +34,11 @@ define('IMAGES_PATH', PUBLIC_PATH . 'images' . DS);
 
 require_once(LIB_PATH . 'autoload.php');
 
-$handler = new core\error\Handler();
+$errorHandler = new core\error\ErrorHandler();
 
-set_error_handler([&$handler, 'waterErrorHandler']);
-set_exception_handler([&$handler, 'waterExceptionHandler']);
-register_shutdown_function([&$handler, 'waterShutdownHandler']);
+set_error_handler([&$errorHandler, 'waterErrorHandler']);
+set_exception_handler([&$errorHandler, 'waterExceptionHandler']);
+register_shutdown_function([&$errorHandler, 'waterShutdownHandler']);
 
 /*
  * ==============================================================

@@ -1,16 +1,15 @@
-<?php namespace core\base;
+<?php namespace core\utils;
 
 final class View
 {
     public static function load($view, $data = null)
     {
-        $app = new Helper;
-
         if ($data and is_array($data)) {
             foreach ($data as $index => $value) {
                 $$index = $value;
             }
         }
+        $app = new Helper;
         require_once(self::getFilename($view));
     }
 

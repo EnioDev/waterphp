@@ -1,4 +1,4 @@
-<?php namespace core\base;
+<?php namespace core\utils;
 
 final class Helper
 {
@@ -19,6 +19,7 @@ final class Helper
             }
             return BASE_URL . $routeName;
         }
+        return null;
     }
 
     public static function asset($resource)

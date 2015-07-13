@@ -1,13 +1,13 @@
 <?php namespace controller;
 
-use core\base\Auth;
 use core\base\Controller;
-use core\base\Encryption;
-use core\base\Request;
-use core\base\Redirect;
-use core\base\Session;
-use core\base\String;
-use core\base\View;
+use core\utils\Auth;
+use core\utils\Encryption;
+use core\utils\Request;
+use core\utils\Redirect;
+use core\utils\Session;
+use core\utils\String;
+use core\utils\View;
 use model\User;
 
 class Login extends Controller {

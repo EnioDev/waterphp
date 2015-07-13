@@ -1,9 +1,9 @@
 <?php namespace core;
 
-use core\base\Session;
-use core\base\Redirect;
-use core\base\View;
-use core\base\Url;
+use core\utils\Session;
+use core\utils\Redirect;
+use core\utils\View;
+use core\utils\Url;
 
 final class App {
 

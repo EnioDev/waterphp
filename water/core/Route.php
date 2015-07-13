@@ -1,6 +1,6 @@
 <?php namespace core;
 
-use core\base\Url;
+use core\utils\Url;
 
 final class Route {
 

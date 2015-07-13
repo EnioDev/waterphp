@@ -1,4 +1,4 @@
-<?php namespace core\base;
+<?php namespace core\utils;
 
 use core\contracts\ICrypt;
 
