@@ -2,7 +2,7 @@
 
 use core\utils\Redirect;
 
-final class Handler
+final class ErrorHandler
 {
     private $title = null;
     
