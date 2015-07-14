@@ -5,8 +5,10 @@ final class Redirect
     public static function to($url)
     {
         if (!headers_sent()) {
-            header('Location: ' . $url);
-            exit;
+            session_write_close();
+            header('HTTP/1.1 301 Moved Permanently');
+            header('Location: '.$url);
+            exit();
         }
     }
 }

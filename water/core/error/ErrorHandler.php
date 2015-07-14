@@ -1,16 +1,16 @@
 <?php namespace core\error;
 
 use core\utils\Redirect;
+use core\utils\Session;
 
 final class ErrorHandler
 {
     private $title = null;
-    
+
     public function waterErrorHandler($code, $message, $filename, $line)
     {
         $debug = DEBUG_MODE;
         $exit = false;
-        $exception = false;
 
         switch ($code)
         {
@@ -28,30 +28,29 @@ final class ErrorHandler
             case E_WARNING:
             case E_USER_WARNING:
                 $this->title = 'Warning';
-                $exception = true;
                 break;
 
             case E_NOTICE:
             case E_USER_NOTICE:
                 $this->title = 'Notice';
-                $exception = true;
                 break;
 
             default:
                 $this->title = 'Unknowing Error';
-                $exception = true;
         }
 
-        $_SESSION['app_error_title'] = $this->title;
-        $_SESSION['app_error_code'] = $code;
-        $_SESSION['app_error_message'] = $message;
-        $_SESSION['app_error_filename'] = $filename;
-        $_SESSION['app_error_line'] = $line;
-        $_SESSION['app_error_exit'] = $exit;
+        $this->forgetAll();
 
-        if (($debug and $exception)) {
+        Session::set('app_error_title', $this->title);
+        Session::set('app_error_code', $code);
+        Session::set('app_error_message', $message);
+        Session::set('app_error_filename', $filename);
+        Session::set('app_error_line', $line);
+        Session::set('app_error_exit', $exit);
+
+        if (($debug and !$exit)) {
             throw new \ErrorException($message, $code, 0, $filename, $line);
-        } else if ($exit) {
+        } else {
             Redirect::to(BASE_URL . 'debug');
         }
 
@@ -69,12 +68,26 @@ final class ErrorHandler
 
     public function waterExceptionHandler($e)
     {
-        $_SESSION['app_error_title'] = ($this->title) ? $this->title : 'Exception';
-        $_SESSION['app_error_code'] = $e->getCode();
-        $_SESSION['app_error_message'] = $e->getMessage();
-        $_SESSION['app_error_filename'] = $e->getFile();
-        $_SESSION['app_error_line'] = $e->getLine();
+        $title = ($this->title) ? $this->title : 'Exception';
+
+        $this->forgetAll();
+
+        Session::set('app_error_title', $title);
+        Session::set('app_error_code', $e->getCode());
+        Session::set('app_error_message', $e->getMessage());
+        Session::set('app_error_filename', $e->getFile());
+        Session::set('app_error_line', $e->getLine());
 
         Redirect::to(BASE_URL . 'debug');
+    }
+
+    private function forgetAll()
+    {
+        Session::forget('app_error_title');
+        Session::forget('app_error_code');
+        Session::forget('app_error_message');
+        Session::forget('app_error_filename');
+        Session::forget('app_error_line');
+        Session::forget('app_error_exit');
     }
 }

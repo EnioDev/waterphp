@@ -9,7 +9,7 @@ final class View
                 $$index = $value;
             }
         }
-        $app = new Helper;
+        $app = new Helper();
         require_once(self::getFilename($view));
     }
 

@@ -5,7 +5,6 @@ use core\utils\Auth;
 use core\utils\Encryption;
 use core\utils\Request;
 use core\utils\Redirect;
-use core\utils\Session;
 use core\utils\String;
 use core\utils\View;
 use model\User;
@@ -42,7 +41,6 @@ class Login extends Controller {
                 View::load('user/login', ['error' => String::values()->user->login->error]);
             }
         } else {
-            Session::stop();
             View::load('user/login');
         }
     }

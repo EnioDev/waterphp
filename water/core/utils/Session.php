@@ -12,10 +12,7 @@ final class Session
     {
         if (self::get('app_session_time'))
         {
-            // Remove todas as variáveis definidas na sessão.
             session_unset();
-
-            // Destrói a sessão do usuário.
             session_destroy();
         }
     }
@@ -36,18 +33,41 @@ final class Session
         return false;
     }
 
-    public static function token()
+    public static function set($key, $value)
     {
-        if (self::get('app_session_token')) {
-            return Encryption::decode(self::get('app_session_token'));
+        if (is_string($key) and !isset($_SESSION[$key])) {
+            $_SESSION[$key] = $value;
         }
-        return null;
     }
 
     public static function get($key)
     {
-        if (isset($_SESSION[$key])) {
+        if (is_string($key) and isset($_SESSION[$key])) {
             return $_SESSION[$key];
+        }
+        return null;
+    }
+
+    public static function forget($key)
+    {
+        $appKeys = [
+            'app_session_token',
+            'app_session_time',
+            'app_session_user'
+        ];
+        if (is_string($key)) {
+            if (!in_array($key, $appKeys)) {
+                if (isset($_SESSION[$key])) {
+                    unset($_SESSION[$key]);
+                }
+            }
+        }
+    }
+
+    public static function token()
+    {
+        if (self::get('app_session_token')) {
+            return Encryption::decode(self::get('app_session_token'));
         }
         return null;
     }
