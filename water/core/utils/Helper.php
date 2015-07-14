@@ -2,9 +2,13 @@
 
 final class Helper
 {
-    public static function url($path = null)
+    public static function url($path = null, $params = null)
     {
         if ($path and is_string($path)) {
+            if ($params and is_array($params) and count($params) > 0) {
+                $params = implode('/', $params);
+                return BASE_URL . $path . DS . $params;
+            }
             return BASE_URL . $path;
         }
         return BASE_URL;
