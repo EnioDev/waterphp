@@ -1,11 +1,10 @@
 <?php $app::view('template/header'); ?>
 
-<body>
+<body class="padding-20">
     <div class="container">
         <div class="col-sm-8 col-sm-offset-2 text-center">
 
-            <img src="<?php echo $app::asset('images/water.jpg'); ?>" />
-            <h1><span class="text-primary">Water</span> Framework.</h1>
+            <h1><span class="text-primary">Water</span> PHP Framework</h1><br>
 
             <pre>You are in the <strong>/view/home/welcome.php</strong> file.</pre><br>
 

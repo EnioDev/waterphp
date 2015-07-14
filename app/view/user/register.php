@@ -3,9 +3,9 @@
 <body>
     <div class="container">
         <div class="wrapper">
-            <form class="form-signup" action="<?php echo $app::url('user/store'); ?>" method="post">
+            <form class="form form-signup" action="<?php echo $app::url('user/store'); ?>" method="post">
 
-                <h3 class="form-signin-heading"><?php echo $app::strings()->user->register->title; ?></h3>
+                <h3 class="form-heading"><?php echo $app::strings()->user->register->title; ?></h3>
 
                 <?php if (isset($message) and strlen($message) > 0) : ?>
                     <div class="alert alert-success">

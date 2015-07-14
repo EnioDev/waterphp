@@ -3,9 +3,9 @@
 <body>
     <div class="container">
         <div class="wrapper">
-            <form class="form-signin" action="<?php echo $app::url('login'); ?>" method="post">
+            <form class="form form-signin" action="<?php echo $app::route('login'); ?>" method="post">
 
-                <h3 class="form-signin-heading"><?php echo $app::strings()->user->login->title; ?></h3>
+                <h3 class="form-heading"><?php echo $app::strings()->user->login->title; ?></h3>
 
                 <?php if (isset($error)) : ?>
                     <div class="alert alert-danger">
@@ -15,7 +15,7 @@
 
                 <h5>
                     <?php echo $app::strings()->user->login->first . ' '; ?>
-                    <a href="<?php echo $app::url('register'); ?>">
+                    <a href="<?php echo $app::route('register'); ?>">
                         <?php echo $app::strings()->user->register->title; ?>
                     </a>
                 </h5>

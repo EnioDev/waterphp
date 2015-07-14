@@ -6,10 +6,9 @@
         <meta name="description" content="Water is a clean PHP Framework." />
         <meta name="author" content="Thomas J. Fazanaro"/>
 
-        <link rel="shortcut icon" href="<?php echo $app::asset('images/water.jpg'); ?>" >
+        <link rel="shortcut icon" href="" >
 
         <link rel="stylesheet" href="<?php echo $app::asset('css/bootstrap.min.css'); ?>" />
-        <link rel="stylesheet" href="<?php echo $app::asset('css/signin.css'); ?>" />
         <link rel="stylesheet" href="<?php echo $app::asset('css/app.css'); ?>" />
         <!--[if lt IE 9]>
         <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
