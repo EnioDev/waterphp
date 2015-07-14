@@ -3,6 +3,7 @@
 use core\base\Controller;
 use core\utils\Auth;
 use core\utils\Redirect;
+use core\utils\Session;
 use core\utils\View;
 use core\utils\Request;
 use core\utils\Encryption;
@@ -23,22 +24,23 @@ class UserController extends Controller
     function __construct()
     {
         // Você pode chamar o construtor da classe Pai e definir
-        // o modelo que será usado por este controlador.
-        // Para acessá-lo basta usar $this->model().
-        // Veja os exemplos nos métodos abaixo.
+        // o modelo que será usado por padrão no controlador.
+        // Para acessá-lo basta usar $this->model(). Veja os
+        // demais exemplos usados nesta classe.
         parent::__construct(new User());
 
         // Para obter os textos do idioma configurado na aplicação,
-        // use String::values() e um objeto será retornado com toda
-        // a informação contida no arquivo strings.xml.
+        // basta usar String::values() e um objeto será retornado
+        // com todo o conteúdo definido no arquivo strings.xml.
         // Consulte os arquivos em "public/values".
         $register = String::values()->user->buttons->register;
 
         // A classe Request permite capturar todos os dados
-        // enviados via post para o controlador.
-        // Veja mais exemplos nos métodos abaixo.
+        // submetidos ao controlador via método post.
+        // Veja os demais exemplos usados nesta classe.
         $submit = Request::get('submit');
 
+        // Verifica se a requisição foi feita do formulário de registro.
         $this->register = ($submit == $register) ? true : false;
 
         // Você pode usar Auth::user() para verificar se o
@@ -57,7 +59,7 @@ class UserController extends Controller
     {
         $this->message = String::values()->user->messages->welcome . ' ' . Auth::user()->name . '!';
 
-        // Use View::load para carregar uma visão.
+        // Use View::load() para carregar uma visão.
         // Você pode passar um array com o conteúdo que deseja
         // recuperar na visão e acessá-los pelo mesmo nome de variável.
         $data = [
@@ -73,8 +75,8 @@ class UserController extends Controller
 
         if ($input)
         {
-            // Filtrando os dados.
-            $this->name = ucwords(strtolower(strip_tags($input['name'])));
+            // Filtrando os dados do formulário.
+            $this->name = ucwords(strtolower(strip_tags(trim($input['name']))));
             $this->email = strtolower(strip_tags(trim($input['email'])));
             $this->password = trim($input['password']);
 
@@ -94,7 +96,7 @@ class UserController extends Controller
                     ]
                 ];
 
-                // Verifica se o usuário foi cadastrado anteriormente.
+                // Verifica se o usuário já foi cadastrado anteriormente.
                 $user = null;
                 if ($input['submit'] == String::values()->user->buttons->update)
                 {
@@ -102,7 +104,7 @@ class UserController extends Controller
                     $user = $this->model()->find($id);
                 }
 
-                // Se o usuário foi encontrado, então atualiza os dados no banco.
+                // Caso encontrado, atualiza os dados do usuário no banco.
                 if ($user) {
                     $response = $this->model()->update($id, $data);
                     if ($response) {
@@ -123,7 +125,7 @@ class UserController extends Controller
         }
 
         // Verifica se a função está sendo chamada do formulário de
-        // registro ou da página de usuários cadastrados.
+        // registro ou da página de usuários para retornar a view adequada.
         $view = ($this->register) ? 'user/register' : 'user/index';
 
         $data = [
@@ -179,5 +181,11 @@ class UserController extends Controller
         }
         // Se não houver erros, retorna "true" para prosseguir o cadastro.
         return (count($this->errors) > 0) ? false : true;
+    }
+
+    public function logout()
+    {
+        Session::stop();
+        Redirect::to(BASE_URL . 'login');
     }
 }
