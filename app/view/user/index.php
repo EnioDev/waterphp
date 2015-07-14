@@ -16,7 +16,7 @@
                 <div id="navbar" class="collapse navbar-collapse">
                     <ul class="nav navbar-nav pull-right">
                         <li><a href="<?php echo $app::url(); ?>"><i class="glyphicon glyphicon-home"></i>&nbsp;Home</a></li>
-                        <li><a href="<?php echo $app::route('login'); ?>"><i class="glyphicon glyphicon-log-out"></i>&nbsp;Logout</a></li>
+                        <li><a href="<?php echo $app::route('logout'); ?>"><i class="glyphicon glyphicon-log-out"></i>&nbsp;Logout</a></li>
                     </ul>
                 </div>
                 <!-- /.nav-collapse -->
@@ -57,7 +57,7 @@
             }
         ?>
 
-        <form class="form-horizontal" role="form" method="POST" action="<?php echo $app::route('user_save'); ?>">
+        <form class="form-horizontal" role="form" method="POST" action="<?php echo $app::url('user/store'); ?>">
 
             <input type="hidden" name="_token" value="<?php echo $app::token(); ?>">
             <input type="hidden" name="id" value="<?php echo $id; ?>">
@@ -98,7 +98,7 @@
             <tbody>
             <?php foreach($users as $user) : ?>
                 <tr>
-                    <form method="POST" action="<?php echo $app::route('user_remove'); ?>">
+                    <form method="POST" action="<?php echo $app::url('user/destroy'); ?>">
 
                         <input type="hidden" name="_token" value="<?php echo $app::token(); ?>">
                         <input type="hidden" name="id" value="<?php echo $user->id; ?>">
@@ -107,7 +107,7 @@
                         <td><?php echo htmlspecialchars($user->name); ?></td>
                         <td><?php echo htmlspecialchars($user->email); ?></td>
                         <td>
-                            <a href="<?php echo $app::route('user_edit', [$user->id]); ?>" class="btn btn-sm btn-default"><?php echo $app::strings()->user->buttons->edit; ?></a>
+                            <a href="<?php echo $app::url('user/edit', [$user->id]); ?>" class="btn btn-sm btn-default"><?php echo $app::strings()->user->buttons->edit; ?></a>
                             <input type="submit" value="<?php echo $app::strings()->user->buttons->remove; ?>" class="btn btn-sm btn-danger">
                         </td>
                     </form>
