@@ -25,6 +25,16 @@ final class Url
         return null;
     }
 
+    public static function base()
+    {
+        return BASE_URL;
+    }
+
+    public static function current()
+    {
+        return BASE_URL . self::get();
+    }
+
     public static function get()
     {
         $url = null;
@@ -49,10 +59,5 @@ final class Url
     public static function getParams()
     {
         return self::splitUrl('params');
-    }
-
-    public static function debugUrl()
-    {
-        var_dump(self::splitUrl());
     }
 }
