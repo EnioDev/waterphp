@@ -85,4 +85,9 @@ final class Route {
         }
         return null;
     }
+
+    public static function getRoutes()
+    {
+        return self::$routes;
+    }
 }
