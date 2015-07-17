@@ -7,13 +7,7 @@ class Crud extends Db implements ICrud
     protected $table;
     protected $primary_key;
 
-    /**
-     * Insere um novo registro na tabela.
-     *
-     * @param  array $data
-     * @return bool
-     */
-	public final function insert($data)
+    public final function insert($data)
     {
         $fields = implode(',', $data['fields']);
         $total  = count($data['fields']);
@@ -34,14 +28,7 @@ class Crud extends Db implements ICrud
         return $stmt->execute($data['values']);
     }
 
-    /**
-     * Atualiza um registro específico na tabela.
-     *
-     * @param  int   $id
-     * @param  array $data
-     * @return bool
-     */
-	public final function update($id, $data)
+    public final function update($id, $data)
     {
         $total = count($data['fields']);
 
@@ -64,12 +51,6 @@ class Crud extends Db implements ICrud
         return $stmt->execute($data['values']);
     }
 
-    /**
-     * Remove um registro específico da tabela.
-     *
-     * @param  int  $id
-     * @return bool
-     */
     public final function delete($id)
     {
         $sql = "DELETE FROM " . $this->table . " WHERE id = :id";
@@ -80,13 +61,7 @@ class Crud extends Db implements ICrud
         return $stmt->execute();
     }
 
-    /**
-     * Busca um registro específico na tabela.
-     *
-     * @param  int  $id
-     * @return mixed
-     */
-	public final function find($id)
+    public final function find($id)
     {
         $sql = "SELECT * FROM " . $this->table . " WHERE id = :id";
 
@@ -97,12 +72,6 @@ class Crud extends Db implements ICrud
         return $stmt->fetch();
 	}
 
-    /**
-     * Busca por registros na tabela de acordo com os argumentos informados.
-     *
-     * @param  array $args
-     * @return mixed
-     */
     public final function where($args)
     {
         $sql = "SELECT * FROM " . $this->table . " WHERE 1 = 1";
@@ -117,12 +86,7 @@ class Crud extends Db implements ICrud
         return $stmt->fetch();
     }
 
-    /**
-     * Retorna todos os dados da tabela.
-     *
-     * @return mixed
-     */
-	public final function all()
+    public final function all()
     {
 		$sql = "SELECT * FROM " . $this->table;
 
