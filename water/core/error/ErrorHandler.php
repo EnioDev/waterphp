@@ -9,7 +9,7 @@ final class ErrorHandler
 
     public function waterErrorHandler($code, $message, $filename, $line)
     {
-        $debug = DEBUG_MODE;
+        $debug = (bool) DEBUG_MODE;
         $exit = false;
 
         switch ($code)
@@ -50,7 +50,7 @@ final class ErrorHandler
 
         if (($debug and !$exit)) {
             throw new \ErrorException($message, $code, 0, $filename, $line);
-        } else {
+        } else if ($exit) {
             Redirect::to(BASE_URL . 'debug');
         }
 
