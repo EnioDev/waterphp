@@ -22,7 +22,7 @@
             if (file_exists($fullFileName))
                 require_once($fullFileName);
             else {
-                throw new \Exception('Class "'.$className.'" does not exist.');
+                trigger_error('Class "'.$className.'" does not exist.', E_USER_ERROR);
             }
         }
     }
