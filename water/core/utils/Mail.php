@@ -7,18 +7,10 @@ final class Mail
     private $message;
     private $headers;
 
-    function __construct($to, $subject, $message)
+    function __construct($message, $subject = '')
     {
-        if (is_array($to)) {
-            $this->to = implode(',', $to);
-        } else if (is_string($to)) {
-            $this->to = trim($to);
-        } else {
-            $this->to = null;
-        }
-
-        $this->subject = substr(trim($subject), 0, 70);
-        $this->message = wordwrap(trim($message), 70);
+        $this->setMessage($message);
+        $this->setSubject($subject);
 
         $this->headers = array();
 
@@ -33,10 +25,40 @@ final class Mail
         $this->headers[] = 'X-Mailer: PHP/' . phpversion();
     }
 
-    public function send()
+    private function setTo($to)
+    {
+        if (is_array($to)) {
+            $this->to = implode(',', $to);
+        } else if (is_string($to)) {
+            $this->to = trim($to);
+        } else {
+            $this->to = null;
+        }
+    }
+
+    private function setSubject($subject)
+    {
+        if (is_string($subject) and strlen($subject) > 0) {
+            $this->subject = substr(trim($subject), 0, 70);
+        } else {
+            $this->subject = '';
+        }
+    }
+
+    private function setMessage($message)
+    {
+        if (is_string($message) and strlen($message) > 0) {
+            $this->message = wordwrap(trim($message), 70);
+        } else {
+            $this->message = null;
+        }
+    }
+
+    public function send($to)
     {
         $accept = false;
-        if ($this->to) {
+        $this->setTo($to);
+        if ($this->to and $this->message) {
             $accept = mail($this->to, $this->subject, $this->message, implode("\r\n", $this->headers), '-f' . MAIL_FROM);
         }
         return $accept;
