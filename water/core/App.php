@@ -3,14 +3,13 @@
 use core\utils\Session;
 use core\utils\Redirect;
 use core\utils\View;
-use core\utils\Url;
 
 final class App {
 
     public function __construct()
     {
         if (!Session::start()) {
-            Redirect::to(BASE_URL);
+            Redirect::to(Url::base());
         } else {
             $this->load();
         }
