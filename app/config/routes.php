@@ -11,6 +11,6 @@ $route->controller('user', 'UserController');
 
 /*
  * Você pode definir URLs mais amigáveis para acessar
- * um método do controlador usando $route->get().
+ * um método do controlador usando $route->controllerMethod().
  */
-$route->get('logout', 'UserController@logout');
+$route->controllerMethod('logout', 'UserController@logout'); // controller@method

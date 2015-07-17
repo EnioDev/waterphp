@@ -1,37 +1,35 @@
 <?php namespace core;
 
-use core\utils\Url;
-
 final class Route {
 
     private static $routes = [];
     private $controller = null;
     private $method = null;
 
-    public function controller($url, $controller)
+    public function controller($routeName, $controller)
     {
         if (!$this->isControllerMethod($controller)) {
-            if (!isset(self::$routes[$url])) {
-                self::$routes[$url] = $controller;
+            if (!isset(self::$routes[$routeName])) {
+                self::$routes[$routeName] = $controller;
             }
         }
     }
 
-    public function get($url, $controllerMethod)
+    public function controllerMethod($routeName, $controllerMethod)
     {
         if ($this->isControllerMethod($controllerMethod)) {
-            if (!isset(self::$routes[$url])) {
-                self::$routes[$url] = $controllerMethod;
+            if (!isset(self::$routes[$routeName])) {
+                self::$routes[$routeName] = $controllerMethod;
             }
         }
     }
 
     private function setControllerMethod($controllerMethod)
     {
-        $m = $this->isControllerMethod($controllerMethod);
-        if ($m) {
-            $this->controller = $m[0];
-            $this->method = $m[1];
+        $segments = $this->isControllerMethod($controllerMethod);
+        if ($segments) {
+            $this->controller = $segments[0];
+            $this->method = $segments[1];
         } else {
             $this->controller = self::$routes[Url::getController()];
             $this->method = null;
@@ -40,24 +38,25 @@ final class Route {
 
     private function isControllerMethod($controllerMethod)
     {
-        $m = explode('@', $controllerMethod);
-        if (is_array($m) and count($m) === 2) {
-            return $m;
+        $segments = explode('@', $controllerMethod);
+        if (is_array($segments) and count($segments) === 2) {
+            return $segments;
         }
         return false;
     }
 
     public function getController()
     {
-        $urlController = Url::getController();
-        $url = Url::get();
-
-        if (isset(self::$routes[$urlController])) {
-            $this->setControllerMethod(self::$routes[$urlController]);
-        } else if (isset(self::$routes[$url])) {
-            $this->setControllerMethod(self::$routes[$url]);
+        $routeName = Url::getController();
+        if (isset(self::$routes[$routeName])) {
+            $this->setControllerMethod(self::$routes[$routeName]);
         } else {
-            return null;
+            $routeName = Url::get();
+            if (isset(self::$routes[$routeName])) {
+                $this->setControllerMethod(self::$routes[$routeName]);
+            } else {
+                return null;
+            }
         }
         return $this->controller;
     }
@@ -74,12 +73,12 @@ final class Route {
     {
         if ($this->getMethod())
         {
-            $url = array_search($this->controller . '@' . $this->method, self::$routes);
-            $url = str_replace($url, '', Url::get());
-            if (substr($url, 0, 1) == '/') {
-                $url = substr($url, 1, strlen($url)-1);
+            $routeName = array_search($this->controller . '@' . $this->method, self::$routes);
+            $segments = str_replace($routeName, '', Url::get());
+            if (substr($segments, 0, 1) == '/') {
+                $segments = substr($segments, 1, strlen($segments)-1);
             }
-            $params = explode('/', $url);
+            $params = explode('/', $segments);
             $params = array_values($params);
             return $params;
         }
