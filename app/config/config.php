@@ -2,7 +2,7 @@
 
 /*
  * --------------------------------------------------------------------------
- * MODO DE DEPURAÇÃO
+ * DEPURAÇÃO DE ERROS
  * --------------------------------------------------------------------------
  *
  * Você pode ativar ou desativar o modo de depuração.
@@ -14,34 +14,37 @@
 define('DEBUG_MODE', 0);
 
 /*
- * Você pode definir seu próprio modelo de página para depurar os erros
- * tais como, warnning e notice, caso a opção acima esteja ativada.
+ * Você pode definir seu próprio modelo de página para depurar os erros,
+ * tais como "warnning" e "notice", caso a opção acima esteja ativada.
  */
+
 define('DEBUG_VIEW', 'template/debug');
 
 /*
- * Você pode definir seu próprio modelo de página de erro 404. Esta página
- * será exibida caso o controlador ou método informado na URL não existir.
+ * Você pode definir seu próprio modelo de página de erro 404.
+ * Esta página será exibida sempre que o controlador ou método informado
+ * na URL não existir.
  */
-define('ERR404_VIEW', 'template/404');
+
+define('ERROR_404_VIEW', 'template/404');
 
 /*
  * --------------------------------------------------------------------------
  * SESSÃO
  * --------------------------------------------------------------------------
  *
- * Você pode definir o tempo máximo que a aplicação deve aguardar pela
- * ação do usuário que se encontra inativo, antes da sessão expirar.
+ * Você pode definir o tempo máximo em segundos para uma sessão que foi
+ * inicializada expirar em caso de inatividade do usuário.
  */
 
-define('SESSION_MAX_LIFETIME', '7200');
+define('SESSION_LIFETIME', '7200');
 
 /*
  * ---------------------------------------------------------------------------
  * CONTROLADOR
  * --------------------------------------------------------------------------
  *
- * Você deve definir o controlador padrão para ser executado caso nenhum
+ * Você deve definir um controlador padrão para ser executado caso nenhum
  * controlador tenha sido informado na url.
  */
 
@@ -49,7 +52,7 @@ define('CONTROLLER_INDEX', 'Home');
 
 /*
  * --------------------------------------------------------------------------
- * IDIOMA E TRADUÇÃO
+ * IDIOMA
  * --------------------------------------------------------------------------
  *
  * Você pode definir o idioma da aplicação, como 'en' para inglês ou 'pt-br'
@@ -59,8 +62,6 @@ define('CONTROLLER_INDEX', 'Home');
  *
  * Para fazer a tradução da aplicação para diferentes idiomas, defina o
  * arquivo "strings.xml" em "public/values".
- *
- * Veja o exemplo dado com o framework. =)
  */
 
 define('APP_LANGUAGE', 'pt-br');
@@ -70,8 +71,8 @@ define('APP_LANGUAGE', 'pt-br');
  * CRIPTOGRAFIA
  * --------------------------------------------------------------------------
  *
- * Para usar a sessão ou fazer autenticação do usuário você deve definir uma
- * chave para sua aplicação criptografar os dados.
+ * Para usar a classe "Session" ou "Auth" você deve definir uma chave que
+ * defina sua aplicaçao e que será usada para criptografar os dados.
  *
  * Atenção: Se já estiver usando a aplicação de exemplo e alterar esta chave,
  * você deve redefinir a senha de todos os usuários cadastrados. Talvez você
@@ -105,13 +106,10 @@ define('DB_CHARSET' , 'utf8');
  * E-MAIL
  * --------------------------------------------------------------------------
  *
- * Se quiser enviar e-mails usando a classe "Mail" você deve definir as
- * informações abaixo.
- *
- * Atenção: Caso sua aplicação esteja em seu servidor local, e o PHP não
- * estiver configurado para enviar e-mails, então talvez você tenha que
- * testar as funcionalidades da classe "Mail" através de um serviço de
- * hospedagem.
+ * Atenção: Se sua aplicaçao estiver rodando em um servidor local,
+ * e o PHP não estiver configurado para enviar e-mails, talvez você
+ * tenha que testar as funcionalidades da classe "Mail" através de um
+ * serviço de hospedagem.
  */
 
 define('MAIL_IS_HTML'   , true);

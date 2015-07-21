@@ -69,8 +69,8 @@ define('PUBLIC_URL', BASE_URL . 'public' . DS);
 
 require_once(CONFIG_PATH . 'config.php');
 
-ini_set('session.save_path', DS.'tmp'); // TODO: Validar no windows.
-ini_set('session.gc_maxlifetime', SESSION_MAX_LIFETIME);
+ini_set('session.save_path', DS . 'tmp'); // TODO: Validar no windows.
+ini_set('session.gc_maxlifetime', SESSION_LIFETIME);
 ini_set('session.gc_probability', 1); // Ex: probability / divisor = 1 (100%)
 ini_set('session.gc_divisor', 1);
 
