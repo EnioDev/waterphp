@@ -49,10 +49,13 @@ final class ErrorHandler
         Session::set('app_error_line', $line);
         Session::set('app_error_exit', $exit);
 
-        if (($debug and !$exit)) {
-            throw new \ErrorException($message, $code, 0, $filename, $line);
-        } else if ($exit) {
-            Redirect::to(Url::base('debug'));
+        if($this->avoidTooManyRedirects($filename))
+        {
+            if (($debug and !$exit)) {
+                throw new \ErrorException($message, $code, 0, $filename, $line);
+            } else if ($exit) {
+                Redirect::to(Url::base('debug'));
+            }
         }
 
         return true;
@@ -79,7 +82,10 @@ final class ErrorHandler
         Session::set('app_error_filename', $e->getFile());
         Session::set('app_error_line', $e->getLine());
 
-        Redirect::to(Url::base('debug'));
+        if($this->avoidTooManyRedirects($e->getFile()))
+        {
+            Redirect::to(Url::base('debug'));
+        }
     }
 
     private function forgetAll()
@@ -90,5 +96,21 @@ final class ErrorHandler
         Session::forget('app_error_filename');
         Session::forget('app_error_line');
         Session::forget('app_error_exit');
+    }
+
+    private function avoidTooManyRedirects($filename)
+    {
+        $index = strrpos($filename, 'public' . DS . 'index.php');
+        $config = strrpos($filename, 'config' . DS . 'config.php');
+        $routes = strrpos($filename, 'config' . DS . 'routes.php');
+        $core = strrpos($filename, 'water' . DS . 'core');
+
+        if($index === false and $config === false and $routes === false and $core === false) {
+            return true;
+        } else {
+            $d = new Debug();
+            $d->index();
+            exit();
+        }
     }
 }

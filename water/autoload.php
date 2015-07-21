@@ -15,14 +15,14 @@
         $fileName .= str_replace('_', DS, $className) . '.php';
         $fullFileName = $libPath . $fileName;
 
-        if (file_exists($fullFileName)) {
+        if (file_exists($fullFileName))
+        {
             require_once($fullFileName);
-        } else {
+        }
+        else {
             $fullFileName = $appPath . $fileName;
-            if (file_exists($fullFileName))
+            if (file_exists($fullFileName)) {
                 require_once($fullFileName);
-            else {
-                trigger_error('Class "'.$className.'" does not exist.', E_USER_ERROR);
             }
         }
     }
