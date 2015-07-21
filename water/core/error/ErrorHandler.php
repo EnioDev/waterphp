@@ -49,14 +49,7 @@ final class ErrorHandler
         Session::set('app_error_line', $line);
         Session::set('app_error_exit', $exit);
 
-        if($this->avoidTooManyRedirects($filename))
-        {
-            if (($debug and !$exit)) {
-                throw new \ErrorException($message, $code, 0, $filename, $line);
-            } else if ($exit) {
-                Redirect::to(Url::base('debug'));
-            }
-        }
+        $this->avoidTooManyRedirects($debug, $exit);
 
         return true;
     }
@@ -82,9 +75,35 @@ final class ErrorHandler
         Session::set('app_error_filename', $e->getFile());
         Session::set('app_error_line', $e->getLine());
 
-        if($this->avoidTooManyRedirects($e->getFile()))
-        {
-            Redirect::to(Url::base('debug'));
+        $this->avoidTooManyRedirects(true, true);
+    }
+
+    private function avoidTooManyRedirects($debug, $exit)
+    {
+        $code = Session::get('app_error_code');
+        $message = Session::get('app_error_message');
+        $filename = Session::get('app_error_filename');
+        $line = Session::get('app_error_line');
+
+        $found = 0;
+
+        $found += (strrpos($filename, 'public' . DS . 'index.php')) ? 1 : 0;
+        $found += (strrpos($filename, 'config' . DS . 'config.php')) ? 1 : 0;
+        $found += (strrpos($filename, 'config' . DS . 'routes.php')) ? 1 : 0;
+        $found += (strrpos($filename, 'water' . DS . 'core')) ? 1 : 0;
+
+        if(!$found) {
+            if (($debug and !$exit)) {
+                throw new \ErrorException($message, $code, 0, $filename, $line);
+            } else if ($exit) {
+                Redirect::to(Url::base('debug'));
+            }
+        } else {
+            if ($debug or $exit) {
+                $d = new Debug();
+                $d->index();
+                exit();
+            }
         }
     }
 
@@ -96,21 +115,5 @@ final class ErrorHandler
         Session::forget('app_error_filename');
         Session::forget('app_error_line');
         Session::forget('app_error_exit');
-    }
-
-    private function avoidTooManyRedirects($filename)
-    {
-        $index = strrpos($filename, 'public' . DS . 'index.php');
-        $config = strrpos($filename, 'config' . DS . 'config.php');
-        $routes = strrpos($filename, 'config' . DS . 'routes.php');
-        $core = strrpos($filename, 'water' . DS . 'core');
-
-        if($index === false and $config === false and $routes === false and $core === false) {
-            return true;
-        } else {
-            $d = new Debug();
-            $d->index();
-            exit();
-        }
     }
 }
