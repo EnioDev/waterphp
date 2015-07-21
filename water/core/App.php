@@ -3,6 +3,7 @@
 use core\utils\Session;
 use core\utils\Redirect;
 use core\utils\View;
+use core\utils\Url;
 
 final class App {
 
@@ -17,7 +18,7 @@ final class App {
     
     private function load()
     {
-        if (!Url::getController())
+        if (!Get::controller())
         {
             $controller = 'controller\\' . CONTROLLER_INDEX;
             $controller = new $controller();
@@ -31,9 +32,9 @@ final class App {
             $method = $route->getMethod();
             $params = $route->getParams();
 
-            $controller = ($controller) ? $controller : Url::getController();
-            $method = ($method) ? $method : Url::getMethod();
-            $params = ($params) ? $params : Url::getParams();
+            $controller = ($controller) ? $controller : Get::controller();
+            $method = ($method) ? $method : Get::method();
+            $params = ($params) ? $params : Get::params();
 
             $namespace = 'controller\\';
             $continue = file_exists(CONTROLLER_PATH . $controller . '.php');
@@ -60,11 +61,11 @@ final class App {
                     if (strlen($method) == 0) {
                         $controller->index();
                     } else {
-                        View::load(ERR404_VIEW);
+                        View::load(ERROR_404_VIEW);
                     }
                 }
             } else {
-                View::load(ERR404_VIEW);
+                View::load(ERROR_404_VIEW);
             }
         }
     }

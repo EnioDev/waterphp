@@ -7,6 +7,7 @@ use core\utils\Request;
 use core\utils\Redirect;
 use core\utils\String;
 use core\utils\View;
+use core\utils\Url;
 use model\User;
 
 class Login extends Controller {
@@ -36,7 +37,7 @@ class Login extends Controller {
 
             if ($user) {
                 Auth::make($user);
-                Redirect::to(BASE_URL . 'user');
+                Redirect::to(Url::route('user'));
             } else {
                 View::load('user/login', ['error' => String::values()->user->login->error]);
             }

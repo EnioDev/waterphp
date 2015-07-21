@@ -31,7 +31,7 @@ final class Route {
             $this->controller = $segments[0];
             $this->method = $segments[1];
         } else {
-            $this->controller = self::$routes[Url::getController()];
+            $this->controller = self::$routes[Get::controller()];
             $this->method = null;
         }
     }
@@ -47,11 +47,11 @@ final class Route {
 
     public function getController()
     {
-        $routeName = Url::getController();
+        $routeName = Get::controller();
         if (isset(self::$routes[$routeName])) {
             $this->setControllerMethod(self::$routes[$routeName]);
         } else {
-            $routeName = Url::get();
+            $routeName = Get::url();
             if (isset(self::$routes[$routeName])) {
                 $this->setControllerMethod(self::$routes[$routeName]);
             } else {
@@ -74,7 +74,7 @@ final class Route {
         if ($this->getMethod())
         {
             $routeName = array_search($this->controller . '@' . $this->method, self::$routes);
-            $segments = str_replace($routeName, '', Url::get());
+            $segments = str_replace($routeName, '', Get::url());
             if (substr($segments, 0, 1) == '/') {
                 $segments = substr($segments, 1, strlen($segments)-1);
             }

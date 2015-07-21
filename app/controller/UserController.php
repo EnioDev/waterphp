@@ -5,6 +5,7 @@ use core\utils\Auth;
 use core\utils\Redirect;
 use core\utils\Session;
 use core\utils\View;
+use core\utils\Url;
 use core\utils\Request;
 use core\utils\Encryption;
 use core\utils\String;
@@ -47,7 +48,7 @@ class UserController extends Controller
         // usuário está autenticado, caso contrário, você
         // pode redirecioná-lo para outra página.
         if (!Auth::user() and !$this->register) {
-            Redirect::to(BASE_URL . 'login');
+            Redirect::to(Url::route('login'));
             exit;
         }
 
@@ -186,6 +187,6 @@ class UserController extends Controller
     public function logout()
     {
         Session::stop();
-        Redirect::to(BASE_URL . 'login');
+        Redirect::to(Url::route('login'));
     }
 }

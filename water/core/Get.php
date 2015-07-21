@@ -1,13 +1,14 @@
 <?php namespace core;
 
-final class Url
+final class Get
 {
     private static function splitUrl($type = null)
     {
-        if (self::get())
+        if (self::url())
         {
-            $url = explode('/', self::get());
             $segments = array();
+
+            $url = explode('/', self::url());
 
             $segments['controller'] = $controller = isset($url[0]) ? $url[0] : null;
             $segments['method'] = isset($url[1]) ? $url[1] : null;
@@ -25,18 +26,7 @@ final class Url
         return null;
     }
 
-    public static function base()
-    {
-        return BASE_URL;
-    }
-
-    public static function current()
-    {
-        $url = self::base() . self::get();
-        return $url;
-    }
-
-    public static function get()
+    public static function url()
     {
         $url = null;
         if (isset($_GET['url']))
@@ -47,17 +37,17 @@ final class Url
         return $url;
     }
 
-    public static function getController()
+    public static function controller()
     {
         return self::splitUrl('controller');
     }
 
-    public static function getMethod()
+    public static function method()
     {
         return self::splitUrl('method');
     }
 
-    public static function getParams()
+    public static function params()
     {
         return self::splitUrl('params');
     }

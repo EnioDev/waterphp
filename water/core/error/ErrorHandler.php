@@ -2,6 +2,7 @@
 
 use core\utils\Redirect;
 use core\utils\Session;
+use core\utils\Url;
 
 final class ErrorHandler
 {
@@ -51,7 +52,7 @@ final class ErrorHandler
         if (($debug and !$exit)) {
             throw new \ErrorException($message, $code, 0, $filename, $line);
         } else if ($exit) {
-            Redirect::to(BASE_URL . 'debug');
+            Redirect::to(Url::base('debug'));
         }
 
         return true;
@@ -78,7 +79,7 @@ final class ErrorHandler
         Session::set('app_error_filename', $e->getFile());
         Session::set('app_error_line', $e->getLine());
 
-        Redirect::to(BASE_URL . 'debug');
+        Redirect::to(Url::base('debug'));
     }
 
     private function forgetAll()
