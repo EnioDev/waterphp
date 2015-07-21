@@ -8,18 +8,28 @@ final class Route {
 
     public function controller($routeName, $controller)
     {
-        if (!$this->isControllerMethod($controller)) {
-            if (!isset(self::$routes[$routeName])) {
-                self::$routes[$routeName] = $controller;
+        if ($this->checkRouteName($routeName))
+        {
+            if (!$this->isControllerMethod($controller))
+            {
+                if (!isset(self::$routes[$routeName]))
+                {
+                    self::$routes[$routeName] = $controller;
+                }
             }
         }
     }
 
     public function controllerMethod($routeName, $controllerMethod)
     {
-        if ($this->isControllerMethod($controllerMethod)) {
-            if (!isset(self::$routes[$routeName])) {
-                self::$routes[$routeName] = $controllerMethod;
+        if ($this->checkRouteName($routeName))
+        {
+            if ($this->isControllerMethod($controllerMethod))
+            {
+                if (!isset(self::$routes[$routeName]))
+                {
+                    self::$routes[$routeName] = $controllerMethod;
+                }
             }
         }
     }
@@ -88,5 +98,16 @@ final class Route {
     public static function getRoutes()
     {
         return self::$routes;
+    }
+
+    private static function checkRouteName($routeName)
+    {
+        $pattern = '/^([a-z]+[0-9]*[_|-]*)+([a-z0-9]*[_|-]*)*$/';
+        $result = preg_match($pattern, $routeName);
+        if ($result) {
+            return true;
+        } else {
+            trigger_error('The route name "<b>'.$routeName.'</b>" is not a valid name. Follow the examples bellow: <br>1) user<br>2) user_edit<br>3) user-edit', E_USER_ERROR);
+        }
     }
 }
