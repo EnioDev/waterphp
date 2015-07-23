@@ -14,7 +14,7 @@ abstract class Controller
         $token = Request::get('_token');
         if ($token) {
             if (Session::token() != trim($token)) {
-                throw new \Exception('The given token is not a valid token! Perhaps the session time is over.');
+                trigger_error('The given token is not a valid token!', E_USER_ERROR);
             }
         }
     }
