@@ -10,13 +10,6 @@ abstract class Controller
     function __construct($model = null)
     {
         $this->setModel($model);
-
-        $token = Request::get('_token');
-        if ($token) {
-            if (Session::token() != trim($token)) {
-                trigger_error('The given token is not a valid token!', E_USER_ERROR);
-            }
-        }
     }
 
     abstract function index();

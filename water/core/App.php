@@ -1,9 +1,10 @@
 <?php namespace core;
 
-use core\utils\Session;
 use core\utils\Redirect;
-use core\utils\View;
+use core\utils\Request;
+use core\utils\Session;
 use core\utils\Url;
+use core\utils\View;
 
 final class App {
 
@@ -12,6 +13,7 @@ final class App {
         if (!Session::start()) {
             Redirect::to(Url::base());
         } else {
+            $this->verifyCSRFToken();
             $this->load();
         }
     }
@@ -66,6 +68,16 @@ final class App {
                 }
             } else {
                 View::load(ERROR_404_VIEW);
+            }
+        }
+    }
+
+    public function verifyCSRFToken()
+    {
+        $token = Request::get('_token');
+        if ($token) {
+            if (Session::token() != trim($token)) {
+                trigger_error('The given token is not a valid token!', E_USER_ERROR);
             }
         }
     }
