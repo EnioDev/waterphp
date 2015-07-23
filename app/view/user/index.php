@@ -15,7 +15,7 @@
                 </div>
                 <div id="navbar" class="collapse navbar-collapse">
                     <ul class="nav navbar-nav pull-right">
-                        <li><a href="<?php echo $app::url(); ?>"><i class="glyphicon glyphicon-home"></i>&nbsp;Home</a></li>
+                        <li><a href="<?php echo $app::base(); ?>"><i class="glyphicon glyphicon-home"></i>&nbsp;Home</a></li>
                         <li><a href="<?php echo $app::route('logout'); ?>"><i class="glyphicon glyphicon-log-out"></i>&nbsp;Logout</a></li>
                     </ul>
                 </div>
