@@ -14,7 +14,7 @@
                 <?php endif; ?>
 
                 <h5>
-                    <?php echo $app::strings()->user->login->first . ' '; ?>
+                    <?php echo $app::strings()->user->login->new_user . ' '; ?>
                     <a href="<?php echo $app::route('register'); ?>">
                         <?php echo $app::strings()->user->register->title; ?>
                     </a>
