@@ -39,7 +39,7 @@ class Login extends Controller {
                 Auth::make($user);
                 Redirect::to(Url::route('user'));
             } else {
-                View::load('user/login', ['error' => String::values()->user->login->error]);
+                View::load('user/login', ['error' => String::values()->user->errors->login]);
             }
         } else {
             View::load('user/login');
