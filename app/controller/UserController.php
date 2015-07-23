@@ -43,7 +43,14 @@ class UserController extends Controller
             'users' => $this->model()->all(),
             'message' => $this->message
         ];
+        View::load('user/index', $data);
+    }
 
+    public function cancel()
+    {
+        $data = [
+            'users' => $this->model()->all()
+        ];
         View::load('user/index', $data);
     }
 

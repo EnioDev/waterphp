@@ -78,10 +78,8 @@
                     <input type="password" class="form-control" name="password" value="<?php echo $password; ?>">
                 </div>
             </div>
-            <input type="submit" class="btn btn-primary" name="submit" value="<?php echo $submit; ?>">
-            <?php if ($id) : ?>
-                <a href="<?php echo $app::route('user'); ?>" class="btn btn-danger"><?php echo $app::strings()->user->buttons->cancel; ?></a>
-            <?php endif; ?>
+            <input type="submit" class="btn btn-success" name="submit" value="<?php echo $submit; ?>">
+            <a href="<?php echo $app::url('user/cancel'); ?>" class="btn btn-info"><?php echo $app::strings()->user->buttons->cancel; ?></a>
         </form>
         <br><br>
         <table class="table table-hover">
