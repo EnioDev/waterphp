@@ -20,53 +20,30 @@ class UserController extends Controller
     private $email;
     private $password;
 
-    private $register;
-
     function __construct()
     {
-        // Você pode chamar o construtor da classe Pai e definir
-        // o modelo que será usado por padrão no controlador.
-        // Para acessá-lo basta usar $this->model(). Veja os
-        // demais exemplos usados nesta classe.
         parent::__construct(new User());
-
-        // Para obter os textos do idioma configurado na aplicação,
-        // basta usar String::values() e um objeto será retornado
-        // com todo o conteúdo definido no arquivo strings.xml.
-        // Consulte os arquivos em "public/values".
-        $register = String::values()->user->buttons->register;
-
-        // A classe Request permite capturar todos os dados
-        // submetidos ao controlador via método post.
-        // Veja os demais exemplos usados nesta classe.
-        $submit = Request::get('submit');
-
-        // Verifica se a requisição foi feita do formulário de registro.
-        $this->register = ($submit == $register) ? true : false;
-
-        // Você pode usar Auth::user() para verificar se o
-        // usuário está autenticado, caso contrário, você
-        // pode redirecioná-lo para outra página.
-        if (!Auth::user() and !$this->register) {
-            Redirect::to(Url::route('login'));
-            exit;
-        }
 
         $this->errors = [];
         $this->message = '';
+
+        $register = (Request::get('submit') == String::values()->user->buttons->register) ? true : false;
+
+        if (!Auth::user() and !$register) {
+            Redirect::to(Url::route('login'));
+            exit;
+        }
     }
 
     public function index()
     {
         $this->message = String::values()->user->messages->welcome . ' ' . Auth::user()->name . '!';
 
-        // Use View::load() para carregar uma visão.
-        // Você pode passar um array com o conteúdo que deseja
-        // recuperar na visão e acessá-los pelo mesmo nome de variável.
         $data = [
             'users' => $this->model()->all(),
             'message' => $this->message
         ];
+
         View::load('user/index', $data);
     }
 
@@ -76,12 +53,10 @@ class UserController extends Controller
 
         if ($input)
         {
-            // Filtrando os dados do formulário.
             $this->name = ucwords(strtolower(strip_tags(trim($input['name']))));
             $this->email = strtolower(strip_tags(trim($input['email'])));
             $this->password = trim($input['password']);
 
-            // Chama a função do controlador que valida os dados acima.
             if ($this->validator())
             {
                 $data = [
@@ -97,23 +72,23 @@ class UserController extends Controller
                     ]
                 ];
 
-                // Verifica se o usuário já foi cadastrado anteriormente.
                 $user = null;
+
                 if ($input['submit'] == String::values()->user->buttons->update)
                 {
                     $id = $input['id'];
                     $user = $this->model()->find($id);
                 }
 
-                // Caso encontrado, atualiza os dados do usuário no banco.
-                if ($user) {
+                if ($user)
+                {
                     $response = $this->model()->update($id, $data);
                     if ($response) {
                         $this->message = String::values()->user->messages->update;
                     } else {
                         array_push($this->errors, String::values()->user->errors->update);
                     }
-                // Senão insere o novo usuário no banco.
+
                 } else {
                     $response = $this->model()->insert($data);
                     if ($response) {
@@ -125,9 +100,9 @@ class UserController extends Controller
             }
         }
 
-        // Verifica se a função está sendo chamada do formulário de
-        // registro ou da página de usuários para retornar a view adequada.
-        $view = ($this->register) ? 'user/register' : 'user/index';
+        $register = ($input['submit'] == String::values()->user->buttons->register) ? true : false;
+
+        $view = ($register) ? 'user/register' : 'user/index';
 
         $data = [
             'users' => $this->model()->all(),
@@ -162,25 +137,27 @@ class UserController extends Controller
 
     private function validator()
     {
-        // Valida o campo nome.
+        // NAME
         if (!filter_var($this->name, FILTER_SANITIZE_STRING)) {
-            array_push($this->errors, String::values()->user->errors->name_string);
+            array_push($this->errors, String::values()->user->errors->name_filter);
         }
         if (strlen($this->name) < 5 or strlen($this->name) > 50) {
             array_push($this->errors, String::values()->user->errors->name_length);
         }
-        // Valida o campo email.
+
+        // EMAIL
         if (!filter_var($this->email, FILTER_VALIDATE_EMAIL)) {
-            array_push($this->errors, String::values()->user->errors->email);
+            array_push($this->errors, String::values()->user->errors->email_filter);
         }
-        // Valida o campo senha.
+
+        // PASSWORD
         if (preg_match('/[^A-Za-z0-9_]/', $this->password)) {
             array_push($this->errors, String::values()->user->errors->password_filter);
         }
         if (strlen($this->password) < 6 or strlen($this->password) > 20) {
             array_push($this->errors, String::values()->user->errors->password_length);
         }
-        // Se não houver erros, retorna "true" para prosseguir o cadastro.
+
         return (count($this->errors) > 0) ? false : true;
     }
 
