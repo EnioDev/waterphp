@@ -17,14 +17,15 @@
         </buttons>
 
         <errors>
-            <name_string>O nome é obrigatório e precisa ser um texto.</name_string>
+            <name_filter>O nome é obrigatório e precisa ser um texto.</name_filter>
             <name_length>O nome deve conter entre 5 a 30 caracteres.</name_length>
-            <email>Informe um email válido.</email>
+            <email_filter>Informe um email válido.</email_filter>
             <password_filter>A senha deve conter somente letras, números e _(underline).</password_filter>
             <password_length>A senha deve conter entre 6 a 20 caracteres.</password_length>
             <insert>Desculpa! Não foi possível criar o novo usuário.</insert>
             <update>Desculpa! Não foi possível atualizar este usuário.</update>
             <delete>Desculpa! Não foi possível remover este usuário.</delete>
+            <login>O usuário não foi encontrado!</login>
         </errors>
 
         <fields>
@@ -39,8 +40,7 @@
 
         <login>
             <title>Por favor, identifique-se.</title>
-            <error>O usuário não foi encontrado!</error>
-            <first>É sua primeira vez?</first>
+            <new_user>É sua primeira vez?</new_user>
         </login>
     </user>
 </strings>
