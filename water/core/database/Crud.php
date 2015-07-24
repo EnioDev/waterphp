@@ -51,13 +51,19 @@ class Crud extends Db implements ICrud
         return $stmt->execute($data['values']);
     }
 
-    public final function delete($id)
+    public final function delete($id = null)
     {
-        $sql = "DELETE FROM " . $this->table . " WHERE id = :id";
+        if ($id and (is_string($id) or is_integer($id)))
+        {
+            $sql = "DELETE FROM " . $this->table . " WHERE id = :id";
+            $stmt = parent::prepare($sql);
+            $stmt->bindParam(':id', $id, parent::paramType($id));
 
-        $stmt = parent::prepare($sql);
-        $stmt->bindParam(':id', $id, parent::paramType($id));
+        } else if ($id === null) {
 
+            $sql = "DELETE FROM " . $this->table;
+            $stmt = parent::prepare($sql);
+        }
         return $stmt->execute();
     }
 
