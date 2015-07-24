@@ -9,14 +9,14 @@ use core\utils\Request;
 
 final class Helpers
 {
-    public static function base()
-    {
-        return Url::base();
-    }
-
     public static function current()
     {
         return Url::current();
+    }
+
+    public static function base()
+    {
+        return Url::base();
     }
 
     public static function url($path = null, $params = null)
