@@ -1,6 +1,13 @@
-<?php namespace core\utils;
+<?php namespace core\view;
 
-final class Helper
+use core\utils\Url;
+use core\utils\View;
+use core\utils\String;
+use core\utils\Auth;
+use core\utils\Session;
+use core\utils\Request;
+
+final class Helpers
 {
     public static function base()
     {
@@ -29,7 +36,7 @@ final class Helper
 
     public static function view($view)
     {
-        return View::load($view);
+        View::load($view);
     }
 
     public static function strings()
