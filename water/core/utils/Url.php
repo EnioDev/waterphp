@@ -1,13 +1,13 @@
 <?php namespace core\utils;
 
-use core\Get;
-use core\Route;
+use core\routing\Get;
+use core\routing\Router;
 
 final class Url
 {
     public static function current()
     {
-        $url = self::base() . Get::url();
+        $url = self::base() . Get::urlSegments();
         return $url;
     }
 
@@ -29,7 +29,7 @@ final class Url
     {
         if (is_string($routeName) and strlen($routeName) > 0)
         {
-            if (array_key_exists($routeName, Route::getRoutes()))
+            if (array_key_exists($routeName, Router::getRoutes()))
             {
                 if ($params and is_array($params) and count($params) > 0)
                 {

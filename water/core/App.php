@@ -5,6 +5,8 @@ use core\utils\Request;
 use core\utils\Session;
 use core\utils\Url;
 use core\utils\View;
+use core\routing\Router;
+use core\routing\Get;
 
 final class App {
 
@@ -20,7 +22,7 @@ final class App {
     
     private function load()
     {
-        if (!Get::controller())
+        if (!Get::urlController())
         {
             $controller = 'controller\\' . CONTROLLER_INDEX;
             $controller = new $controller();
@@ -28,15 +30,15 @@ final class App {
 
         } else {
 
-            $route = new Route();
+            $router = new Router();
 
-            $controller = $route->getController();
-            $method = $route->getMethod();
-            $params = $route->getParams();
+            $controller = $router->getController();
+            $method = $router->getMethod();
+            $params = $router->getParams();
 
-            $controller = ($controller) ? $controller : Get::controller();
-            $method = ($method) ? $method : Get::method();
-            $params = ($params) ? $params : Get::params();
+            $controller = ($controller) ? $controller : Get::urlController();
+            $method = ($method) ? $method : Get::urlMethod();
+            $params = ($params) ? $params : Get::urlParams();
 
             $namespace = 'controller\\';
             $continue = file_exists(CONTROLLER_PATH . $controller . '.php');

@@ -95,7 +95,7 @@ ini_set('smtp_port', MAIL_SMTP_PORT);
  * ==============================================================
  */
 
-$route = new core\Route();
+$router = new core\routing\Router();
 require_once(CONFIG_PATH . 'routes.php');
 
 /*

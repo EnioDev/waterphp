@@ -1,6 +1,6 @@
-<?php namespace core;
+<?php namespace core\routing;
 
-final class Route {
+final class Router {
 
     private static $routes = [];
     private $controller = null;
@@ -41,7 +41,7 @@ final class Route {
             $this->controller = $segments[0];
             $this->method = $segments[1];
         } else {
-            $this->controller = self::$routes[Get::controller()];
+            $this->controller = self::$routes[Get::urlController()];
             $this->method = null;
         }
     }
@@ -57,11 +57,11 @@ final class Route {
 
     public function getController()
     {
-        $routeName = Get::controller();
+        $routeName = Get::urlController();
         if (isset(self::$routes[$routeName])) {
             $this->setControllerMethod(self::$routes[$routeName]);
         } else {
-            $routeName = Get::url();
+            $routeName = Get::urlSegments();
             if (isset(self::$routes[$routeName])) {
                 $this->setControllerMethod(self::$routes[$routeName]);
             } else {
@@ -84,7 +84,7 @@ final class Route {
         if ($this->getMethod())
         {
             $routeName = array_search($this->controller . '@' . $this->method, self::$routes);
-            $segments = str_replace($routeName, '', Get::url());
+            $segments = str_replace($routeName, '', Get::urlSegments());
             if (substr($segments, 0, 1) == '/') {
                 $segments = substr($segments, 1, strlen($segments)-1);
             }

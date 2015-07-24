@@ -1,14 +1,14 @@
-<?php namespace core;
+<?php namespace core\routing;
 
 final class Get
 {
     private static function splitUrl($type = null)
     {
-        if (self::url())
+        if (self::urlSegments())
         {
             $segments = array();
 
-            $url = explode('/', self::url());
+            $url = explode('/', self::urlSegments());
 
             $segments['controller'] = $controller = isset($url[0]) ? $url[0] : null;
             $segments['method'] = isset($url[1]) ? $url[1] : null;
@@ -26,7 +26,7 @@ final class Get
         return null;
     }
 
-    public static function url()
+    public static function urlSegments()
     {
         $url = null;
         if (isset($_GET['url']))
@@ -37,17 +37,17 @@ final class Get
         return $url;
     }
 
-    public static function controller()
+    public static function urlController()
     {
         return self::splitUrl('controller');
     }
 
-    public static function method()
+    public static function urlMethod()
     {
         return self::splitUrl('method');
     }
 
-    public static function params()
+    public static function urlParams()
     {
         return self::splitUrl('params');
     }
