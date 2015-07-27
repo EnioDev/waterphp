@@ -1,11 +1,8 @@
 <?php namespace core\base;
 
-use core\utils\Request;
-use core\utils\Session;
-
 abstract class Controller
 {
-    private $model = null;
+    private $model;
 
     function __construct($model = null)
     {
