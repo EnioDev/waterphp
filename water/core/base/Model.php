@@ -11,9 +11,4 @@ class Model extends Crud
     // Você DEVE redefinir este atributo na classe filha SE
     // o nome do campo chave primária na tabela for diferente.
     protected $primary_key = 'id';
-
-    public final function getTable()
-    {
-        return $this->table;
-    }
 }
