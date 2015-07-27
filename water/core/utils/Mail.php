@@ -7,11 +7,8 @@ final class Mail
     private $message;
     private $headers;
 
-    function __construct($message, $subject = '')
+    function __construct()
     {
-        $this->setMessage($message);
-        $this->setSubject($subject);
-
         $this->headers = array();
 
         if (MAIL_IS_HTML) {
@@ -32,11 +29,11 @@ final class Mail
         } else if (is_string($to)) {
             $this->to = trim($to);
         } else {
-            $this->to = null;
+            $this->to = false;
         }
     }
 
-    private function setSubject($subject)
+    public function setSubject($subject)
     {
         if (is_string($subject) and strlen($subject) > 0) {
             $this->subject = substr(trim($subject), 0, 70);
@@ -45,19 +42,21 @@ final class Mail
         }
     }
 
-    private function setMessage($message)
+    public function setMessage($message)
     {
         if (is_string($message) and strlen($message) > 0) {
             $this->message = wordwrap(trim($message), 70);
         } else {
-            $this->message = null;
+            $this->message = false;
         }
     }
 
     public function send($to)
     {
-        $accept = false;
         $this->setTo($to);
+
+        $accept = false;
+
         if ($this->to and $this->message) {
             $accept = mail($this->to, $this->subject, $this->message, implode("\r\n", $this->headers), '-f' . MAIL_FROM);
         }
