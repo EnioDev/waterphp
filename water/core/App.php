@@ -4,7 +4,7 @@ use core\utils\Redirect;
 use core\utils\Request;
 use core\utils\Session;
 use core\utils\Url;
-use core\utils\View;
+use core\base\View;
 use core\routing\Router;
 use core\routing\Get;
 

@@ -1,6 +1,6 @@
-<?php namespace core\utils;
+<?php namespace core\base;
 
-use core\view\Helpers;
+use core\Helpers;
 
 final class View
 {

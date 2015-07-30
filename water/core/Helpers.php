@@ -1,7 +1,7 @@
-<?php namespace core\view;
+<?php namespace core;
 
+use core\base\View;
 use core\utils\Url;
-use core\utils\View;
 use core\utils\String;
 use core\utils\Auth;
 use core\utils\Session;

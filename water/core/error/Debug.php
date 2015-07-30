@@ -1,7 +1,7 @@
 <?php namespace core\error;
 
 use core\utils\Session;
-use core\utils\View;
+use core\base\View;
 use core\base\Controller;
 
 class Debug extends Controller
