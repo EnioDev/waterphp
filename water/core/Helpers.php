@@ -1,11 +1,11 @@
 <?php namespace core;
 
 use core\base\View;
-use core\utils\Url;
-use core\utils\String;
 use core\utils\Auth;
-use core\utils\Session;
 use core\utils\Request;
+use core\utils\Session;
+use core\utils\String;
+use core\utils\Url;
 
 final class Helpers
 {

@@ -1,12 +1,12 @@
 <?php namespace core;
 
+use core\base\View;
+use core\routing\Get;
+use core\routing\Router;
 use core\utils\Redirect;
 use core\utils\Request;
 use core\utils\Session;
 use core\utils\Url;
-use core\base\View;
-use core\routing\Router;
-use core\routing\Get;
 
 final class App {
 

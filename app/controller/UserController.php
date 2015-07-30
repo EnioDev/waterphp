@@ -3,12 +3,12 @@
 use core\base\Controller;
 use core\base\View;
 use core\utils\Auth;
-use core\utils\Redirect;
-use core\utils\Session;
-use core\utils\Url;
-use core\utils\Request;
 use core\utils\Encryption;
+use core\utils\Redirect;
+use core\utils\Request;
+use core\utils\Session;
 use core\utils\String;
+use core\utils\Url;
 use model\User;
 
 class UserController extends Controller
