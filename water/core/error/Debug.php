@@ -1,8 +1,8 @@
 <?php namespace core\error;
 
-use core\utils\Session;
-use core\base\View;
 use core\base\Controller;
+use core\base\View;
+use core\utils\Session;
 
 class Debug extends Controller
 {
