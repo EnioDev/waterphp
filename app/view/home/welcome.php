@@ -4,7 +4,7 @@
     <div class="container">
         <div class="col-sm-8 col-sm-offset-2 text-center">
 
-            <h1><span class="text-primary">Water</span> PHP Framework</h1><br>
+            <h1><span class="text-primary">WaterPHP</span> Framework</h1><br>
 
             <pre>You are in the <strong>/view/home/welcome.php</strong> file.</pre><br>
 
