@@ -33,7 +33,7 @@ final class Mail
         }
     }
 
-    public function setSubject($subject)
+    private function setSubject($subject)
     {
         if (is_string($subject) and strlen($subject) > 0) {
             $this->subject = substr(trim($subject), 0, 70);
@@ -42,13 +42,23 @@ final class Mail
         }
     }
 
-    public function setMessage($message)
+    private function setMessage($message)
     {
         if (is_string($message) and strlen($message) > 0) {
             $this->message = wordwrap(trim($message), 70);
         } else {
             $this->message = false;
         }
+    }
+
+    public function subject($subject)
+    {
+        $this->setSubject($subject);
+    }
+
+    public function message($message)
+    {
+        $this->setMessage($message);
     }
 
     public function send($to)
