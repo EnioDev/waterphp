@@ -1,21 +1,15 @@
-=====================
-PASSO 1: CONFIGURAÇÃO
-=====================
+============================
+PASSO 1: INSTALANDO O MODELO
+============================
 
-Abra o arquivo "app/config/config.php" e siga as orientações, é muito simples! =)
+O WaterPHP Framework já vem com uma aplicação de exemplo, e para utilizá-la
+é necessário criar o banco de dados e a tabela conforme abaixo:
 
-================
-PASSO 2: EXEMPLO
-================
+Exemplo usando MYSQL:
+---------------------
 
-O Water Framework já vem com uma aplicação de exemplo, e para utilizá-la
-é necessário criar o banco e a tabela conforme abaixo:
-
-Usando MYSQL:
--------------
-
-CREATE DATABASE water;
-USE water;
+CREATE DATABASE waterphp;
+USE waterphp;
 CREATE TABLE users (
 	id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 	name VARCHAR(50) NOT NULL,
@@ -23,5 +17,8 @@ CREATE TABLE users (
 	password VARCHAR(100)
 );
 
-OBS: Você pode criá-lo em outro SGBD de sua preferência e atualizar o
-driver de conexão com o banco em "app/config/config.php".
+=================================
+PASSO 2: CONFIGURANDO A APLICAÇÃO
+=================================
+
+Abra o arquivo "app/config/config.php" e siga as orientações, é muito simples! =)

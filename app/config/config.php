@@ -2,11 +2,11 @@
 
 /*
  * --------------------------------------------------------------------------
- * DEPURAÇÃO DE ERROS
+ * TRATAMENTO DE ERROS
  * --------------------------------------------------------------------------
  *
  * Você pode ativar ou desativar o modo de depuração.
- * É altamente aconselhável desativar em ambiente de produção.
+ * É altamente recomendado desativar em ambiente de produção.
  * 0 ou false = Desativado
  * 1 ou true = Ativado
  */
@@ -15,7 +15,9 @@ define('DEBUG_MODE', 0);
 
 /*
  * Você pode definir seu próprio modelo de página para depurar os erros,
- * tais como "warnning" e "notice", caso a opção acima esteja ativada.
+ * tais como "Warning" e "Notice", caso a opção acima esteja ativada.
+ * Veja o modelo dado com o framework para saber quais informações você
+ * pode exibir.
  */
 
 define('DEBUG_VIEW', 'template/debug');
@@ -33,11 +35,11 @@ define('ERROR_404_VIEW', 'template/404');
  * SESSÃO
  * --------------------------------------------------------------------------
  *
- * Você pode definir o tempo máximo em segundos para uma sessão que foi
- * inicializada expirar em caso de inatividade do usuário.
+ * Você pode definir o tempo máximo em segundos que a aplicação deve
+ * aguardar pela atividade do usuário antes da sessão expirar.
  */
 
-define('SESSION_LIFETIME', '7200');
+define('SESSION_LIFETIME', '7200'); // 7200 = 2h
 
 /*
  * ---------------------------------------------------------------------------
@@ -55,13 +57,26 @@ define('CONTROLLER_INDEX', 'Home');
  * IDIOMA
  * --------------------------------------------------------------------------
  *
- * Você pode definir o idioma da aplicação, como 'en' para inglês ou 'pt-br'
- * para o português do Brasil.
- * Para mais informações consulte o atributo "lang" usado na meta tag do
- * cabeçalho HTML e siga os mesmos padrões de nomenclatura.
+ * Você deve definir o idioma da aplicação. Esta ação é útil para ajudar o
+ * buscador a classificar seu site no idioma apropriado, orientar os
+ * navegadores a exibir acentuação e caracteres especiais corretamente.
+ * O idioma também é usado para fazer a tradução da aplicação. Consulte
+ * a documentação para saber mais.
  *
- * Para fazer a tradução da aplicação para diferentes idiomas, defina o
- * arquivo "strings.xml" em "public/values".
+ * Veja alguns valores possíveis:
+ *
+ * pt Português
+ * pt-br Português do Brasil
+ * en Inglês
+ * en-us Inglês dos EUA
+ * en-gb Inglês Britânico
+ * fr Francês
+ * de Alemão
+ * es Espanhol
+ * it Italiano
+ * ru Russo
+ * zh Chinês
+ * ja Japonês
  */
 
 define('APP_LANGUAGE', 'pt-br');
@@ -71,13 +86,14 @@ define('APP_LANGUAGE', 'pt-br');
  * CRIPTOGRAFIA
  * --------------------------------------------------------------------------
  *
- * Para usar a classe "Session" ou "Auth" você deve definir uma chave que
- * defina sua aplicaçao e que será usada para criptografar os dados.
+ * Para usar a classe Session ou Auth você deve definir uma chave para
+ * criptografar os dados, uma sequência de caracteres que será usada
+ * para identificar sua aplicação.
  *
- * Atenção: Se já estiver usando a aplicação de exemplo e alterar esta chave,
- * você deve redefinir a senha de todos os usuários cadastrados. Talvez você
- * tenha que registrar um novo usuário para conseguir efetuar o login e
- * redefinir os demais.
+ * Atenção: Se você já estiver usando a aplicação de exemplo dada com o
+ * framework e alterar esta chave, você deverá redefinir a senha de todos
+ * os usuários cadastrados. Para isso será necessário registrar um novo
+ * usuário e efetuar o login novamente.
  */
 
 define('ENCRYPTION_KEY', 'your_secret_key');
@@ -87,16 +103,13 @@ define('ENCRYPTION_KEY', 'your_secret_key');
  * BANCO DE DADOS
  * --------------------------------------------------------------------------
  *
- * Defina as configurações de conexão com o seu banco.
- *
- * Obs: Para usar a aplicação de exemplo, consulte o arquivo "install.txt"
- * na raiz do projeto e veja como criar o banco e a tabela.
+ * Defina as informações abaixo corretamente para usar o seu banco de dados.
  */
 
 define('DB_DRIVER'  , 'mysql');
 define('DB_HOST'    , 'localhost');
 define('DB_PORT'    , '5432');
-define('DB_NAME'    , 'water');
+define('DB_NAME'    , 'waterphp');
 define('DB_USER'    , 'root');
 define('DB_PASSWORD', 'root');
 define('DB_CHARSET' , 'utf8');
@@ -106,10 +119,10 @@ define('DB_CHARSET' , 'utf8');
  * E-MAIL
  * --------------------------------------------------------------------------
  *
- * Atenção: Se sua aplicaçao estiver rodando em um servidor local,
- * e o PHP não estiver configurado para enviar e-mails, talvez você
- * tenha que testar as funcionalidades da classe "Mail" através de um
- * serviço de hospedagem.
+ * Atenção: Para usar a classe Mail certifique-se que o seu PHP está
+ * corretamente configurado para enviar e-mails usando a função mail do PHP.
+ * Talvez você tenha que testar as funcionalidades da classe Mail através
+ * de um servidor de hospedagem.
  */
 
 define('MAIL_IS_HTML'   , true);
