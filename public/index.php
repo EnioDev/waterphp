@@ -22,7 +22,7 @@ define('CONTROLLER_PATH', APP_PATH . 'controller' . DS);
 
 define('PUBLIC_PATH', ROOT_PATH . 'public' . DS);
 
-define('VALUES_PATH', PUBLIC_PATH . 'values' . DS);
+define('LANGUAGE_PATH', PUBLIC_PATH . 'lang' . DS);
 
 define('IMAGES_PATH', PUBLIC_PATH . 'images' . DS);
 
