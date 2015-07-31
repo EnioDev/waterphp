@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html>
-    <head lang="<?= APP_LANGUAGE; ?>">
+<html lang="<?= APP_LANGUAGE; ?>">
+    <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="description" content="Water is a clean PHP Framework." />
