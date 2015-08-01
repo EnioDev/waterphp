@@ -1,5 +1,2 @@
-php_flag error_reporting E_ALL
-php_flag display_errors 1
-
 RewriteEngine On
 RewriteRule ^(.*)$ public/$1 [L]
