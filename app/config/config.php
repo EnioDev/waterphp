@@ -104,6 +104,10 @@ define('ENCRYPTION_KEY', 'your_secret_key');
  * --------------------------------------------------------------------------
  *
  * Defina as informações abaixo corretamente para usar o seu banco de dados.
+ *
+ * Atenção: Consulte os drivers disponíveis para fazer a conexão com o banco
+ * usando o PDO (PHP Data Objects). Exemplo: Para se conectar ao postgresql
+ * você deve usar o drive "pgsql".
  */
 
 define('DB_DRIVER'  , 'mysql');
@@ -112,17 +116,17 @@ define('DB_PORT'    , '5432');
 define('DB_NAME'    , 'waterphp');
 define('DB_USER'    , 'root');
 define('DB_PASSWORD', 'root');
-define('DB_CHARSET' , 'utf8');
 
 /*
  * --------------------------------------------------------------------------
  * E-MAIL
  * --------------------------------------------------------------------------
  *
- * Atenção: Para usar a classe Mail certifique-se que o seu PHP está
- * corretamente configurado para enviar e-mails usando a função mail do PHP.
- * Talvez você tenha que testar as funcionalidades da classe Mail através
- * de um servidor de hospedagem.
+ * Atenção: Para usar a classe Mail certifique-se que o PHP instalado em seu
+ * servidor está corretamente configurado para enviar e-mails usando a função
+ * mail do PHP.
+ * Você também pode testar as funcionalidades da classe Mail através do seu
+ * servidor de hospedagem, provavelmente ele estará corretamente configurado.
  */
 
 define('MAIL_IS_HTML'   , true);
