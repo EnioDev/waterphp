@@ -1,17 +1,14 @@
-php_flag error_reporting E_ALL
-php_flag display_errors 1
-
 # Necessário para evitar problemas quando estiver usando um controlador nomeado "index" e um arquivo "root" index.php.
 # Veja mais: http://httpd.apache.org/docs/2.2/content-negotiation.html.
 Options -MultiViews
 
-# Confirma o uso da reescrita de URL (como: meuprojeto.com/controlador/metodo/param1/param2/param3).
+# Ativa a reescrita de URL (como: http://www.projeto.com/controlador/metodo/param1/param2/param3).
 RewriteEngine On
 
 # Evita que pessoas pesquisem diretamente nas pastas.
 Options -Indexes
 
-# Verifica se as condições abaixo são verdadeiras:
+# Verifica as condições abaixo:
 
 # Se o nome do arquivo solicitado não é um diretório.
 RewriteCond %{REQUEST_FILENAME} !-d
