@@ -2,6 +2,8 @@
 
 final class Session
 {
+    private static $cookieLifetime = 0;
+
     public static function start()
     {
         session_start();
@@ -19,9 +21,11 @@ final class Session
 
     private static function timeout()
     {
+        self::$cookieLifetime = ini_get('cookie_lifetime');
+
         if (self::get('app_session_time')) {
-            if (SESSION_TIMEOUT > 0) {
-                if (self::get('app_session_time') < (time() - SESSION_TIMEOUT)) {
+            if (self::$cookieLifetime > 0) {
+                if (self::get('app_session_time') < (time() - self::$cookieLifetime)) {
                     self::stop();
                     return true;
                 }

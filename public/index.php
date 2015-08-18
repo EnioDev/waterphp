@@ -1,5 +1,8 @@
 <?php
 
+ini_set('error_reporting', E_ALL);
+ini_set('display_errors', 1);
+
 /*
  * ==============================================================
  * DEFINE OS CAMINHOS DOS DIRETÓRIOS DA APLICAÇÃO:
@@ -13,6 +16,8 @@ define('ROOT_PATH', dirname(__DIR__) . DS);
 define('LIB_PATH', ROOT_PATH . 'water' . DS);
 
 define('APP_PATH', ROOT_PATH . 'app' . DS);
+
+define('STORAGE_PATH', ROOT_PATH . 'storage' . DS);
 
 define('CONFIG_PATH', APP_PATH . 'config' . DS);
 
@@ -52,7 +57,7 @@ define('SUB_FOLDER', str_replace('public', '', dirname($_SERVER['SCRIPT_NAME']))
 
 /*
  * Define a URL base do projeto.
- * Ex: http://localhost/seuprojeto ou www.seuprojeto.com.
+ * Ex: http://localhost/projeto ou http://www.projeto.com.
  */
 define('BASE_URL', PROTOCOL . DOMAIN . SUB_FOLDER);
 
@@ -69,16 +74,11 @@ define('PUBLIC_URL', BASE_URL . 'public' . DS);
 
 require_once(CONFIG_PATH . 'config.php');
 
-ini_set('session.save_path', session_save_path());
+ini_set('session.save_path', STORAGE_PATH . 'sessions');
 ini_set('session.gc_maxlifetime', SESSION_LIFETIME);
+ini_set('session.cookie_lifetime', 0);
 ini_set('session.gc_probability', 1); // Ex: probability / divisor = 1 (100%)
 ini_set('session.gc_divisor', 1);
-
-/*
- * Somente definir o valor em segundos se desejar interromper
- * a sessão mesmo que o usuário estiver ativo.
- */
-define('SESSION_TIMEOUT', '0');
 
 /*
  * ==============================================================
