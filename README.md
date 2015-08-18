@@ -6,4 +6,4 @@
 
 ## Aprenda WaterPHP
 
-Leia a [documentação](http://waterphp.org/waterdoc). Você aprenderá como instalar o modelo que o framework disponibiliza para você estudar e aprender mais rápido, como usar as classes, etc.
+Leia a [documentação](http://waterphp.org/waterdoc) e saiba como instalar o modelo que o framework disponibiliza para você estudar e aprender mais rápido, além de como usar as classes, métodos e tudo mais.
