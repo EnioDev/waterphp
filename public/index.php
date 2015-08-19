@@ -1,5 +1,8 @@
 <?php
 
+ini_set('error_reporting', E_ALL);
+ini_set('display_error', 1);
+
 /*
  * ==============================================================
  * DEFINE OS CAMINHOS DOS DIRETÓRIOS DA APLICAÇÃO:
@@ -52,7 +55,7 @@ define('SUB_FOLDER', str_replace('public', '', dirname($_SERVER['SCRIPT_NAME']))
 
 /*
  * Define a URL base do projeto.
- * Ex: http://localhost/seuprojeto ou www.seuprojeto.com.
+ * Ex: http://localhost/projeto ou http://www.projeto.com.
  */
 define('BASE_URL', PROTOCOL . DOMAIN . SUB_FOLDER);
 
