@@ -79,7 +79,7 @@ final class App {
         $token = Request::get('_token');
         if ($token) {
             if (Session::token() != trim($token)) {
-                trigger_error('The given token is not a valid token!', E_USER_ERROR);
+                trigger_error('The given token is not a valid token! Maybe the session time is over!', E_USER_ERROR);
             }
         }
     }

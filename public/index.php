@@ -1,7 +1,7 @@
 <?php
 
 ini_set('error_reporting', E_ALL);
-ini_set('display_errors', 1);
+ini_set('display_error', 1);
 
 /*
  * ==============================================================
@@ -16,8 +16,6 @@ define('ROOT_PATH', dirname(__DIR__) . DS);
 define('LIB_PATH', ROOT_PATH . 'water' . DS);
 
 define('APP_PATH', ROOT_PATH . 'app' . DS);
-
-define('STORAGE_PATH', ROOT_PATH . 'storage' . DS);
 
 define('CONFIG_PATH', APP_PATH . 'config' . DS);
 
@@ -74,9 +72,14 @@ define('PUBLIC_URL', BASE_URL . 'public' . DS);
 
 require_once(CONFIG_PATH . 'config.php');
 
-ini_set('session.save_path', STORAGE_PATH . 'sessions');
+// TODO: Criar diretório para armazenar as sessões.
+$savePath = session_save_path();
+if (strtolower(PHP_OS) === 'linux') :
+    $savePath = DS . 'var' . DS . 'tmp';
+endif;
+
+ini_set('session.save_path', $savePath);
 ini_set('session.gc_maxlifetime', SESSION_LIFETIME);
-ini_set('session.cookie_lifetime', 0);
 ini_set('session.gc_probability', 1); // Ex: probability / divisor = 1 (100%)
 ini_set('session.gc_divisor', 1);
 
