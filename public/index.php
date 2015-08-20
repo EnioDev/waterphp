@@ -72,16 +72,16 @@ define('PUBLIC_URL', BASE_URL . 'public' . DS);
 
 require_once(CONFIG_PATH . 'config.php');
 
-ini_set('session.save_path', session_save_path());
+// TODO: Criar diretório para armazenar as sessões.
+$savePath = session_save_path();
+if (strtolower(PHP_OS) === 'linux') :
+    $savePath = DS . 'var' . DS . 'tmp';
+endif;
+
+ini_set('session.save_path', $savePath);
 ini_set('session.gc_maxlifetime', SESSION_LIFETIME);
 ini_set('session.gc_probability', 1); // Ex: probability / divisor = 1 (100%)
 ini_set('session.gc_divisor', 1);
-
-/*
- * Somente definir o valor em segundos se desejar interromper
- * a sessão mesmo que o usuário estiver ativo.
- */
-define('SESSION_TIMEOUT', '0');
 
 /*
  * ==============================================================

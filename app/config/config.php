@@ -42,6 +42,12 @@ define('ERROR_404_VIEW', 'template/404');
 define('SESSION_LIFETIME', '7200'); // 7200 = 2h
 
 /*
+ * Se preferir, você pode definir o tempo máximo em segundos que a sessão
+ * do usuário deve durar mesmo que ele esteja ativo.
+ */
+define('SESSION_TIMEOUT', '0');
+
+/*
  * ---------------------------------------------------------------------------
  * CONTROLADOR
  * --------------------------------------------------------------------------
