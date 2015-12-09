@@ -11,11 +11,31 @@ abstract class Controller
 
     abstract function index();
 
-    private function setModel($model) {
-        $this->model = $model;
+    private function setModel($name)
+    {
+        if (is_string($name))
+        {
+            $namespace = 'model' . '\\' . $name;
+            $this->model = new $namespace;
+        }
+        if (is_object($name))
+        {
+            $this->model = $name;
+        }
     }
 
-    protected final function model() {
+    protected final function loadModel($name)
+    {
+        if (is_string($name))
+        {
+            $namespace = 'model' . '\\' . $name;
+            $model = new $namespace;
+            return $model;
+        }
+    }
+
+    protected final function model()
+    {
         return $this->model;
     }
 }

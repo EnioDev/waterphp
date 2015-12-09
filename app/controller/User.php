@@ -9,9 +9,9 @@ use core\utils\Request;
 use core\utils\Session;
 use core\utils\String;
 use core\utils\Url;
-use model\User;
+use model\User as UserModel;
 
-class UserController extends Controller
+class User extends Controller
 {
     private $errors;
     private $message;
@@ -37,7 +37,7 @@ class UserController extends Controller
             if (!$register) {
                 // Então redireciona para a página de login.
                 // Obs.: Isto evita que alguém acesse a aplicação ou execute qualquer
-                // método do controlador sem estar autenticado.
+                // método do controlador digitando a url sem estar autenticado.
                 Redirect::to(Url::route('login'));
                 exit;
             }
@@ -84,9 +84,9 @@ class UserController extends Controller
             {
                 $data = [
                     'fields' => [
-                        User::COLUMN_NAME,
-                        User::COLUMN_EMAIL,
-                        User::COLUMN_PASSWD
+                        UserModel::COLUMN_NAME,
+                        UserModel::COLUMN_EMAIL,
+                        UserModel::COLUMN_PASSWD
                     ],
                     'values' => [
                         $this->name,
