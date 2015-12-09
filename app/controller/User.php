@@ -22,17 +22,33 @@ class UserController extends Controller
 
     function __construct()
     {
-        parent::__construct(new User());
+        // Define o modelo que será usado no controlador.
+        parent::__construct('User');
 
         $this->errors = [];
         $this->message = '';
 
+        // Verifica se o submit foi feito do formulário de registro.
         $register = (Request::get('submit') == String::values()->user->buttons->register) ? true : false;
 
-        if (!Auth::user() and !$register) {
-            Redirect::to(Url::route('login'));
-            exit;
+        // Se o usuário não estiver autenticado.
+        if (!Auth::user()) {
+            // E não está registrando um novo usuário.
+            if (!$register) {
+                // Então redireciona para a página de login.
+                // Obs.: Isto evita que alguém acesse a aplicação ou execute qualquer
+                // método do controlador sem estar autenticado.
+                Redirect::to(Url::route('login'));
+                exit;
+            }
         }
+    }
+
+    private function users()
+    {
+        // Seleciona todos os usuários e ordena por nome em ordem crescente.
+        $users = $this->model()->all('name', 'asc');
+        return $users;
     }
 
     public function index()
@@ -40,7 +56,7 @@ class UserController extends Controller
         $this->message = String::values()->user->messages->welcome . ' ' . Auth::user()->name . '!';
 
         $data = [
-            'users' => $this->model()->all(),
+            'users' => $this->users(),
             'message' => $this->message
         ];
         View::load('user/index', $data);
@@ -48,9 +64,7 @@ class UserController extends Controller
 
     public function cancel()
     {
-        $data = [
-            'users' => $this->model()->all()
-        ];
+        $data = ['users' => $this->users()];
         View::load('user/index', $data);
     }
 
@@ -60,10 +74,12 @@ class UserController extends Controller
 
         if ($input)
         {
+            // Filtra os dados recebidos do formulário.
             $this->name = ucwords(strtolower(strip_tags(trim($input['name']))));
             $this->email = strtolower(strip_tags(trim($input['email'])));
             $this->password = trim($input['password']);
 
+            // Chama a função que faz a validação dos dados.
             if ($this->validator())
             {
                 $data = [
@@ -79,23 +95,22 @@ class UserController extends Controller
                     ]
                 ];
 
-                $user = null;
-
+                // Verifica se está atualizando um usuário existente...
                 if ($input['submit'] == String::values()->user->buttons->update)
                 {
                     $id = $input['id'];
                     $user = $this->model()->find($id);
-                }
 
-                if ($user)
-                {
-                    $response = $this->model()->update($id, $data);
-                    if ($response) {
-                        $this->message = String::values()->user->messages->update;
-                    } else {
-                        array_push($this->errors, String::values()->user->errors->update);
+                    if ($user)
+                    {
+                        $response = $this->model()->update($id, $data);
+                        if ($response) {
+                            $this->message = String::values()->user->messages->update;
+                        } else {
+                            array_push($this->errors, String::values()->user->errors->update);
+                        }
                     }
-
+                // ... Caso contrário insere o novo usuário.
                 } else {
                     $response = $this->model()->insert($data);
                     if ($response) {
@@ -107,12 +122,14 @@ class UserController extends Controller
             }
         }
 
+        // Verifica se a função foi chamada pelo formulário de registro.
         $register = ($input['submit'] == String::values()->user->buttons->register) ? true : false;
 
+        // Então define a visão.
         $view = ($register) ? 'user/register' : 'user/index';
 
         $data = [
-            'users' => $this->model()->all(),
+            'users' => $this->users(),
             'message' => $this->message,
             'errors' => $this->errors
         ];
@@ -127,7 +144,7 @@ class UserController extends Controller
             $user = $this->model()->find($id);
             $user->password = Encryption::decode($user->password);
         }
-        View::load('user/index', ['users' => $this->model()->all(), 'user' => $user]);
+        View::load('user/index', ['users' => $this->users(), 'user' => $user]);
     }
 
     public function destroy()
@@ -139,12 +156,12 @@ class UserController extends Controller
                 array_push($this->errors, String::values()->user->errors->delete);
             }
         }
-        View::load('user/index', ['users' => $this->model()->all(), 'errors' => $this->errors]);
+        View::load('user/index', ['users' => $this->users(), 'errors' => $this->errors]);
     }
 
     private function validator()
     {
-        // NAME
+        // Campo Nome
         if (!filter_var($this->name, FILTER_SANITIZE_STRING)) {
             array_push($this->errors, String::values()->user->errors->name_filter);
         }
@@ -152,12 +169,12 @@ class UserController extends Controller
             array_push($this->errors, String::values()->user->errors->name_length);
         }
 
-        // EMAIL
+        // Campo E-mail
         if (!filter_var($this->email, FILTER_VALIDATE_EMAIL)) {
             array_push($this->errors, String::values()->user->errors->email_filter);
         }
 
-        // PASSWORD
+        // Campo Senha
         if (preg_match('/[^A-Za-z0-9_]/', $this->password)) {
             array_push($this->errors, String::values()->user->errors->password_filter);
         }

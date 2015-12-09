@@ -13,4 +13,6 @@ interface ICrud
     function where($args);
 
     function all();
+
+    function query($sql);
 }

@@ -4,26 +4,52 @@ use core\contracts\ICrud;
 
 class Crud extends Db implements ICrud
 {
+    private $sql;
     protected $table;
     protected $primary_key;
+
+    private function orderBy($column, $direction)
+    {
+        if (!is_null($column) and is_string($column))
+        {
+            $this->sql .= " ORDER BY " . $column;
+        }
+
+        if (!is_null($column) and is_array($column))
+        {
+            foreach ($column as $i => $name)
+            {
+                if ($i < 1) {
+                    $this->sql .= " ORDER BY " . $name;
+                } else {
+                    $this->sql .= ", " . $name;
+                }
+            }
+        }
+
+        if (!is_null($direction) and is_string($direction))
+        {
+            $this->sql .= " " . strtoupper($direction);
+        }
+    }
 
     public final function insert($data)
     {
         $fields = implode(',', $data['fields']);
         $total  = count($data['fields']);
 
-        $sql = "INSERT INTO " . $this->table . " (" . $fields . ") VALUES (";
+        $this->sql = "INSERT INTO " . $this->table . " (" . $fields . ") VALUES (";
 
         foreach ($data['fields'] as $i => $field)
         {
-            $sql .= "?";
+            $this->sql .= "?";
             if ((++$i) != $total) {
-                $sql .= ", ";
+                $this->sql .= ", ";
             } else {
-                $sql .= ")";
+                $this->sql .= ")";
             }
         }
-		$stmt = parent::prepare($sql);
+        $stmt = parent::prepare($this->sql);
 
         return $stmt->execute($data['values']);
     }
@@ -32,19 +58,19 @@ class Crud extends Db implements ICrud
     {
         $total = count($data['fields']);
 
-        $sql = "UPDATE " . $this->table . " SET ";
+        $this->sql = "UPDATE " . $this->table . " SET ";
 
         foreach ($data['fields'] as $i => $field)
         {
-            $sql .= $field . " = ?";
+            $this->sql .= $field . " = ?";
             if ((++$i) != $total) {
-                $sql .= ", ";
+                $this->sql .= ", ";
             }
         }
-        $sql .= " WHERE ";
-        $sql .= $this->primary_key . " = ?";
+        $this->sql .= " WHERE ";
+        $this->sql .= $this->primary_key . " = ?";
 
-		$stmt = parent::prepare($sql);
+        $stmt = parent::prepare($this->sql);
 
         array_push($data['values'], $id);
 
@@ -55,50 +81,69 @@ class Crud extends Db implements ICrud
     {
         if ($id and (is_string($id) or is_integer($id)))
         {
-            $sql = "DELETE FROM " . $this->table . " WHERE id = :id";
-            $stmt = parent::prepare($sql);
+            $this->sql = "DELETE FROM " . $this->table . " WHERE id = :id";
+            $stmt = parent::prepare($this->sql);
             $stmt->bindParam(':id', $id, parent::paramType($id));
 
         } else if ($id === null) {
 
-            $sql = "DELETE FROM " . $this->table;
-            $stmt = parent::prepare($sql);
+            $this->sql = "DELETE FROM " . $this->table;
+            $stmt = parent::prepare($this->sql);
         }
         return $stmt->execute();
     }
 
     public final function find($id)
     {
-        $sql = "SELECT * FROM " . $this->table . " WHERE id = :id";
+        $this->sql = "SELECT * FROM " . $this->table . " WHERE id = :id";
 
-        $stmt = parent::prepare($sql);
+        $stmt = parent::prepare($this->sql);
         $stmt->bindParam(':id', $id, parent::paramType($id));
         $stmt->execute();
 
         return $stmt->fetch();
-	}
+    }
 
-    public final function where($args)
+    public final function where($args, $column = null, $direction = null)
     {
-        $sql = "SELECT * FROM " . $this->table . " WHERE 1 = 1";
+        $this->sql = "SELECT * FROM " . $this->table . " WHERE 1 = 1";
 
         foreach ($args['fields'] as $field) {
-            $sql .= " AND " . $field . " = ?";
+            $this->sql .= " AND " . $field . " = ?";
         }
 
-        $stmt = parent::prepare($sql);
+        $this->orderBy($column, $direction);
+
+        $stmt = parent::prepare($this->sql);
         $stmt->execute($args['values']);
 
         return $stmt->fetch();
     }
 
-    public final function all()
+    public final function all($column = null, $direction = null)
     {
-		$sql = "SELECT * FROM " . $this->table;
+        $this->sql = "SELECT * FROM " . $this->table;
 
-		$stmt = parent::prepare($sql);
-		$stmt->execute();
+        $this->orderBy($column, $direction);
+
+        $stmt = parent::prepare($this->sql);
+        $stmt->execute();
 
         return $stmt->fetchAll();
-	}
+    }
+
+    public final function query($sql, $values = array())
+    {
+        $this->sql = $sql;
+
+        $stmt = parent::prepare($this->sql);
+
+        if (count($values) > 0) {
+            $stmt->execute($values);
+        } else {
+            $stmt->execute();
+        }
+
+        return $stmt->fetch();
+    }
 }
