@@ -8,32 +8,24 @@ use core\utils\Redirect;
 use core\utils\Request;
 use core\utils\String;
 use core\utils\Url;
-use model\User;
 
 class Login extends Controller {
-
-    public function __construct()
-    {
-        parent::__construct(new User());
-    }
 
     public function index()
     {
         $input = Request::all();
 
-        if (isset($input['email']) and isset($input['password'])) {
-            $args = [
-                'fields' => [
-                    User::COLUMN_EMAIL,
-                    User::COLUMN_PASSWD
-                ],
-                'values' => [
-                    $input['email'],
-                    Encryption::encode($input['password'])
-                ]
+        if (isset($input['email']) and isset($input['password']))
+        {
+            $values = [
+                $input['email'],
+                Encryption::encode($input['password'])
             ];
 
-            $user = $this->model()->where($args);
+            $sql = "SELECT * FROM users WHERE email = ? AND password = ?";
+
+            $model = $this->loadModel('User');
+            $user = $model->query($sql, $values);
 
             if ($user) {
                 Auth::make($user);
