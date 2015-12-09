@@ -3,8 +3,8 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="description" content="Water is a clean PHP Framework." />
-        <meta name="author" content="Thomas J. Fazanaro"/>
+        <meta name="description" content="From little things big things grow." />
+        <meta name="author" content="WaterPHP"/>
 
         <link rel="shortcut icon" href="" >
 
