@@ -21,6 +21,8 @@ define('CONFIG_PATH', APP_PATH . 'config' . DS);
 
 define('VIEW_PATH', APP_PATH . 'view' . DS);
 
+define('MODEL_PATH', APP_PATH . 'model' . DS);
+
 define('CONTROLLER_PATH', APP_PATH . 'controller' . DS);
 
 define('PUBLIC_PATH', ROOT_PATH . 'public' . DS);
@@ -35,6 +37,7 @@ define('IMAGES_PATH', PUBLIC_PATH . 'images' . DS);
  * ==============================================================
  */
 
+require_once(CONFIG_PATH . 'config.php');
 require_once(LIB_PATH . 'autoload.php');
 
 $errorHandler = new core\error\ErrorHandler();
@@ -70,13 +73,7 @@ define('PUBLIC_URL', BASE_URL . 'public' . DS);
  * ==============================================================
  */
 
-require_once(CONFIG_PATH . 'config.php');
-
-// TODO: Criar diretório para armazenar as sessões.
-$savePath = session_save_path();
-if (strtolower(PHP_OS) === 'linux') :
-    $savePath = DS . 'var' . DS . 'tmp';
-endif;
+$savePath = ROOT_PATH . 'storage' . DS . 'sessions';
 
 ini_set('session.save_path', $savePath);
 ini_set('session.gc_maxlifetime', SESSION_LIFETIME);
