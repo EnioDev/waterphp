@@ -15,13 +15,14 @@ final class App {
         if (!Session::start()) {
             Redirect::to(Url::base());
         } else {
-            $this->verifyCSRFToken();
             $this->load();
         }
     }
     
     private function load()
     {
+        $this->verifyCSRFToken();
+
         if (!Get::urlController())
         {
             $controller = 'controller\\' . CONTROLLER_INDEX;
@@ -51,7 +52,7 @@ final class App {
 
             if ($continue)
             {
-                $controller = $namespace . $controller;
+                $controller = $namespace . str_replace(DS, '\\', $controller);
                 $controller = new $controller();
 
                 if (method_exists($controller, $method))
@@ -79,7 +80,7 @@ final class App {
         $token = Request::get('_token');
         if ($token) {
             if (Session::token() != trim($token)) {
-                trigger_error('The given token is not a valid token! Maybe the session time is over!', E_USER_ERROR);
+                throw new \Exception('The given token is not a valid token! Maybe the session time is over!');
             }
         }
     }

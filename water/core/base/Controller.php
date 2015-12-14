@@ -15,7 +15,7 @@ abstract class Controller
     {
         if (is_string($name))
         {
-            $namespace = 'model' . '\\' . $name;
+            $namespace = 'model\\' . str_replace(DS, '\\', $name);
             $this->model = new $namespace;
         }
         if (is_object($name))
@@ -28,7 +28,7 @@ abstract class Controller
     {
         if (is_string($name))
         {
-            $namespace = 'model' . '\\' . $name;
+            $namespace = 'model\\' . str_replace(DS, '\\', $name);
             $model = new $namespace;
             return $model;
         }
