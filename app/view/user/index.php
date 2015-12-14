@@ -51,9 +51,9 @@
                 $password = $app::old('password');
             }
 
-            $submit = $app::strings()->user->buttons->create;
+            $submit = $app::strings()->button->create;
             if ($id) {
-                $submit = $app::strings()->user->buttons->update;
+                $submit = $app::strings()->button->update;
             }
         ?>
 
@@ -64,22 +64,22 @@
 
             <div class="form-group">
                 <div class="col-md-4">
-                    <label class="control-label"><?php echo $app::strings()->user->fields->name; ?>:</label>
+                    <label class="control-label"><?php echo $app::strings()->field->name; ?>:</label>
                     <input type="text" class="form-control" name="name" value="<?php echo $name; ?>">
                 </div>
 
                 <div class="col-md-5">
-                    <label class="control-label"><?php echo $app::strings()->user->fields->email; ?>:</label>
+                    <label class="control-label"><?php echo $app::strings()->field->email; ?>:</label>
                     <input type="text" class="form-control" name="email" value="<?php echo $email; ?>">
                 </div>
 
                 <div class="col-md-3">
-                    <label class="control-label"><?php echo $app::strings()->user->fields->password; ?>:</label>
+                    <label class="control-label"><?php echo $app::strings()->field->password; ?>:</label>
                     <input type="password" class="form-control" name="password" value="<?php echo $password; ?>">
                 </div>
             </div>
             <input type="submit" class="btn btn-success" name="submit" value="<?php echo $submit; ?>">
-            <a href="<?php echo $app::url('user/cancel'); ?>" class="btn btn-info"><?php echo $app::strings()->user->buttons->cancel; ?></a>
+            <a href="<?php echo $app::url('user/cancel'); ?>" class="btn btn-info"><?php echo $app::strings()->button->cancel; ?></a>
         </form>
         <br><br>
         <table class="table table-hover">
@@ -87,8 +87,8 @@
             <thead>
             <tr>
                 <th>#</th>
-                <th><?php echo $app::strings()->user->fields->name; ?>:</th>
-                <th><?php echo $app::strings()->user->fields->email; ?>:</th>
+                <th><?php echo $app::strings()->field->name; ?>:</th>
+                <th><?php echo $app::strings()->field->email; ?>:</th>
                 <th>&nbsp;</th>
             </tr>
             </thead>
@@ -105,8 +105,8 @@
                         <td><?php echo htmlspecialchars($user->name); ?></td>
                         <td><?php echo htmlspecialchars($user->email); ?></td>
                         <td>
-                            <a href="<?php echo $app::url('user/edit', [$user->id]); ?>" class="btn btn-sm btn-default"><?php echo $app::strings()->user->buttons->edit; ?></a>
-                            <input type="submit" value="<?php echo $app::strings()->user->buttons->remove; ?>" class="btn btn-sm btn-danger">
+                            <a href="<?php echo $app::url('user/edit', [$user->id]); ?>" class="btn btn-sm btn-default"><?php echo $app::strings()->button->edit; ?></a>
+                            <input type="submit" value="<?php echo $app::strings()->button->remove; ?>" class="btn btn-sm btn-danger">
                         </td>
                     </form>
                 </tr>

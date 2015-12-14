@@ -4,7 +4,7 @@ use core\base\View;
 use core\utils\Auth;
 use core\utils\Request;
 use core\utils\Session;
-use core\utils\String;
+use core\utils\Lang;
 use core\utils\Url;
 
 final class Helpers
@@ -41,7 +41,7 @@ final class Helpers
 
     public static function strings()
     {
-        return String::values();
+        return Lang::strings();
     }
 
     public static function auth()
@@ -57,5 +57,15 @@ final class Helpers
     public static function old($name)
     {
         return Request::get($name);
+    }
+
+    public static function default_language()
+    {
+        return DEFAULT_LANGUAGE;
+    }
+
+    public static function session_language()
+    {
+        return Session::get('app_session_language');
     }
 }

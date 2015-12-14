@@ -19,18 +19,12 @@ final class Session
 
     private static function timeout()
     {
-        $cookieLifetime = ini_get('cookie_lifetime');
-
-        if (self::get('app_session_time')) {
-            if ($cookieLifetime > 0) {
-                if (self::get('app_session_time') < (time() - $cookieLifetime)) {
-                    self::stop();
-                    return true;
-                }
-            }
-        } else {
+        if (is_null(self::get('app_session_time')))
+        {
             $_SESSION['app_session_time']  = time();
             $_SESSION['app_session_token'] = Encryption::encode(md5(uniqid(rand(), true)));
+            $_SESSION['app_session_language'] = DEFAULT_LANGUAGE;
+            return true;
         }
         return false;
     }
@@ -52,16 +46,9 @@ final class Session
 
     public static function forget($key)
     {
-        $appKeys = [
-            'app_session_token',
-            'app_session_time',
-            'app_session_user'
-        ];
-        if (is_string($key)) {
-            if (!in_array($key, $appKeys)) {
-                if (isset($_SESSION[$key])) {
-                    unset($_SESSION[$key]);
-                }
+        if (is_string($key) and substr($key, 0, 12) !== 'app_session_') {
+            if (isset($_SESSION[$key])) {
+                unset($_SESSION[$key]);
             }
         }
     }

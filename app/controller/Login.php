@@ -6,7 +6,7 @@ use core\utils\Auth;
 use core\utils\Encryption;
 use core\utils\Redirect;
 use core\utils\Request;
-use core\utils\String;
+use core\utils\Lang;
 use core\utils\Url;
 
 class Login extends Controller {
@@ -31,7 +31,7 @@ class Login extends Controller {
                 Auth::make($user);
                 Redirect::to(Url::route('user'));
             } else {
-                View::load('user/login', ['error' => String::values()->user->errors->login]);
+                View::load('user/login', ['error' => Lang::strings()->error->login]);
             }
         } else {
             View::load('user/login');

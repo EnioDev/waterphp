@@ -1,46 +1,42 @@
 <strings>
-    <user>
-        <messages>
-            <welcome>Seja bem vindo</welcome>
-            <create>O usuário foi inserido com sucesso!</create>
-            <update>O usuário foi atualizado com sucesso!</update>
-        </messages>
+    <message>
+        <welcome>Seja bem vindo</welcome>
+        <create>O usuário foi inserido com sucesso!</create>
+        <update>O usuário foi atualizado com sucesso!</update>
+    </message>
 
-        <buttons>
-            <create>Cadastrar</create>
-            <update>Atualizar</update>
-            <edit>Editar</edit>
-            <remove>Remover</remove>
-            <login>Entrar</login>
-            <register>Registrar</register>
-            <cancel>Cancelar</cancel>
-        </buttons>
+    <button>
+        <create>Cadastrar</create>
+        <update>Atualizar</update>
+        <edit>Editar</edit>
+        <remove>Remover</remove>
+        <login>Entrar</login>
+        <register>Registrar</register>
+        <cancel>Cancelar</cancel>
+    </button>
 
-        <errors>
-            <name_filter>O nome é obrigatório e precisa ser um texto.</name_filter>
-            <name_length>O nome deve conter entre 5 a 30 caracteres.</name_length>
-            <email_filter>Informe um email válido.</email_filter>
-            <password_filter>A senha deve conter somente letras, números e _(underline).</password_filter>
-            <password_length>A senha deve conter entre 6 a 20 caracteres.</password_length>
-            <insert>Desculpa! Não foi possível criar o novo usuário.</insert>
-            <update>Desculpa! Não foi possível atualizar este usuário.</update>
-            <delete>Desculpa! Não foi possível remover este usuário.</delete>
-            <login>O usuário não foi encontrado!</login>
-        </errors>
+    <error>
+        <name>O nome é obrigatório e deve ter entre 5 a 30 caracteres.</name>
+        <email>Informe um email válido.</email>
+        <password>A senha pode conter letras, números e _(underline) e deve ter entre 6 a 20 caracteres.</password>
+        <create>Desculpa! Não foi possível criar o novo usuário.</create>
+        <update>Desculpa! Não foi possível atualizar este usuário.</update>
+        <delete>Desculpa! Não foi possível remover este usuário.</delete>
+        <login>O usuário não foi encontrado!</login>
+    </error>
 
-        <fields>
-            <name>Nome</name>
-            <email>Email</email>
-            <password>Senha</password>
-        </fields>
+    <field>
+        <name>Nome</name>
+        <email>Email</email>
+        <password>Senha</password>
+    </field>
 
-        <register>
-            <title>Por favor, registre-se.</title>
-        </register>
+    <register>
+        <title>Por favor, registre-se.</title>
+    </register>
 
-        <login>
-            <title>Por favor, identifique-se.</title>
-            <new_user>É sua primeira vez?</new_user>
-        </login>
-    </user>
+    <login>
+        <title>Por favor, identifique-se.</title>
+        <first>É sua primeira vez?</first>
+    </login>
 </strings>

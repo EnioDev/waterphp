@@ -7,8 +7,8 @@ use core\utils\Encryption;
 use core\utils\Redirect;
 use core\utils\Request;
 use core\utils\Session;
-use core\utils\String;
 use core\utils\Url;
+use core\utils\Lang;
 use model\User as UserModel;
 
 class User extends Controller
@@ -29,7 +29,7 @@ class User extends Controller
         $this->message = '';
 
         // Verifica se o submit foi feito do formulário de registro.
-        $register = (Request::get('submit') == String::values()->user->buttons->register) ? true : false;
+        $register = (Request::get('submit') == Lang::strings()->button->register) ? true : false;
 
         // Se o usuário não estiver autenticado.
         if (!Auth::user()) {
@@ -53,7 +53,7 @@ class User extends Controller
 
     public function index()
     {
-        $this->message = String::values()->user->messages->welcome . ' ' . Auth::user()->name . '!';
+        $this->message = Lang::strings()->message->welcome . ' ' . Auth::user()->name . '!';
 
         $data = [
             'users' => $this->users(),
@@ -96,7 +96,7 @@ class User extends Controller
                 ];
 
                 // Verifica se está atualizando um usuário existente...
-                if ($input['submit'] == String::values()->user->buttons->update)
+                if ($input['submit'] == Lang::strings()->button->update)
                 {
                     $id = $input['id'];
                     $user = $this->model()->find($id);
@@ -105,25 +105,25 @@ class User extends Controller
                     {
                         $response = $this->model()->update($id, $data);
                         if ($response) {
-                            $this->message = String::values()->user->messages->update;
+                            $this->message = Lang::strings()->message->update;
                         } else {
-                            array_push($this->errors, String::values()->user->errors->update);
+                            array_push($this->errors, Lang::strings()->error->update);
                         }
                     }
                 // ... Caso contrário insere o novo usuário.
                 } else {
                     $response = $this->model()->insert($data);
                     if ($response) {
-                        $this->message = String::values()->user->messages->create;
+                        $this->message = Lang::strings()->message->create;
                     } else {
-                        array_push($this->errors, String::values()->user->errors->insert);
+                        array_push($this->errors, Lang::strings()->error->create);
                     }
                 }
             }
         }
 
         // Verifica se a função foi chamada pelo formulário de registro.
-        $register = ($input['submit'] == String::values()->user->buttons->register) ? true : false;
+        $register = ($input['submit'] == Lang::strings()->button->register) ? true : false;
 
         // Então define a visão.
         $view = ($register) ? 'user/register' : 'user/index';
@@ -153,7 +153,7 @@ class User extends Controller
         if ($input) {
             $id = $input['id'];
             if (!$this->model()->delete($id)) {
-                array_push($this->errors, String::values()->user->errors->delete);
+                array_push($this->errors, Lang::strings()->error->delete);
             }
         }
         View::load('user/index', ['users' => $this->users(), 'errors' => $this->errors]);
@@ -161,25 +161,35 @@ class User extends Controller
 
     private function validator()
     {
+        $error = 0;
+
         // Campo Nome
         if (!filter_var($this->name, FILTER_SANITIZE_STRING)) {
-            array_push($this->errors, String::values()->user->errors->name_filter);
+            $error = 1;
         }
         if (strlen($this->name) < 5 or strlen($this->name) > 50) {
-            array_push($this->errors, String::values()->user->errors->name_length);
+            $error = 1;
+        }
+        if ($error) {
+            array_push($this->errors, Lang::strings()->error->name);
         }
 
         // Campo E-mail
         if (!filter_var($this->email, FILTER_VALIDATE_EMAIL)) {
-            array_push($this->errors, String::values()->user->errors->email_filter);
+            array_push($this->errors, Lang::strings()->error->email);
         }
+
+        $error = 0;
 
         // Campo Senha
         if (preg_match('/[^A-Za-z0-9_]/', $this->password)) {
-            array_push($this->errors, String::values()->user->errors->password_filter);
+            $error = 1;
         }
         if (strlen($this->password) < 6 or strlen($this->password) > 20) {
-            array_push($this->errors, String::values()->user->errors->password_length);
+            $error = 1;
+        }
+        if ($error) {
+            array_push($this->errors, Lang::strings()->error->password);
         }
 
         return (count($this->errors) > 0) ? false : true;
