@@ -1,6 +1,26 @@
-============================
-PASSO 1: INSTALANDO O MODELO
-============================
+=================================================================================================
+ATENÇÃO: PARA USAR A APLICAÇÃO DE EXEMPLO DADA COM O FRAMEWORK VOCÊ DEVE SEGUIR OS PASSOS ABAIXO:
+=================================================================================================
+
+=========================================
+PASSO 1: PERMISSÃO PARA ARMAZENAR SESSÕES
+=========================================
+
+De permissão total para o diretório "storage/sessions" localizado dentro da pasta
+onde criou seu projeto, senão uma mensagem de erro será exibida em seu navegador
+ao tentar acessar a aplicação.
+
+Exemplo em Linux:
+-----------------
+
+$ sudo chmod 777 -R storage/
+
+Obs: No Microsoft Windows você pode usar o menu de contexto.
+Consulte a forma adequada de executar esta ação de acordo com o SO utilizado.
+
+=================================
+PASSO 2: CRIANDO O BANCO DE DADOS
+=================================
 
 O WaterPHP Framework já vem com uma aplicação de exemplo, e para utilizá-la
 é necessário criar o banco de dados e a tabela conforme abaixo:
@@ -18,7 +38,7 @@ CREATE TABLE users (
 );
 
 =================================
-PASSO 2: CONFIGURANDO A APLICAÇÃO
+PASSO 3: CONFIGURANDO A APLICAÇÃO
 =================================
 
 Abra o arquivo "app/config/config.php" e siga as orientações, é muito simples! =)
