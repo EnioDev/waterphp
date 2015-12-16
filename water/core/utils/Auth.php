@@ -5,7 +5,7 @@ final class Auth
     public static function make($user)
     {
         if (!Session::get('app_session_user')) {
-            $_SESSION['app_session_user'] = Encryption::encode(serialize($user));
+            Session::set('app_session_user', Encryption::encode(serialize($user)));
         }
     }
 

@@ -7,12 +7,12 @@ final class Lang
 
     public static function setSessionLanguage($language)
     {
-        $_SESSION['app_session_language'] = (is_string($language)) ? $language : DEFAULT_LANGUAGE;
+        Session::set('app_session_language', (is_string($language) ? $language : DEFAULT_LANGUAGE), true);
     }
 
     public static function load($language = null)
     {
-        $language = (is_string($language)) ? $language : $_SESSION['app_session_language'];
+        $language = (is_string($language)) ? $language : Session::get('app_session_language');
 
         $file = LANGUAGE_PATH . $language . DS . 'strings.xml';
 
