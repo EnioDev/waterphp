@@ -10,7 +10,7 @@ final class Session
 
     public static function stop()
     {
-        if (self::get('app_session_time'))
+        if (session_id())
         {
             session_unset();
             session_destroy();
@@ -19,19 +19,20 @@ final class Session
 
     private static function timeout()
     {
-        if (is_null(self::get('app_session_time')))
-        {
-            $_SESSION['app_session_time']  = time();
-            $_SESSION['app_session_token'] = Encryption::encode(md5(uniqid(rand(), true)));
-            $_SESSION['app_session_language'] = DEFAULT_LANGUAGE;
+        if (self::get('app_session_time') && (time() > self::get('app_session_time'))) {
+            self::stop();
             return true;
+        } else {
+            self::set('app_session_time', time() + SESSION_LIFETIME, true);
+            self::set('app_session_token', Encryption::encode(md5(uniqid(rand(), true))));
+            self::set('app_session_language', DEFAULT_LANGUAGE);
+            return false;
         }
-        return false;
     }
 
-    public static function set($key, $value)
+    public static function set($key, $value, $force = false)
     {
-        if (is_string($key) and !isset($_SESSION[$key])) {
+        if (is_string($key) and (!isset($_SESSION[$key]) or $force)) {
             $_SESSION[$key] = $value;
         }
     }
