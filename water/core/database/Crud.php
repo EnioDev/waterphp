@@ -13,23 +13,29 @@ class Crud extends Db implements ICrud
         if (!is_null($column) and is_string($column))
         {
             $this->sql .= " ORDER BY " . $column;
+
+            if (!is_null($direction) and is_string($direction))
+            {
+                $this->sql .= " " . strtoupper($direction);
+            }
         }
 
         if (!is_null($column) and is_array($column))
         {
-            foreach ($column as $i => $name)
+            if (!is_null($direction) and is_array($direction))
             {
-                if ($i < 1) {
-                    $this->sql .= " ORDER BY " . $name;
-                } else {
-                    $this->sql .= ", " . $name;
+                if (count($column) === count($direction))
+                {
+                    foreach ($column as $i => $field)
+                    {
+                        if ($i < 1) {
+                            $this->sql .= " ORDER BY " . $field . " " . strtoupper($direction[$i]);
+                        } else {
+                            $this->sql .= ", " . $field . " " . strtoupper($direction[$i]);
+                        }
+                    }
                 }
             }
-        }
-
-        if (!is_null($direction) and is_string($direction))
-        {
-            $this->sql .= " " . strtoupper($direction);
         }
     }
 
