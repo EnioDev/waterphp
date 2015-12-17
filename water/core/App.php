@@ -80,7 +80,7 @@ final class App {
         $token = Request::get('_token');
         if ($token) {
             if (Session::token() != trim($token)) {
-                throw new \Exception('The given token is not a valid token! Maybe the session time is over!');
+                throw new \Exception('The given token is not a valid token! See <b>CSRF</b> protection in the documentation for more details.');
             }
         }
     }
