@@ -5,7 +5,7 @@ ini_set('display_error', 1);
 
 /*
  * ==============================================================
- * DEFINE OS CAMINHOS DOS DIRETÓRIOS DA APLICAÇÃO:
+ * DEFINE OS CAMINHOS DOS DIRETÓRIOS DA APLICAÇÃO
  * ==============================================================
  */
 
@@ -33,12 +33,41 @@ define('IMAGES_PATH', PUBLIC_PATH . 'images' . DS);
 
 /*
  * ==============================================================
- * CONFIGURA O TRATAMENTO DE ERROS DA APLICAÇÃO:
+ * DEFINE AS URL's USADAS NA APLICAÇÃO
+ * ==============================================================
+ */
+
+define('PROTOCOL', 'http://');
+
+define('DOMAIN', $_SERVER['HTTP_HOST']);
+
+define('SUB_FOLDER', str_replace('public', '', dirname($_SERVER['SCRIPT_NAME'])));
+
+define('BASE_URL', PROTOCOL . DOMAIN . SUB_FOLDER); // Ex: http://localhost/projeto ou http://www.projeto.com
+
+define('PUBLIC_URL', BASE_URL . 'public' . DS);
+
+/*
+ * ==============================================================
+ * CARREGA AS CONFIGURAÇÕES DA APLICAÇÃO
  * ==============================================================
  */
 
 require_once(CONFIG_PATH . 'config.php');
+
+/*
+ * ==============================================================
+ * INCLUI A FUNÇÃO QUE FAZ O CARREGAMENTO DAS CLASSES
+ * ==============================================================
+ */
+
 require_once(LIB_PATH . 'autoload.php');
+
+/*
+ * ==============================================================
+ * CONFIGURA O TRATAMENTO DE ERROS DA APLICAÇÃO
+ * ==============================================================
+ */
 
 $errorHandler = new core\error\ErrorHandler();
 
@@ -48,28 +77,7 @@ register_shutdown_function([&$errorHandler, 'waterShutdownHandler']);
 
 /*
  * ==============================================================
- * DEFINE AS URLs USADAS NA APLICAÇÃO:
- * ==============================================================
- */
-
-define('PROTOCOL', 'http://');
-define('DOMAIN', $_SERVER['HTTP_HOST']);
-define('SUB_FOLDER', str_replace('public', '', dirname($_SERVER['SCRIPT_NAME'])));
-
-/*
- * Define a URL base do projeto.
- * Ex: http://localhost/projeto ou http://www.projeto.com.
- */
-define('BASE_URL', PROTOCOL . DOMAIN . SUB_FOLDER);
-
-/*
- * Define a URL para o diretório público da aplicação.
- */
-define('PUBLIC_URL', BASE_URL . 'public' . DS);
-
-/*
- * ==============================================================
- * CONFIGURA A SESSÃO:
+ * CONFIGURA A SESSÃO
  * ==============================================================
  */
 
@@ -82,7 +90,7 @@ ini_set('session.gc_divisor', 1);
 
 /*
  * ==============================================================
- * CONFIGURA O SERVIDOR SMTP:
+ * CONFIGURA O SERVIDOR SMTP
  * ==============================================================
  */
 
@@ -91,7 +99,7 @@ ini_set('smtp_port', MAIL_SMTP_PORT);
 
 /*
  * ==============================================================
- * CARREGA AS ROTAS:
+ * CARREGA AS ROTAS
  * ==============================================================
  */
 
@@ -100,7 +108,7 @@ require_once(CONFIG_PATH . 'routes.php');
 
 /*
  * ==============================================================
- * INICIALIZA A APLICAÇÃO:
+ * INICIALIZA A APLICAÇÃO
  * ==============================================================
  */
 
