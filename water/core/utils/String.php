@@ -1,7 +1,13 @@
 <?php namespace core\utils;
 
+/**
+ * @deprecated Deprecated since version 1.2.0. See the documentation for more details.
+ */
 final class String
 {
+    /**
+     * @deprecated Deprecated since version 1.2.0. See the documentation for more details.
+     */
     public static function values($node = null)
     {
         $file = LANGUAGE_PATH . APP_LANGUAGE . DS . 'strings.xml';
