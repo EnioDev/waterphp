@@ -12,11 +12,18 @@ final class Lang
 
     public static function load($language = null)
     {
-        $language = (is_string($language)) ? $language : Session::get('app_session_language');
+        $reload = 0;
+
+        if (is_string($language)) {
+            $language = $language;
+            $reload = 1;
+        } else {
+            $language = Session::get('app_session_language');
+        }
 
         $file = LANGUAGE_PATH . $language . DS . 'strings.xml';
 
-        if (!self::$loaded and file_exists($file))
+        if ((!self::$loaded and file_exists($file)) or $reload)
         {
             self::$xml = simplexml_load_file($file);
             self::$loaded = 1;
