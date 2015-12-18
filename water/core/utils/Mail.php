@@ -22,7 +22,7 @@ final class Mail
         $this->headers[] = 'X-Mailer: PHP/' . phpversion();
     }
 
-    private function setTo($to)
+    private function to($to)
     {
         if (is_array($to)) {
             $this->to = implode(',', $to);
@@ -33,7 +33,7 @@ final class Mail
         }
     }
 
-    private function setSubject($subject)
+    public function subject($subject)
     {
         if (is_string($subject) and strlen($subject) > 0) {
             $this->subject = substr(trim($subject), 0, 70);
@@ -42,7 +42,7 @@ final class Mail
         }
     }
 
-    private function setMessage($message)
+    public function message($message)
     {
         if (is_string($message) and strlen($message) > 0) {
             $this->message = wordwrap(trim($message), 70);
@@ -51,19 +51,9 @@ final class Mail
         }
     }
 
-    public function subject($subject)
-    {
-        $this->setSubject($subject);
-    }
-
-    public function message($message)
-    {
-        $this->setMessage($message);
-    }
-
     public function send($to)
     {
-        $this->setTo($to);
+        $this->to($to);
 
         if (is_null($this->to)) {
             throw new \Exception('You can\'t send a message without a recipient.');
