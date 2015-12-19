@@ -96,10 +96,10 @@ define('DEFAULT_LANGUAGE', 'pt-br');
  * criptografar os dados, uma sequência de caracteres que será usada
  * para identificar sua aplicação.
  *
- * Atenção: Se você já estiver usando a aplicação de exemplo dada com o
- * framework e alterar esta chave, você deverá redefinir a senha de todos
- * os usuários cadastrados. Para isso será necessário registrar um novo
- * usuário e efetuar o login novamente.
+ * Atenção: Se você já estiver usando a aplicação de exemplo com o framework
+ * e alterar esta chave, você deverá redefinir a senha de todos os usuários
+ * cadastrados. Para isso será necessário registrar um novo usuário e
+ * efetuar o login novamente.
  */
 
 define('ENCRYPTION_KEY', 'your_secret_key');
@@ -114,7 +114,7 @@ define('ENCRYPTION_KEY', 'your_secret_key');
  *
  * Atenção: Defina as informações corretamente, caso contrário, uma exceção
  * será lançada sempre que tentar executar uma operação de banco de dados
- * ou se estiver usando a aplicação de exemplo dada com o framework.
+ * ou se estiver usando a aplicação de exemplo com o framework.
  *
  * Consulte os drivers disponíveis na documentação do PHP para fazer a
  * conexão com os diversos bancos de dados usando o PDO (PHP Data Objects).
@@ -135,10 +135,13 @@ define('DB_PASSWORD', ''); // Informe a senha do usuário definido acima.
  *
  * Atenção: Certifique-se que o PHP instalado em seu servidor está
  * corretamente configurado para enviar e-mails usando a função mail do PHP.
+ *
+ * As informações abaixo são somente exemplos, verifique corretamente as
+ * configurações do seu servidor.
  */
 
 define('MAIL_IS_HTML'   , true);
-define('MAIL_CHARSET'   , 'iso-8859-1');
-define('MAIL_FROM'      , ''); // user@gmail.com
-define('MAIL_SMTP_HOST' , ''); // ssl://smtp.gmail.com
+define('MAIL_CHARSET'   , ''); // utf-8
+define('MAIL_FROM'      , ''); // user@domain.com
+define('MAIL_SMTP_HOST' , ''); // smtp.domain.com
 define('MAIL_SMTP_PORT' , ''); // 465

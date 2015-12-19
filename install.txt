@@ -1,6 +1,6 @@
-=================================================================================================
-ATENÇÃO: PARA USAR A APLICAÇÃO DE EXEMPLO DADA COM O FRAMEWORK VOCÊ DEVE SEGUIR OS PASSOS ABAIXO:
-=================================================================================================
+============================================================================================
+ATENÇÃO: PARA USAR A APLICAÇÃO DE EXEMPLO COM O FRAMEWORK VOCÊ DEVE SEGUIR OS PASSOS ABAIXO:
+============================================================================================
 
 =========================================
 PASSO 1: PERMISSÃO PARA ARMAZENAR SESSÕES
@@ -15,8 +15,8 @@ Exemplo em Linux:
 
 $ sudo chmod 777 -R storage/
 
-Obs: No Microsoft Windows você pode usar o menu de contexto.
-Consulte a forma adequada de executar esta ação de acordo com o SO utilizado.
+OBS: Se estiver usando o Microsoft Windows, talvez não seja necessário executar
+este passo, isto depende da configuração do SO utilizado.
 
 =================================
 PASSO 2: CRIANDO O BANCO DE DADOS
