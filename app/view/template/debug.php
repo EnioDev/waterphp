@@ -13,7 +13,7 @@
                     echo '<b>Line</b>: ' . $line;
                 ?>
             </div>
-            <a href="<?php echo $app::route('home'); ?>" class="btn btn-default">
+            <a href="<?php echo $app::base(); ?>" class="btn btn-default">
                 <span class="glyphicon glyphicon-home"></span>
                 Home
             </a>
