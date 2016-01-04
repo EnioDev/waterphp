@@ -75,12 +75,17 @@ final class App {
         }
     }
 
-    public function verifyCSRFToken()
+    private function verifyCSRFToken()
     {
         $token = Request::get('_token');
         if ($token) {
-            if (Session::token() != trim($token)) {
-                throw new \Exception('The given token is not a valid token! See <b>CSRF</b> protection in the documentation for more details.');
+            if (Session::get('app_session_encryption_key') != ENCRYPTION_KEY) {
+                Session::stop();
+            } else {
+                if (Session::token() != trim($token)) {
+                    Session::stop();
+                    throw new \Exception('The given token is not a valid token! See <b>CSRF</b> protection in the documentation for more details.');
+                }
             }
         }
     }
