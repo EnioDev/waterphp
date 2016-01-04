@@ -11,19 +11,19 @@ final class ErrorHandler
     public function waterErrorHandler($code, $message, $filename, $line)
     {
         $debug = (bool) DEBUG_MODE;
-        $exit = false;
+        $stop = false;
 
         switch ($code)
         {
             case E_ERROR:
             case E_USER_ERROR:
                 $this->title = 'Fatal Error';
-                $exit = true;
+                $stop = true;
                 break;
 
             case E_PARSE:
                 $this->title = 'Parse Error';
-                $exit = true;
+                $stop = true;
                 break;
 
             case E_WARNING:
@@ -47,9 +47,9 @@ final class ErrorHandler
         Session::set('app_error_message', $message);
         Session::set('app_error_filename', $filename);
         Session::set('app_error_line', $line);
-        Session::set('app_error_exit', $exit);
+        Session::set('app_error_stop', $stop);
 
-        $this->avoidTooManyRedirects($debug, $exit);
+        $this->avoidTooManyRedirects($debug, $stop);
 
         return true;
     }
@@ -78,28 +78,28 @@ final class ErrorHandler
         $this->avoidTooManyRedirects(true, true);
     }
 
-    private function avoidTooManyRedirects($debug, $exit)
+    private function avoidTooManyRedirects($debug, $stop)
     {
         $code = Session::get('app_error_code');
         $message = Session::get('app_error_message');
         $filename = Session::get('app_error_filename');
         $line = Session::get('app_error_line');
 
-        $found = 0;
+        $except = 0;
 
-        $found += (strrpos($filename, 'public' . DS . 'index.php')) ? 1 : 0;
-        $found += (strrpos($filename, 'config' . DS . 'config.php')) ? 1 : 0;
-        $found += (strrpos($filename, 'config' . DS . 'routes.php')) ? 1 : 0;
-        $found += (strrpos($filename, 'water' . DS . 'core')) ? 1 : 0;
+        $except += (strrpos($filename, 'public' . DS . 'index.php')) ? 1 : 0;
+        $except += (strrpos($filename, 'config' . DS . 'config.php')) ? 1 : 0;
+        $except += (strrpos($filename, 'config' . DS . 'routes.php')) ? 1 : 0;
+        $except += (strrpos($filename, 'water'  . DS . 'core')) ? 1 : 0;
 
-        if(!$found) {
-            if (($debug and !$exit)) {
+        if(!$except) {
+            if (($debug and !$stop)) {
                 throw new \ErrorException($message, $code, 0, $filename, $line);
-            } else if ($exit) {
+            } else if ($stop) {
                 Redirect::to(Url::base('debug'));
             }
         } else {
-            if ($debug or $exit) {
+            if ($debug or $stop) {
                 $d = new Debug();
                 $d->index();
                 exit();
@@ -114,6 +114,6 @@ final class ErrorHandler
         Session::forget('app_error_message');
         Session::forget('app_error_filename');
         Session::forget('app_error_line');
-        Session::forget('app_error_exit');
+        Session::forget('app_error_stop');
     }
 }
