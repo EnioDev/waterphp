@@ -107,7 +107,7 @@ final class Router {
         if ($result) {
             return true;
         } else {
-            trigger_error('The route name "<b>'.$routeName.'</b>" is not a valid name. Follow the examples bellow: <br>1) user<br>2) user_edit<br>3) user-edit', E_USER_ERROR);
+            trigger_error('The route name "<b>'.$routeName.'</b>" is not a valid name. You can use letters, numbers, "_" and "-" to make a route.', E_USER_ERROR);
         }
     }
 }
