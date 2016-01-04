@@ -17,7 +17,7 @@ class Debug extends Controller
             'filename' => Session::get('app_error_filename'),
             'line' => Session::get('app_error_line')
         ];
-        if (Session::get('app_error_exit')) {
+        if (Session::get('app_error_stop')) {
             Session::stop();
         }
     }
