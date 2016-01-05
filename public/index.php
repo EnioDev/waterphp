@@ -49,14 +49,6 @@ define('PUBLIC_URL', BASE_URL . 'public' . DS);
 
 /*
  * ==============================================================
- * CONFIG
- * ==============================================================
- */
-
-require_once(CONFIG_PATH . 'config.php');
-
-/*
- * ==============================================================
  * AUTOLOAD
  * ==============================================================
  */
@@ -74,6 +66,14 @@ $errorHandler = new core\error\ErrorHandler();
 set_error_handler([&$errorHandler, 'waterErrorHandler']);
 set_exception_handler([&$errorHandler, 'waterExceptionHandler']);
 register_shutdown_function([&$errorHandler, 'waterShutdownHandler']);
+
+/*
+ * ==============================================================
+ * CONFIG
+ * ==============================================================
+ */
+
+require_once(CONFIG_PATH . 'config.php');
 
 /*
  * ==============================================================
