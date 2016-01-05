@@ -8,6 +8,7 @@ final class ErrorHandler
 {
     private $title = null;
 
+    // It will catch Warnings and Notices.
     public function waterErrorHandler($code, $message, $filename, $line)
     {
         $debug = (bool) DEBUG_MODE;
@@ -52,6 +53,8 @@ final class ErrorHandler
         $this->avoidTooManyRedirects($debug, $stop);
     }
 
+    // It will always be called at the end of any script execution.
+    // It will also catch Fatal Errors and Parse Errors.
     public function waterShutdownHandler()
     {
         $e = error_get_last();
@@ -92,15 +95,16 @@ final class ErrorHandler
         $noRedirect += (strrpos($filename, 'water'  . DS . 'core')) ? 1 : 0;
 
         if(!$noRedirect) {
-            // Warning or Notice
+            // When it was a Warning or Notice.
             if (($debug and !$stop)) {
                 throw new \ErrorException($message, $code, 0, $filename, $line);
-            // Fatal Error or Parse Error
+            // When it was a Fatal Error or Parse Error.
+            // Warning or Notice called by ErrorException.
             } else if ($stop) {
                 Redirect::to(Url::base('debug'));
             }
         } else {
-            // On bootstrap or core files
+            // On bootstrap or core files.
             if ($debug or $stop) {
                 $d = new Debug();
                 $d->index();
