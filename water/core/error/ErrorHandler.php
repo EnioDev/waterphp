@@ -11,7 +11,7 @@ final class ErrorHandler
     public function waterErrorHandler($code, $message, $filename, $line)
     {
         $debug = (bool) DEBUG_MODE;
-        $stop = false;
+        $stop  = false;
 
         switch ($code)
         {
@@ -40,7 +40,7 @@ final class ErrorHandler
                 $this->title = 'Unknowing Error';
         }
 
-        $this->forgetAll();
+        $this->clearPrevious();
 
         Session::set('app_error_title', $this->title);
         Session::set('app_error_code', $code);
@@ -50,24 +50,23 @@ final class ErrorHandler
         Session::set('app_error_stop', $stop);
 
         $this->avoidTooManyRedirects($debug, $stop);
-
-        return true;
     }
 
     public function waterShutdownHandler()
     {
         $e = error_get_last();
-        if (count($e) == 0 or $e['type'] == '') {
+        if (count($e) == 0 or (isset($e['type']) and $e['type'] == '')) {
             return false;
         }
-        return $this->waterErrorHandler($e['type'], $e['message'], $e['file'], $e['line']);
+        $this->waterErrorHandler($e['type'], $e['message'], $e['file'], $e['line']);
+        return true;
     }
 
     public function waterExceptionHandler($e)
     {
         $title = ($this->title) ? $this->title : 'Exception';
 
-        $this->forgetAll();
+        $this->clearPrevious();
 
         Session::set('app_error_title', $title);
         Session::set('app_error_code', $e->getCode());
@@ -85,20 +84,23 @@ final class ErrorHandler
         $filename = Session::get('app_error_filename');
         $line = Session::get('app_error_line');
 
-        $except = 0;
+        $noRedirect = 0;
 
-        $except += (strrpos($filename, 'public' . DS . 'index.php')) ? 1 : 0;
-        $except += (strrpos($filename, 'config' . DS . 'config.php')) ? 1 : 0;
-        $except += (strrpos($filename, 'config' . DS . 'routes.php')) ? 1 : 0;
-        $except += (strrpos($filename, 'water'  . DS . 'core')) ? 1 : 0;
+        $noRedirect += (strrpos($filename, 'public' . DS . 'index.php')) ? 1 : 0;
+        $noRedirect += (strrpos($filename, 'config' . DS . 'config.php')) ? 1 : 0;
+        $noRedirect += (strrpos($filename, 'config' . DS . 'routes.php')) ? 1 : 0;
+        $noRedirect += (strrpos($filename, 'water'  . DS . 'core')) ? 1 : 0;
 
-        if(!$except) {
+        if(!$noRedirect) {
+            // Warning or Notice
             if (($debug and !$stop)) {
                 throw new \ErrorException($message, $code, 0, $filename, $line);
+            // Fatal Error or Parse Error
             } else if ($stop) {
                 Redirect::to(Url::base('debug'));
             }
         } else {
+            // On bootstrap or core files
             if ($debug or $stop) {
                 $d = new Debug();
                 $d->index();
@@ -107,7 +109,7 @@ final class ErrorHandler
         }
     }
 
-    private function forgetAll()
+    private function clearPrevious()
     {
         Session::forget('app_error_title');
         Session::forget('app_error_code');
