@@ -19,7 +19,8 @@ define('DEBUG_MODE', 0);
  * Veja o template usado na aplicação de exemplo para saber quais
  * informações você pode exibir na visão.
  *
- * Atenção: Nunca apague um template antes de redefiní-lo.
+ * Atenção: Mesmo que você substitua a visão abaixo por outra, não
+ * apague os arquivos da pasta template.
  */
 
 define('DEBUG_VIEW', 'template/debug');
