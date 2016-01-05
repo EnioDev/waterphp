@@ -77,16 +77,23 @@ final class App {
 
     private function verifyCSRFToken()
     {
-        $token = Request::get('_token');
-        if ($token) {
-            if (Session::get('app_session_encryption_key') != ENCRYPTION_KEY) {
-                Session::stop();
-            } else {
+        if ($this->verifyEncryptionKey()) {
+            $token = Request::get('_token');
+            if ($token) {
                 if (Session::token() != trim($token)) {
                     Session::stop();
                     throw new \Exception('The given token is not a valid token! See <b>CSRF</b> protection in the documentation for more details.');
                 }
             }
         }
+    }
+    
+    private function verifyEncryptionKey()
+    {
+        if (Session::get('app_session_encryption_key') != ENCRYPTION_KEY) {
+            Session::stop();
+            throw new \Exception('The encryption key has been changed! You need to restart your application.');
+        }
+        return true;
     }
 }
