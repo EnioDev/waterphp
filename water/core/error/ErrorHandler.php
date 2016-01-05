@@ -6,25 +6,27 @@ use core\utils\Url;
 
 final class ErrorHandler
 {
-    private $title = null;
+    private $debug;
+    private $title;
+    private $stop;
 
-    // It will catch Warnings and Notices.
-    public function waterErrorHandler($code, $message, $filename, $line)
+    private function setTitle($code)
     {
-        $debug = (bool) DEBUG_MODE;
-        $stop  = false;
+        $this->debug = (bool) DEBUG_MODE;
+        $this->title = '';
+        $this->stop = false;
 
         switch ($code)
         {
             case E_ERROR:
             case E_USER_ERROR:
                 $this->title = 'Fatal Error';
-                $stop = true;
+                $this->stop = true;
                 break;
 
             case E_PARSE:
                 $this->title = 'Parse Error';
-                $stop = true;
+                $this->stop = true;
                 break;
 
             case E_WARNING:
@@ -38,8 +40,15 @@ final class ErrorHandler
                 break;
 
             default:
-                $this->title = 'Unknowing Error';
+                $this->title = 'Exception';
         }
+    }
+
+    // It will catch Warnings and Notices.
+    // It will also catch E_USER_ERROR.
+    public function waterErrorHandler($code, $message, $filename, $line)
+    {
+        $this->setTitle($code);
 
         $this->clearPrevious();
 
@@ -48,9 +57,9 @@ final class ErrorHandler
         Session::set('app_error_message', $message);
         Session::set('app_error_filename', $filename);
         Session::set('app_error_line', $line);
-        Session::set('app_error_stop', $stop);
+        Session::set('app_error_stop', $this->stop);
 
-        $this->avoidTooManyRedirects($debug, $stop);
+        $this->avoidTooManyRedirects($this->debug, $this->stop);
     }
 
     // It will always be called at the end of any script execution.
@@ -67,11 +76,11 @@ final class ErrorHandler
 
     public function waterExceptionHandler($e)
     {
-        $title = ($this->title) ? $this->title : 'Exception';
+        $this->setTitle($e->getCode());
 
         $this->clearPrevious();
 
-        Session::set('app_error_title', $title);
+        Session::set('app_error_title', $this->title);
         Session::set('app_error_code', $e->getCode());
         Session::set('app_error_message', $e->getMessage());
         Session::set('app_error_filename', $e->getFile());
@@ -95,12 +104,12 @@ final class ErrorHandler
         $noRedirect += (strrpos($filename, 'water'  . DS . 'core')) ? 1 : 0;
 
         if(!$noRedirect) {
-            // When it was a Warning or Notice.
             if (($debug and !$stop)) {
+                // If it's a Warning or Notice.
                 throw new \ErrorException($message, $code, 0, $filename, $line);
-            // When it was a Fatal Error or Parse Error.
-            // Warning or Notice called by ErrorException.
             } else if ($stop) {
+                // If it's a Fatal Error or Parse Error.
+                // If it's a Warning or Notice called by ErrorException.
                 Redirect::to(Url::base('debug'));
             }
         } else {
