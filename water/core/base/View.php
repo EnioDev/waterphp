@@ -1,7 +1,5 @@
 <?php namespace core\base;
 
-use core\Helpers;
-
 final class View
 {
     public static function load($view, $data = null)
@@ -11,7 +9,6 @@ final class View
                 $$index = $value;
             }
         }
-        $app = new Helpers();
         require_once(self::getFilename($view));
     }
 
