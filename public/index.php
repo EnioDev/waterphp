@@ -13,23 +13,25 @@ define('DS', DIRECTORY_SEPARATOR);
 
 define('ROOT_PATH', dirname(__DIR__) . DS);
 
-define('LIB_PATH', ROOT_PATH . 'water' . DS);
-
 define('APP_PATH', ROOT_PATH . 'app' . DS);
 
 define('CONFIG_PATH', APP_PATH . 'config' . DS);
 
-define('VIEW_PATH', APP_PATH . 'view' . DS);
+define('CONTROLLER_PATH', APP_PATH . 'controller' . DS);
 
 define('MODEL_PATH', APP_PATH . 'model' . DS);
 
-define('CONTROLLER_PATH', APP_PATH . 'controller' . DS);
+define('VIEW_PATH', APP_PATH . 'view' . DS);
 
 define('PUBLIC_PATH', ROOT_PATH . 'public' . DS);
 
 define('LANGUAGE_PATH', PUBLIC_PATH . 'lang' . DS);
 
 define('IMAGES_PATH', PUBLIC_PATH . 'images' . DS);
+
+define('LIB_PATH', ROOT_PATH . 'water' . DS);
+
+define('CORE_PATH', LIB_PATH . 'core' . DS);
 
 /*
  * ==============================================================
@@ -108,8 +110,17 @@ require_once(CONFIG_PATH . 'routes.php');
 
 /*
  * ==============================================================
+ * HELPERS
+ * ==============================================================
+ */
+
+require_once(CORE_PATH . 'helpers.php');
+
+/*
+ * ==============================================================
  * START
  * ==============================================================
  */
 
 new core\App();
+
