@@ -1,4 +1,4 @@
-<?php $app::view('template/header'); ?>
+<?php view('template/header'); ?>
 
 <body>
     <div class="container">
@@ -15,8 +15,8 @@
                 </div>
                 <div id="navbar" class="collapse navbar-collapse">
                     <ul class="nav navbar-nav pull-right">
-                        <li><a href="<?php echo $app::base(); ?>"><i class="glyphicon glyphicon-home"></i>&nbsp;Home</a></li>
-                        <li><a href="<?php echo $app::route('logout'); ?>"><i class="glyphicon glyphicon-log-out"></i>&nbsp;Logout</a></li>
+                        <li><a href="<?php echo base(); ?>"><i class="glyphicon glyphicon-home"></i>&nbsp;Home</a></li>
+                        <li><a href="<?php echo route('logout'); ?>"><i class="glyphicon glyphicon-log-out"></i>&nbsp;Logout</a></li>
                     </ul>
                 </div>
                 <!-- /.nav-collapse -->
@@ -45,41 +45,41 @@
 
             if (isset($errors) and count($errors) > 0)
             {
-                $id = $app::old('id');
-                $name = $app::old('name');
-                $email = $app::old('email');
-                $password = $app::old('password');
+                $id = old('id');
+                $name = old('name');
+                $email = old('email');
+                $password = old('password');
             }
 
-            $submit = $app::strings()->button->create;
+            $submit = strings()->button->create;
             if ($id) {
-                $submit = $app::strings()->button->update;
+                $submit = strings()->button->update;
             }
         ?>
 
-        <form class="form-horizontal" role="form" method="POST" action="<?php echo $app::url('user/store'); ?>">
+        <form class="form-horizontal" role="form" method="POST" action="<?php echo url('user/store'); ?>">
 
-            <input type="hidden" name="_token" value="<?php echo $app::token(); ?>">
+            <input type="hidden" name="_token" value="<?php echo token(); ?>">
             <input type="hidden" name="id" value="<?php echo $id; ?>">
 
             <div class="form-group">
                 <div class="col-md-4">
-                    <label class="control-label"><?php echo $app::strings()->field->name; ?>:</label>
+                    <label class="control-label"><?php echo strings()->field->name; ?>:</label>
                     <input type="text" class="form-control" name="name" value="<?php echo $name; ?>">
                 </div>
 
                 <div class="col-md-5">
-                    <label class="control-label"><?php echo $app::strings()->field->email; ?>:</label>
+                    <label class="control-label"><?php echo strings()->field->email; ?>:</label>
                     <input type="text" class="form-control" name="email" value="<?php echo $email; ?>">
                 </div>
 
                 <div class="col-md-3">
-                    <label class="control-label"><?php echo $app::strings()->field->password; ?>:</label>
+                    <label class="control-label"><?php echo strings()->field->password; ?>:</label>
                     <input type="password" class="form-control" name="password" value="<?php echo $password; ?>">
                 </div>
             </div>
             <input type="submit" class="btn btn-success" name="submit" value="<?php echo $submit; ?>">
-            <a href="<?php echo $app::url('user/cancel'); ?>" class="btn btn-info"><?php echo $app::strings()->button->cancel; ?></a>
+            <a href="<?php echo url('user/cancel'); ?>" class="btn btn-info"><?php echo strings()->button->cancel; ?></a>
         </form>
         <br><br>
         <table class="table table-hover">
@@ -87,8 +87,8 @@
             <thead>
             <tr>
                 <th>#</th>
-                <th><?php echo $app::strings()->field->name; ?>:</th>
-                <th><?php echo $app::strings()->field->email; ?>:</th>
+                <th><?php echo strings()->field->name; ?>:</th>
+                <th><?php echo strings()->field->email; ?>:</th>
                 <th>&nbsp;</th>
             </tr>
             </thead>
@@ -96,17 +96,17 @@
             <tbody>
             <?php foreach($users as $user) : ?>
                 <tr>
-                    <form method="POST" action="<?php echo $app::url('user/destroy'); ?>">
+                    <form method="POST" action="<?php echo url('user/destroy'); ?>">
 
-                        <input type="hidden" name="_token" value="<?php echo $app::token(); ?>">
+                        <input type="hidden" name="_token" value="<?php echo token(); ?>">
                         <input type="hidden" name="id" value="<?php echo $user->id; ?>">
 
                         <td><?php echo $user->id; ?></td>
                         <td><?php echo htmlspecialchars($user->name); ?></td>
                         <td><?php echo htmlspecialchars($user->email); ?></td>
                         <td>
-                            <a href="<?php echo $app::url('user/edit', [$user->id]); ?>" class="btn btn-sm btn-default"><?php echo $app::strings()->button->edit; ?></a>
-                            <input type="submit" value="<?php echo $app::strings()->button->remove; ?>" class="btn btn-sm btn-danger">
+                            <a href="<?php echo url('user/edit', [$user->id]); ?>" class="btn btn-sm btn-default"><?php echo strings()->button->edit; ?></a>
+                            <input type="submit" value="<?php echo strings()->button->remove; ?>" class="btn btn-sm btn-danger">
                         </td>
                     </form>
                 </tr>
@@ -115,4 +115,4 @@
         </table>
     </div><!-- /Container -->
 
-<?php $app::view('template/footer'); ?>
+<?php view('template/footer'); ?>

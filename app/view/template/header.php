@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="<?= $app::default_language(); ?>">
+<html lang="<?= default_language(); ?>">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -8,8 +8,8 @@
 
         <link rel="shortcut icon" href="" >
 
-        <link rel="stylesheet" href="<?php echo $app::asset('css/bootstrap.min.css'); ?>" />
-        <link rel="stylesheet" href="<?php echo $app::asset('css/app.css'); ?>" />
+        <link rel="stylesheet" href="<?php echo asset('css/bootstrap.min.css'); ?>" />
+        <link rel="stylesheet" href="<?php echo asset('css/app.css'); ?>" />
         <!--[if lt IE 9]>
         <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
