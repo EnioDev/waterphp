@@ -27,7 +27,7 @@ define('PUBLIC_PATH', ROOT_PATH . 'public' . DS);
 
 define('LANGUAGE_PATH', PUBLIC_PATH . 'lang' . DS);
 
-define('IMAGES_PATH', PUBLIC_PATH . 'images' . DS);
+define('IMAGE_PATH', PUBLIC_PATH . 'images' . DS);
 
 define('LIB_PATH', ROOT_PATH . 'water' . DS);
 
@@ -123,4 +123,3 @@ require_once(CORE_PATH . 'helpers.php');
  */
 
 new core\App();
-
