@@ -1,4 +1,4 @@
-<?php view('template/header'); ?>
+<?php load('template/header'); ?>
 
 <body>
     <div class="container">
@@ -15,7 +15,7 @@
                 </div>
                 <div id="navbar" class="collapse navbar-collapse">
                     <ul class="nav navbar-nav pull-right">
-                        <li><a href="<?php echo base(); ?>"><i class="glyphicon glyphicon-home"></i>&nbsp;Home</a></li>
+                        <li><a href="<?php echo base_url(); ?>"><i class="glyphicon glyphicon-home"></i>&nbsp;Home</a></li>
                         <li><a href="<?php echo route('logout'); ?>"><i class="glyphicon glyphicon-log-out"></i>&nbsp;Logout</a></li>
                     </ul>
                 </div>
@@ -45,10 +45,10 @@
 
             if (isset($errors) and count($errors) > 0)
             {
-                $id = old('id');
-                $name = old('name');
-                $email = old('email');
-                $password = old('password');
+                $id = previous('id');
+                $name = previous('name');
+                $email = previous('email');
+                $password = previous('password');
             }
 
             $submit = strings()->button->create;
@@ -59,7 +59,7 @@
 
         <form class="form-horizontal" role="form" method="POST" action="<?php echo url('user/store'); ?>">
 
-            <input type="hidden" name="_token" value="<?php echo token(); ?>">
+            <input type="hidden" name="_token" value="<?php echo session_token(); ?>">
             <input type="hidden" name="id" value="<?php echo $id; ?>">
 
             <div class="form-group">
@@ -98,7 +98,7 @@
                 <tr>
                     <form method="POST" action="<?php echo url('user/destroy'); ?>">
 
-                        <input type="hidden" name="_token" value="<?php echo token(); ?>">
+                        <input type="hidden" name="_token" value="<?php echo session_token(); ?>">
                         <input type="hidden" name="id" value="<?php echo $user->id; ?>">
 
                         <td><?php echo $user->id; ?></td>
@@ -115,4 +115,4 @@
         </table>
     </div><!-- /Container -->
 
-<?php view('template/footer'); ?>
+<?php load('template/footer'); ?>

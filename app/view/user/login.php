@@ -1,4 +1,4 @@
-<?php view('template/header'); ?>
+<?php load('template/header'); ?>
 
 <body>
     <div class="container">
@@ -28,4 +28,4 @@
         </div>
     </div>
 
-<?php view('template/footer'); ?>
+<?php load('template/footer'); ?>

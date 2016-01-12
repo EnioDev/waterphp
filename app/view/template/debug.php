@@ -1,4 +1,4 @@
-<?php view('template/header'); ?>
+<?php load('template/header'); ?>
 
 <body class="padding-20">
     <div class="container">
@@ -13,11 +13,11 @@
                     echo '<b>Line</b>: ' . $line;
                 ?>
             </div>
-            <a href="<?php echo base(); ?>" class="btn btn-default">
+            <a href="<?php echo base_url(); ?>" class="btn btn-default">
                 <span class="glyphicon glyphicon-home"></span>
                 Home
             </a>
         </div>
     </div>
 
-<?php view('template/footer'); ?>
+<?php load('template/footer'); ?>

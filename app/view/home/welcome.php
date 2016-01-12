@@ -1,4 +1,4 @@
-<?php view('template/header'); ?>
+<?php load('template/header'); ?>
 
 <body class="padding-20">
     <div class="container">
@@ -8,10 +8,10 @@
 
             <pre>You are in the <strong>/view/home/welcome.php</strong> file.</pre><br>
 
-            <a href="<?php echo (auth()) ? route('user') : route('login'); ?>" class="btn btn-primary btn-lg">
+            <a href="<?php echo (auth()) ? controller('User') : route('login'); ?>" class="btn btn-primary btn-lg">
                 CRUD Example
             </a>
         </div>
     </div>
 
-<?php view('template/footer'); ?>
+<?php load('template/footer'); ?>

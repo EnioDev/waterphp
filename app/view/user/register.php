@@ -1,4 +1,4 @@
-<?php view('template/header'); ?>
+<?php load('template/header'); ?>
 
 <body>
     <div class="container">
@@ -28,13 +28,13 @@
 
                     if (isset($errors) and count($errors) > 0)
                     {
-                        $name = old('name');
-                        $email = old('email');
-                        $password = old('password');
+                        $name = previous('name');
+                        $email = previous('email');
+                        $password = previous('password');
                     }
                 ?>
 
-                <input type="hidden" name="_token" value="<?php echo token(); ?>">
+                <input type="hidden" name="_token" value="<?php echo session_token(); ?>">
 
                 <input name="name" type="text" class="form-control no-radius-bottom" value="<?php echo $name; ?>" placeholder="<?php echo strings()->field->name; ?>" autofocus>
                 <input name="email" type="email" class="form-control no-radius" value="<?php echo $email; ?>" placeholder="<?php echo strings()->field->email; ?>">
@@ -46,4 +46,4 @@
         </div>
     </div>
 
-<?php view('template/footer'); ?>
+<?php load('template/footer'); ?>
