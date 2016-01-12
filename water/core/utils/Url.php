@@ -11,41 +11,39 @@ final class Url
         return $url;
     }
 
-    public static function base($path = null, $params = null)
+    public static function base($str = null, $params = null)
     {
-        if ($path and is_string($path) and strlen($path) > 0)
-        {
-            if ($params and is_array($params) and count($params) > 0)
-            {
+        if ($str and is_string($str) and strlen($str) > 0) {
+
+            $routes = Router::getRoutes();
+
+            $routeName = (array_key_exists($str, $routes)) ? $str : null;
+            $routeName = (is_null($routeName)) ? array_search($str, $routes) : null;
+
+            $segments = ($routeName) ? $routeName : $str;
+
+            if ($params and is_array($params) and count($params) > 0) {
                 $params = implode('/', $params);
-                return self::base() . $path . DS . $params;
+                return BASE_URL . $segments . DS . $params;
             }
-            return self::base() . $path;
+            return BASE_URL . $segments;
         }
         return BASE_URL;
     }
 
     public static function route($routeName, $params = null)
     {
-        if (is_string($routeName) and strlen($routeName) > 0)
-        {
-            if (array_key_exists($routeName, Router::getRoutes()))
-            {
-                if ($params and is_array($params) and count($params) > 0)
-                {
-                    $params = implode('/', $params);
-                    return self::base() . $routeName . DS . $params;
-                }
-                return self::base() . $routeName;
-            }
-        }
-        return null;
+        return self::base($routeName, $params);
+    }
+
+    public static function controller($controllerName, $params = null)
+    {
+        return self::base($controllerName, $params);
     }
 
     public static function asset($resource)
     {
-        if (is_string($resource) and strlen($resource) > 0)
-        {
+        if (is_string($resource) and strlen($resource) > 0) {
             return PUBLIC_URL . $resource;
         }
         return null;
