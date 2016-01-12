@@ -8,7 +8,18 @@
 
 if (!function_exists('current'))
 {
+    /*
+     * @deprecated deprecated since version 1.3.0
+     */
     function current()
+    {
+        return Url::current();
+    }
+}
+
+if (!function_exists('current_url'))
+{
+    function current_url()
     {
         return Url::current();
     }
@@ -16,7 +27,18 @@ if (!function_exists('current'))
 
 if (!function_exists('base'))
 {
+    /*
+     * @deprecated deprecated since version 1.3.0
+     */
     function base()
+    {
+        return core\utils\Url::base();
+    }
+}
+
+if (!function_exists('base_url'))
+{
+    function base_url()
     {
         return core\utils\Url::base();
     }
@@ -24,9 +46,17 @@ if (!function_exists('base'))
 
 if (!function_exists('url'))
 {
-    function url($path = null, $params = null)
+    function url($str, $params = null)
     {
-        return core\utils\Url::base($path, $params);
+        return core\utils\Url::base($str, $params);
+    }
+}
+
+if (!function_exists('controller'))
+{
+    function controller($controllerName, $params = null)
+    {
+        return core\utils\Url::controller($controllerName, $params);
     }
 }
 
@@ -43,6 +73,28 @@ if (!function_exists('asset'))
     function asset($resource)
     {
         return core\utils\Url::asset($resource);
+    }
+}
+
+/*
+ * ========================================
+ * PATH HELPERS
+ * ========================================
+ */
+
+if (!function_exists('public_path'))
+{
+    function public_path()
+    {
+        return PUBLIC_PATH;
+    }
+}
+
+if (!function_exists('image_path'))
+{
+    function image_path()
+    {
+        return IMAGE_PATH;
     }
 }
 
@@ -76,7 +128,18 @@ if (!function_exists('session_language'))
 
 if (!function_exists('view'))
 {
+    /*
+     * @deprecated deprecated since version 1.3.0
+     */
     function view($view)
+    {
+        core\base\View::load($view);
+    }
+}
+
+if (!function_exists('load'))
+{
+    function load($view)
     {
         core\base\View::load($view);
     }
@@ -101,17 +164,6 @@ if (!function_exists('auth'))
     }
 }
 
-if (!function_exists('auth_user'))
-{
-    /*
-     * This is a new option to the auth function.
-     */
-    function auth_user()
-    {
-        return (core\utils\Auth::user()) ? new core\utils\Auth() : null;
-    }
-}
-
 if (!function_exists('token'))
 {
     /*
@@ -125,9 +177,6 @@ if (!function_exists('token'))
 
 if (!function_exists('session_token'))
 {
-    /*
-     * This is a new option to the token function.
-     */
     function session_token()
     {
         return core\utils\Session::token();
@@ -136,7 +185,18 @@ if (!function_exists('session_token'))
 
 if (!function_exists('old'))
 {
+    /*
+     * @deprecated deprecated since version 1.3.0
+     */
     function old($name)
+    {
+        return core\utils\Request::get($name);
+    }
+}
+
+if (!function_exists('previous'))
+{
+    function previous($name)
     {
         return core\utils\Request::get($name);
     }
