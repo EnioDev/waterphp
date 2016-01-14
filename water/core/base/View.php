@@ -2,6 +2,8 @@
 
 final class View
 {
+    use \core\traits\ClassMethods;
+
     private static function getFilename($view)
     {
         $parts = explode('/', $view);
