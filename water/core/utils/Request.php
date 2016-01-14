@@ -2,14 +2,19 @@
 
 final class Request
 {
+    use \core\traits\ClassMethods;
+
     public static function all()
     {
+        self::validateNumArgs(__FUNCTION__, func_num_args());
+
         if (count($_POST) > 0)
         {
             $post_fields = array_keys($_POST);
             $post_values = array_values($_POST);
 
             $input = [];
+
             foreach($post_fields as $i => $name) {
                 $input[$name] = $post_values[$i];
             }
@@ -20,8 +25,12 @@ final class Request
 
     public static function get($name)
     {
+        self::validateNumArgs(__FUNCTION__, func_num_args(), 1, 1);
+        self::validateArgType(__FUNCTION__, $name, 1, ['string']);
+
         $input = self::all();
-        if ($input) {
+
+        if ($input and is_string($name)) {
             if (array_key_exists($name, $input)) {
                 return $input[$name];
             }

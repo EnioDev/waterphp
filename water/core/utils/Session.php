@@ -2,20 +2,7 @@
 
 final class Session
 {
-    public static function start()
-    {
-        session_start();
-        return !self::timeout();
-    }
-
-    public static function stop()
-    {
-        if (session_id())
-        {
-            session_unset();
-            session_destroy();
-        }
-    }
+    use \core\traits\ClassMethods;
 
     private static function timeout()
     {
@@ -31,8 +18,30 @@ final class Session
         }
     }
 
+    public static function start()
+    {
+        self::validateNumArgs(__FUNCTION__, func_num_args());
+
+        session_start();
+        return !self::timeout();
+    }
+
+    public static function stop()
+    {
+        self::validateNumArgs(__FUNCTION__, func_num_args());
+
+        if (session_id()) {
+            session_unset();
+            session_destroy();
+        }
+    }
+
     public static function set($key, $value, $force = false)
     {
+        self::validateNumArgs(__FUNCTION__, func_num_args(), 2, 3);
+        self::validateArgType(__FUNCTION__, $key, 1, ['string']);
+        self::validateArgType(__FUNCTION__, $force, 3, ['bool']);
+
         if (is_string($key) and (!isset($_SESSION[$key]) or $force)) {
             $_SESSION[$key] = $value;
         }
@@ -40,6 +49,9 @@ final class Session
 
     public static function get($key)
     {
+        self::validateNumArgs(__FUNCTION__, func_num_args(), 1, 1);
+        self::validateArgType(__FUNCTION__, $key, 1, ['string']);
+
         if (is_string($key) and isset($_SESSION[$key])) {
             return $_SESSION[$key];
         }
@@ -48,6 +60,9 @@ final class Session
 
     public static function forget($key)
     {
+        self::validateNumArgs(__FUNCTION__, func_num_args(), 1, 1);
+        self::validateArgType(__FUNCTION__, $key, 1, ['string']);
+
         if (is_string($key) and substr($key, 0, 12) !== 'app_session_') {
             if (isset($_SESSION[$key])) {
                 unset($_SESSION[$key]);
@@ -57,6 +72,8 @@ final class Session
 
     public static function token()
     {
+        self::validateNumArgs(__FUNCTION__, func_num_args());
+
         if (self::get('app_session_token')) {
             return Encryption::decode(self::get('app_session_token'));
         }

@@ -5,17 +5,24 @@ final class Lang
     private static $xml = null;
     private static $loaded = 0;
 
+    use \core\traits\ClassMethods;
+
     public static function setSessionLanguage($language)
     {
+        self::validateNumArgs(__FUNCTION__, func_num_args(), 1, 1);
+        self::validateArgType(__FUNCTION__, $language, 1, ['string']);
+
         Session::set('app_session_language', (is_string($language) ? $language : DEFAULT_LANGUAGE), true);
     }
 
     public static function load($language = null)
     {
+        self::validateNumArgs(__FUNCTION__, func_num_args(), 0, 1);
+        self::validateArgType(__FUNCTION__, $language, 1, ['string', 'null']);
+
         $reload = 0;
 
-        if (is_string($language)) {
-            $language = $language;
+        if ($language and is_string($language)) {
             $reload = 1;
         } else {
             $language = Session::get('app_session_language');
@@ -23,8 +30,7 @@ final class Lang
 
         $file = LANGUAGE_PATH . $language . DS . 'strings.xml';
 
-        if ((!self::$loaded and file_exists($file)) or $reload)
-        {
+        if ((!self::$loaded and file_exists($file)) or $reload) {
             self::$xml = simplexml_load_file($file);
             self::$loaded = 1;
         }
@@ -32,9 +38,12 @@ final class Lang
 
     public static function strings($node = null)
     {
+        self::validateNumArgs(__FUNCTION__, func_num_args(), 0, 1);
+        self::validateArgType(__FUNCTION__, $node, 1, ['string', 'null']);
+
         self::load();
 
-        if ($node) {
+        if ($node and is_string($node)) {
             $strings = (isset(self::$xml->{$node})) ? self::$xml->{$node} : null;
         } else {
             $strings = self::$xml;

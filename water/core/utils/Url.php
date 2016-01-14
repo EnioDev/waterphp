@@ -5,14 +5,22 @@ use core\routing\Router;
 
 final class Url
 {
+    use \core\traits\ClassMethods;
+
     public static function current()
     {
+        self::validateNumArgs(__FUNCTION__, func_num_args());
+
         $url = self::base() . Get::urlSegments();
         return $url;
     }
 
     public static function base($str = null, $params = null)
     {
+        self::validateNumArgs(__FUNCTION__, func_num_args(), 0, 2);
+        self::validateArgType(__FUNCTION__, $str, 1, ['string', 'null']);
+        self::validateArgType(__FUNCTION__, $params, 2, ['array', 'null']);
+
         if ($str and is_string($str) and strlen($str) > 0) {
 
             $routes = Router::getRoutes();
@@ -33,16 +41,27 @@ final class Url
 
     public static function route($routeName, $params = null)
     {
+        self::validateNumArgs(__FUNCTION__, func_num_args(), 1, 2);
+        self::validateArgType(__FUNCTION__, $routeName, 1, ['string']);
+        self::validateArgType(__FUNCTION__, $params, 2, ['array', 'null']);
+
         return self::base($routeName, $params);
     }
 
     public static function controller($controllerName, $params = null)
     {
+        self::validateNumArgs(__FUNCTION__, func_num_args(), 1, 2);
+        self::validateArgType(__FUNCTION__, $controllerName, 1, ['string']);
+        self::validateArgType(__FUNCTION__, $params, 2, ['array', 'null']);
+
         return self::base($controllerName, $params);
     }
 
     public static function asset($resource)
     {
+        self::validateNumArgs(__FUNCTION__, func_num_args(), 1, 1);
+        self::validateArgType(__FUNCTION__, $resource, 1, ['string']);
+
         if (is_string($resource) and strlen($resource) > 0) {
             return PUBLIC_URL . $resource;
         }

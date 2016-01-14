@@ -4,38 +4,47 @@ abstract class Controller
 {
     private $model;
 
-    function __construct($model = null)
+    use \core\traits\ClassMethods;
+
+    public function __construct($model = null)
     {
+        self::validateNumArgs(__FUNCTION__, func_num_args(), 0, 1);
+        self::validateArgType(__FUNCTION__, $model, 1, ['string', 'object', 'null']);
+
         $this->setModel($model);
+    }
+
+    private function setModel($model)
+    {
+        $this->model = null;
+
+        if (is_string($model)) {
+            $namespace = 'model\\' . str_replace(DS, '\\', $model);
+            $this->model = new $namespace;
+        }
+        if (is_object($model)) {
+            $this->model = $model;
+        }
     }
 
     abstract function index();
 
-    private function setModel($name)
+    protected final function loadModel($model)
     {
-        if (is_string($name))
-        {
-            $namespace = 'model\\' . str_replace(DS, '\\', $name);
-            $this->model = new $namespace;
-        }
-        if (is_object($name))
-        {
-            $this->model = $name;
-        }
-    }
+        self::validateNumArgs(__FUNCTION__, func_num_args(), 1, 1);
+        self::validateArgType(__FUNCTION__, $model, 1, ['string']);
 
-    protected final function loadModel($name)
-    {
-        if (is_string($name))
-        {
-            $namespace = 'model\\' . str_replace(DS, '\\', $name);
+        if (is_string($model)) {
+            $namespace = 'model\\' . str_replace(DS, '\\', $model);
             $model = new $namespace;
             return $model;
         }
+        return null;
     }
 
     protected final function model()
     {
+        self::validateNumArgs(__FUNCTION__, func_num_args());
         return $this->model;
     }
 }

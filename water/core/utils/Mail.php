@@ -7,8 +7,12 @@ final class Mail
     private $message;
     private $headers;
 
-    function __construct()
+    use \core\traits\ClassMethods;
+
+    public function __construct()
     {
+        self::validateNumArgs(__FUNCTION__, func_num_args());
+
         $this->headers = array();
 
         if (MAIL_IS_HTML) {
@@ -24,47 +28,49 @@ final class Mail
 
     private function to($to)
     {
+        $this->to = null;
+
         if (is_array($to)) {
             $this->to = implode(',', $to);
         } else if (is_string($to)) {
             $this->to = trim($to);
-        } else {
-            $this->to = null;
         }
     }
 
     public function subject($subject)
     {
+        self::validateNumArgs(__FUNCTION__, func_num_args(), 1, 1);
+        self::validateArgType(__FUNCTION__, $subject, 1, ['string']);
+
+        $this->subject = null;
+
         if (is_string($subject) and strlen($subject) > 0) {
             $this->subject = substr(trim($subject), 0, 70);
-        } else {
-            $this->subject = null;
         }
     }
 
     public function message($message)
     {
+        self::validateNumArgs(__FUNCTION__, func_num_args(), 1, 1);
+        self::validateArgType(__FUNCTION__, $message, 1, ['string']);
+
+        $this->message = null;
+
         if (is_string($message) and strlen($message) > 0) {
             $this->message = wordwrap(trim($message), 70);
-        } else {
-            $this->message = null;
         }
     }
 
     public function send($to)
     {
+        self::validateNumArgs(__FUNCTION__, func_num_args(), 1, 1);
+        self::validateArgType(__FUNCTION__, $to, 1, ['string', 'array']);
+
         $this->to($to);
 
-        if (is_null($this->to)) {
-            throw new \Exception('You can\'t send a message without a recipient.');
+        if (!is_null($this->to) and !is_null($this->subject) and !is_null($this->message)) {
+            return mail($this->to, $this->subject, $this->message, implode("\r\n", $this->headers), '-f' . MAIL_FROM);
         }
-        if (is_null($this->subject)) {
-            throw new \Exception('You can\'t send a message without a subject.');
-        }
-        if (is_null($this->message)) {
-            throw new \Exception('You need to define a message to send.');
-        }
-
-        return mail($this->to, $this->subject, $this->message, implode("\r\n", $this->headers), '-f' . MAIL_FROM);
+        return false;
     }
 }
