@@ -10,13 +10,17 @@ class Debug extends Controller
 
     public function __construct()
     {
+        $file = Session::get('debug_backtrace_file');
+        $line = Session::get('debug_backtrace_line');
+
         $this->data = [
             'title' => Session::get('app_error_title'),
             'code' => Session::get('app_error_code'),
             'message' => Session::get('app_error_message'),
-            'filename' => Session::get('app_error_filename'),
-            'line' => Session::get('app_error_line')
+            'filename' => (($file) ? $file : Session::get('app_error_filename')),
+            'line' => (($line) ? $line : Session::get('app_error_line'))
         ];
+
         if (Session::get('app_error_stop')) {
             Session::stop();
         }
@@ -24,6 +28,9 @@ class Debug extends Controller
 
     public function index()
     {
+        Session::forget('debug_backtrace_file');
+        Session::forget('debug_backtrace_line');
+
         if (defined(DEBUG_VIEW)) {
             View::load(DEBUG_VIEW, $this->data);
         } else {
