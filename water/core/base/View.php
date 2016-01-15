@@ -29,7 +29,14 @@ final class View
                     $$index = $value;
                 }
             }
-            require_once(self::getFilename($view));
+            if (file_exists(self::getFilename($view))) {
+                require_once(self::getFilename($view));
+            } else {
+                $idx = (strripos(debug_backtrace()[0]['file'], 'helpers.php')) ? 1 : 0;
+                $_SESSION['debug_backtrace_file'] = debug_backtrace()[$idx]['file'];
+                $_SESSION['debug_backtrace_line'] = debug_backtrace()[$idx]['line'];
+                trigger_error('Failed opening the view file. Make sure both name and directory are correct.', E_USER_ERROR);
+            }
         }
     }
 }
