@@ -81,8 +81,7 @@ final class App {
             $token = Request::get('_token');
             if ($token) {
                 if (Session::token() != trim($token)) {
-                    Session::stop();
-                    throw new \Exception('The given token is not a valid token! See <b>CSRF</b> protection in the documentation for more details.');
+                    trigger_error('The given token is not a valid token! See <b>CSRF</b> protection in the documentation for more details.', E_USER_ERROR);
                 }
             }
         }
@@ -92,7 +91,11 @@ final class App {
     {
         if (Session::get('app_session_encryption_key') != ENCRYPTION_KEY) {
             Session::stop();
-            throw new \Exception('The encryption key has been changed! You need to restart your application.');
+            if (DEBUG_MODE) {
+                trigger_error('The encryption key has been changed! Your application will be restart.', E_USER_NOTICE);
+            } else {
+                Redirect::to(Url::base());
+            }
         }
         return true;
     }
