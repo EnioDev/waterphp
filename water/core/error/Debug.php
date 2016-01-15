@@ -17,7 +17,7 @@ class Debug extends Controller
             'title' => Session::get('app_error_title'),
             'code' => Session::get('app_error_code'),
             'message' => Session::get('app_error_message'),
-            'filename' => (($file) ? $file : Session::get('app_error_filename')),
+            'file' => (($file) ? $file : Session::get('app_error_file')),
             'line' => (($line) ? $line : Session::get('app_error_line'))
         ];
 

@@ -9,7 +9,7 @@
                 <?php
                     echo '<b>Code</b>: ' . $code . '<br>';
                     echo '<b>Message</b>: ' . $message . '<br>';
-                    echo '<b>File</b>: ' . $filename . '<br>';
+                    echo '<b>File</b>: ' . $file . '<br>';
                     echo '<b>Line</b>: ' . $line;
                 ?>
             </div>

@@ -46,7 +46,7 @@ final class ErrorHandler
 
     // It will catch Warnings and Notices.
     // It will also catch E_USER_ERROR.
-    public function waterErrorHandler($code, $message, $filename, $line)
+    public function waterErrorHandler($code, $message, $file, $line)
     {
         $this->setTitle($code);
 
@@ -55,7 +55,7 @@ final class ErrorHandler
         Session::set('app_error_title', $this->title);
         Session::set('app_error_code', $code);
         Session::set('app_error_message', $message);
-        Session::set('app_error_filename', $filename);
+        Session::set('app_error_file', $file);
         Session::set('app_error_line', $line);
         Session::set('app_error_stop', $this->stop);
 
@@ -83,7 +83,7 @@ final class ErrorHandler
         Session::set('app_error_title', $this->title);
         Session::set('app_error_code', $e->getCode());
         Session::set('app_error_message', $e->getMessage());
-        Session::set('app_error_filename', $e->getFile());
+        Session::set('app_error_file', $e->getFile());
         Session::set('app_error_line', $e->getLine());
 
         $this->avoidTooManyRedirects(true, true);
@@ -93,20 +93,24 @@ final class ErrorHandler
     {
         $code = Session::get('app_error_code');
         $message = Session::get('app_error_message');
-        $filename = Session::get('app_error_filename');
-        $line = Session::get('app_error_line');
+
+        $file = Session::get('debug_backtrace_file');
+        $line = Session::get('debug_backtrace_line');
+
+        $file = ($file) ? $file : Session::get('app_error_file');
+        $line = ($line) ? $line : Session::get('app_error_line');
 
         $noRedirect = 0;
 
-        $noRedirect += (strrpos($filename, 'public' . DS . 'index.php')) ? 1 : 0;
-        $noRedirect += (strrpos($filename, 'config' . DS . 'config.php')) ? 1 : 0;
-        $noRedirect += (strrpos($filename, 'config' . DS . 'routes.php')) ? 1 : 0;
-        $noRedirect += (strrpos($filename, 'water'  . DS . 'core')) ? 1 : 0;
+        $noRedirect += (strrpos($file, 'public' . DS . 'index.php')) ? 1 : 0;
+        $noRedirect += (strrpos($file, 'config' . DS . 'config.php')) ? 1 : 0;
+        $noRedirect += (strrpos($file, 'config' . DS . 'routes.php')) ? 1 : 0;
+        $noRedirect += (strrpos($file, 'water'  . DS . 'core')) ? 1 : 0;
 
         if(!$noRedirect) {
             if (($debug and !$stop)) {
                 // If it's a Warning or Notice.
-                throw new \ErrorException($message, $code, 0, $filename, $line);
+                throw new \ErrorException($message, $code, 0, $file, $line);
             } else if ($stop) {
                 // If it's a Fatal Error or Parse Error.
                 // If it's a Warning or Notice called by ErrorException.
@@ -127,7 +131,7 @@ final class ErrorHandler
         Session::forget('app_error_title');
         Session::forget('app_error_code');
         Session::forget('app_error_message');
-        Session::forget('app_error_filename');
+        Session::forget('app_error_file');
         Session::forget('app_error_line');
         Session::forget('app_error_stop');
     }
