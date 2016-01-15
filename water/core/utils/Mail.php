@@ -30,9 +30,9 @@ final class Mail
     {
         $this->to = null;
 
-        if (is_array($to)) {
+        if (is_array($to) and count($to) > 0) {
             $this->to = implode(',', $to);
-        } else if (is_string($to)) {
+        } else if (is_string($to) and strlen($to) > 0) {
             $this->to = trim($to);
         }
     }
@@ -68,6 +68,7 @@ final class Mail
 
         $this->to($to);
 
+        // TODO: Define a error message when any parameter is not defined.
         if (!is_null($this->to) and !is_null($this->subject) and !is_null($this->message)) {
             return mail($this->to, $this->subject, $this->message, implode("\r\n", $this->headers), '-f' . MAIL_FROM);
         }
