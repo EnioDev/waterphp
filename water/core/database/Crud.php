@@ -8,6 +8,14 @@ class Crud extends Db implements ICrud
     protected $table;
     protected $primary_key;
 
+    use \core\traits\ClassMethods;
+
+    private function setDebugBacktrace($file, $line)
+    {
+        $_SESSION['debug_backtrace_file'] = $file;
+        $_SESSION['debug_backtrace_line'] = $line;
+    }
+
     private function orderBy($column, $direction)
     {
         if (!is_null($column) and is_string($column))
@@ -41,6 +49,18 @@ class Crud extends Db implements ICrud
 
     public final function insert($data)
     {
+        self::validateNumArgs(__FUNCTION__, func_num_args(), 1, 1);
+        self::validateArgType(__FUNCTION__, $data, 1, ['array']);
+
+        $continue = false;
+
+        if (is_array($data) and isset($data['fields']) and isset($data['values'])) {
+            if (count($data['fields']) === count($data['values'])) {
+                $continue = true;
+            }
+        }
+        if (!$continue) { return false; }
+
         $fields = implode(',', $data['fields']);
         $total  = count($data['fields']);
 
@@ -55,13 +75,34 @@ class Crud extends Db implements ICrud
                 $this->sql .= ")";
             }
         }
-        $stmt = parent::prepare($this->sql);
 
-        return $stmt->execute($data['values']);
+        try {
+            $stmt = parent::prepare($this->sql);
+            return $stmt->execute($data['values']);
+        } catch (\Exception $e) {
+            $this->setDebugBacktrace(debug_backtrace()[0]['file'], debug_backtrace()[0]['line']);
+            throw new \Exception($e->getMessage());
+        }
     }
 
     public final function update($id, $data)
     {
+        self::validateNumArgs(__FUNCTION__, func_num_args(), 2, 2);
+        self::validateArgType(__FUNCTION__, $id, 1, ['string', 'integer']);
+        self::validateArgType(__FUNCTION__, $data, 2, ['array']);
+
+        $continue = false;
+
+        if (is_array($data) and isset($data['fields']) and isset($data['values'])) {
+            if (count($data['fields']) === count($data['values'])) {
+                $continue = true;
+            }
+        }
+        if (is_string($id) or is_integer($id)) {
+            $continue = true;
+        }
+        if (!$continue) { return false; }
+
         $total = count($data['fields']);
 
         $this->sql = "UPDATE " . $this->table . " SET ";
@@ -76,80 +117,149 @@ class Crud extends Db implements ICrud
         $this->sql .= " WHERE ";
         $this->sql .= $this->primary_key . " = ?";
 
-        $stmt = parent::prepare($this->sql);
-
-        array_push($data['values'], $id);
-
-        return $stmt->execute($data['values']);
+        try {
+            $stmt = parent::prepare($this->sql);
+            array_push($data['values'], $id);
+            return $stmt->execute($data['values']);
+        } catch (\Exception $e) {
+            $this->setDebugBacktrace(debug_backtrace()[0]['file'], debug_backtrace()[0]['line']);
+            throw new \Exception($e->getMessage());
+        }
     }
 
-    public final function delete($id = null)
+    public final function delete($id)
     {
-        if ($id and (is_string($id) or is_integer($id)))
-        {
+        self::validateNumArgs(__FUNCTION__, func_num_args(), 1, 1);
+        self::validateArgType(__FUNCTION__, $id, 1, ['string', 'integer']);
+
+        if ($id and (is_string($id) or is_integer($id))) {
+
             $this->sql = "DELETE FROM " . $this->table . " WHERE id = :id";
-            $stmt = parent::prepare($this->sql);
-            $stmt->bindParam(':id', $id, parent::paramType($id));
 
-        } else if ($id === null) {
+            try {
+                $stmt = parent::prepare($this->sql);
+                $stmt->bindParam(':id', $id, parent::paramType($id));
+                return $stmt->execute();
+            } catch (\Exception $e) {
+                $this->setDebugBacktrace(debug_backtrace()[0]['file'], debug_backtrace()[0]['line']);
+                throw new \Exception($e->getMessage());
+            }
 
-            $this->sql = "DELETE FROM " . $this->table;
+        } else { return false; }
+    }
+
+    public final function deleteAll()
+    {
+        self::validateNumArgs(__FUNCTION__, func_num_args());
+
+        $this->sql = "DELETE FROM " . $this->table;
+
+        try {
             $stmt = parent::prepare($this->sql);
+            return $stmt->execute();
+        } catch (\Exception $e) {
+            $this->setDebugBacktrace(debug_backtrace()[0]['file'], debug_backtrace()[0]['line']);
+            throw new \Exception($e->getMessage());
         }
-        return $stmt->execute();
     }
 
     public final function find($id)
     {
-        $this->sql = "SELECT * FROM " . $this->table . " WHERE id = :id";
+        self::validateNumArgs(__FUNCTION__, func_num_args(), 1, 1);
+        self::validateArgType(__FUNCTION__, $id, 1, ['string', 'integer']);
 
-        $stmt = parent::prepare($this->sql);
-        $stmt->bindParam(':id', $id, parent::paramType($id));
-        $stmt->execute();
+        if ($id and (is_string($id) or is_integer($id))) {
 
-        return $stmt->fetch();
+            $this->sql = "SELECT * FROM " . $this->table . " WHERE id = :id";
+
+            try {
+                $stmt = parent::prepare($this->sql);
+                $stmt->bindParam(':id', $id, parent::paramType($id));
+                $stmt->execute();
+                return $stmt->fetch();
+            } catch (\Exception $e) {
+                $this->setDebugBacktrace(debug_backtrace()[0]['file'], debug_backtrace()[0]['line']);
+                throw new \Exception($e->getMessage());
+            }
+
+        } else { return null; }
     }
 
     public final function where($args, $column = null, $direction = null)
     {
+        self::validateNumArgs(__FUNCTION__, func_num_args(), 1, 3);
+        self::validateArgType(__FUNCTION__, $args, 1, ['array']);
+        self::validateArgType(__FUNCTION__, $column, 2, ['string', 'null']);
+        self::validateArgType(__FUNCTION__, $direction, 3, ['string', 'null']);
+
+        $continue = false;
+
+        if (is_array($args) and isset($args['fields']) and isset($args['values'])) {
+            if (count($args['fields']) === count($args['values'])) {
+                $continue = true;
+            }
+        }
+        if (!$continue) { return []; }
+
         $this->sql = "SELECT * FROM " . $this->table . " WHERE 1 = 1";
 
         foreach ($args['fields'] as $field) {
-            $this->sql .= " AND " . $field . " = ?";
+            $this->sql .= " AND " . $field . " LIKE ?";
         }
 
         $this->orderBy($column, $direction);
 
-        $stmt = parent::prepare($this->sql);
-        $stmt->execute($args['values']);
-
-        return $stmt->fetch();
+        try {
+            $stmt = parent::prepare($this->sql);
+            $stmt->execute($args['values']);
+            return $stmt->fetchAll();
+        } catch (\Exception $e) {
+            $this->setDebugBacktrace(debug_backtrace()[0]['file'], debug_backtrace()[0]['line']);
+            throw new \Exception($e->getMessage());
+        }
     }
 
     public final function all($column = null, $direction = null)
     {
+        self::validateNumArgs(__FUNCTION__, func_num_args(), 0, 2);
+        self::validateArgType(__FUNCTION__, $column, 1, ['string', 'null']);
+        self::validateArgType(__FUNCTION__, $direction, 2, ['string', 'null']);
+
         $this->sql = "SELECT * FROM " . $this->table;
 
         $this->orderBy($column, $direction);
 
-        $stmt = parent::prepare($this->sql);
-        $stmt->execute();
-
-        return $stmt->fetchAll();
+        try {
+            $stmt = parent::prepare($this->sql);
+            $stmt->execute();
+            return $stmt->fetchAll();
+        } catch (\Exception $e) {
+            $this->setDebugBacktrace(debug_backtrace()[0]['file'], debug_backtrace()[0]['line']);
+            throw new \Exception($e->getMessage());
+        }
     }
 
     public final function query($sql, $values = array())
     {
+        self::validateNumArgs(__FUNCTION__, func_num_args(), 1, 2);
+        self::validateArgType(__FUNCTION__, $sql, 1, ['string']);
+        self::validateArgType(__FUNCTION__, $values, 2, ['array']);
+
+        if (!is_string($sql)) { return []; }
+
         $this->sql = $sql;
 
-        $stmt = parent::prepare($this->sql);
-
-        if (count($values) > 0) {
-            $stmt->execute($values);
-        } else {
-            $stmt->execute();
+        try {
+            $stmt = parent::prepare($this->sql);
+            if (count($values) > 0) {
+                $stmt->execute($values);
+            } else {
+                $stmt->execute();
+            }
+            return $stmt->fetchAll();
+        } catch (\Exception $e) {
+            $this->setDebugBacktrace(debug_backtrace()[0]['file'], debug_backtrace()[0]['line']);
+            throw new \Exception($e->getMessage());
         }
-
-        return $stmt->fetch();
     }
 }
