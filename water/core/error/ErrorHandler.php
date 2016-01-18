@@ -100,6 +100,9 @@ final class ErrorHandler
         $file = ($file) ? $file : Session::get('app_error_file');
         $line = ($line) ? $line : Session::get('app_error_line');
 
+        Session::set('app_error_file', $file, true);
+        Session::set('app_error_line', $line, true);
+
         $noRedirect = 0;
 
         $noRedirect += (strrpos($file, 'public' . DS . 'index.php')) ? 1 : 0;
