@@ -155,9 +155,6 @@ if (!function_exists('strings'))
 
 if (!function_exists('auth'))
 {
-    /*
-     * @deprecated deprecated since version 1.3.0
-     */
     function auth()
     {
         return (core\utils\Auth::user()) ? new core\utils\Auth() : null;
