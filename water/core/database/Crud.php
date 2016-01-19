@@ -175,8 +175,12 @@ class Crud extends Db implements ICrud
             try {
                 $stmt = parent::prepare($this->sql);
                 $stmt->bindParam(':id', $id, parent::paramType($id));
-                $stmt->execute();
-                return $stmt->fetch();
+                $result = $stmt->execute();
+                if ($result) {
+                    return $stmt->fetch();
+                } else {
+                    return false;
+                }
             } catch (\Exception $e) {
                 $this->setDebugBacktrace(debug_backtrace()[0]['file'], debug_backtrace()[0]['line']);
                 throw new \Exception($e->getMessage());
@@ -211,8 +215,12 @@ class Crud extends Db implements ICrud
 
         try {
             $stmt = parent::prepare($this->sql);
-            $stmt->execute($args['values']);
-            return $stmt->fetchAll();
+            $result = $stmt->execute($args['values']);
+            if ($result) {
+                return $stmt->fetchAll();
+            } else {
+                return false;
+            }
         } catch (\Exception $e) {
             $this->setDebugBacktrace(debug_backtrace()[0]['file'], debug_backtrace()[0]['line']);
             throw new \Exception($e->getMessage());
@@ -231,8 +239,12 @@ class Crud extends Db implements ICrud
 
         try {
             $stmt = parent::prepare($this->sql);
-            $stmt->execute();
-            return $stmt->fetchAll();
+            $result = $stmt->execute();
+            if ($result) {
+                return $stmt->fetchAll();
+            } else {
+                return false;
+            }
         } catch (\Exception $e) {
             $this->setDebugBacktrace(debug_backtrace()[0]['file'], debug_backtrace()[0]['line']);
             throw new \Exception($e->getMessage());
@@ -252,11 +264,16 @@ class Crud extends Db implements ICrud
         try {
             $stmt = parent::prepare($this->sql);
             if (count($values) > 0) {
-                $stmt->execute($values);
+                $result = $stmt->execute($values);
             } else {
-                $stmt->execute();
+                $result = $stmt->execute();
             }
-            return $stmt->fetchAll();
+            try {
+                $records = $stmt->fetchAll();
+                return $records;
+            } catch (\Exception $e) {
+                return $result;
+            }
         } catch (\Exception $e) {
             $this->setDebugBacktrace(debug_backtrace()[0]['file'], debug_backtrace()[0]['line']);
             throw new \Exception($e->getMessage());
