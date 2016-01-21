@@ -15,21 +15,13 @@ final class Url
         return $url;
     }
 
-    public static function base($str = null, $params = null)
+    public static function base($segments = null, $params = null)
     {
         self::validateNumArgs(__FUNCTION__, func_num_args(), 0, 2);
-        self::validateArgType(__FUNCTION__, $str, 1, ['string', 'null']);
+        self::validateArgType(__FUNCTION__, $segments, 1, ['string', 'null']);
         self::validateArgType(__FUNCTION__, $params, 2, ['array', 'null']);
 
-        if ($str and is_string($str) and strlen($str) > 0) {
-
-            $routes = Router::getRoutes();
-
-            $routeName = (array_key_exists($str, $routes)) ? $str : null;
-            $routeName = (is_null($routeName)) ? array_search($str, $routes) : null;
-
-            $segments = ($routeName) ? $routeName : $str;
-
+        if ($segments and is_string($segments) and strlen($segments) > 0) {
             if ($params and is_array($params) and count($params) > 0) {
                 $params = implode('/', $params);
                 return BASE_URL . $segments . DS . $params;
@@ -45,7 +37,14 @@ final class Url
         self::validateArgType(__FUNCTION__, $routeName, 1, ['string']);
         self::validateArgType(__FUNCTION__, $params, 2, ['array', 'null']);
 
-        return self::base($routeName, $params);
+        if (is_string($routeName) and strlen($routeName) > 0) {
+
+            $routes = Router::getRoutes();
+            $route = (array_key_exists($routeName, $routes)) ? $routeName : null;
+
+            return ($route) ? self::base($route, $params) : '';
+        }
+        return '';
     }
 
     public static function controller($controllerName, $params = null)
@@ -54,7 +53,14 @@ final class Url
         self::validateArgType(__FUNCTION__, $controllerName, 1, ['string']);
         self::validateArgType(__FUNCTION__, $params, 2, ['array', 'null']);
 
-        return self::base($controllerName, $params);
+        if (is_string($controllerName) and strlen($controllerName) > 0) {
+
+            $routes = Router::getRoutes();
+            $route = array_search($controllerName, $routes);
+
+            return ($route) ? self::base($route, $params) : '';
+        }
+        return '';
     }
 
     public static function asset($resource)
@@ -65,6 +71,6 @@ final class Url
         if (is_string($resource) and strlen($resource) > 0) {
             return PUBLIC_URL . $resource;
         }
-        return null;
+        return '';
     }
 }
