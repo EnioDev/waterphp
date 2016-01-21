@@ -25,11 +25,9 @@ class Debug extends Controller
 
     public function index()
     {
-        if (defined(DEBUG_VIEW)) {
-            View::load(DEBUG_VIEW, $this->data);
-        } else {
-            // TODO: Create a default error template to use when it is not defined by user.
-            View::load('template/debug', $this->data);
-        }
+        // TODO: Create a default debug template to use when it is not defined by user.
+        $view = (defined('DEBUG_VIEW')) ? DEBUG_VIEW : 'template/debug';
+        View::load($view, $this->data);
+        exit();
     }
 }
