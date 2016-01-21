@@ -39,7 +39,6 @@ class User extends Controller
                 // Obs.: Isto evita que alguém acesse a aplicação ou execute qualquer
                 // método do controlador digitando a url sem estar autenticado.
                 Redirect::to(Url::route('login'));
-                exit;
             }
         }
     }
