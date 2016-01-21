@@ -31,6 +31,9 @@ final class App {
 
         } else {
 
+            // TODO: Create a default error 404 template to use when it is not defined by user.
+            $error404view = (defined('ERROR_404_VIEW')) ? ERROR_404_VIEW : 'template/404';
+
             $router = new Router();
 
             $controller = $router->getController();
@@ -66,11 +69,11 @@ final class App {
                     if (strlen($method) == 0) {
                         $controller->index();
                     } else {
-                        View::load(ERROR_404_VIEW);
+                        View::load($error404view);
                     }
                 }
             } else {
-                View::load(ERROR_404_VIEW);
+                View::load($error404view);
             }
         }
     }
@@ -89,9 +92,12 @@ final class App {
     
     private function verifyEncryptionKey()
     {
-        if (Session::get('app_session_encryption_key') != ENCRYPTION_KEY) {
+        $encryptionKey = (defined('ENCRYPTION_KEY')) ? ENCRYPTION_KEY : null;
+        $debugMode = (defined('DEBUG_MODE')) ? DEBUG_MODE : 1;
+
+        if (!is_null($encryptionKey) and Session::get('app_session_encryption_key') != $encryptionKey) {
             Session::stop();
-            if (DEBUG_MODE) {
+            if ($debugMode) {
                 trigger_error('The encryption key has been changed! Your application will be restart.', E_USER_NOTICE);
             } else {
                 Redirect::to(Url::base());
