@@ -12,7 +12,7 @@ final class ErrorHandler
 
     private function setTitle($code)
     {
-        $this->debug = (bool) DEBUG_MODE;
+        $this->debug = (defined('DEBUG_MODE')) ? DEBUG_MODE : 1;
         $this->title = '';
         $this->stop = false;
 
@@ -120,11 +120,10 @@ final class ErrorHandler
                 Redirect::to(Url::base('debug'));
             }
         } else {
-            // On bootstrap or core files.
+            // On bootstrap, config or core files.
             if ($debug or $stop) {
                 $d = new Debug();
                 $d->index();
-                exit();
             }
         }
     }
