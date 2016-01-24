@@ -6,6 +6,7 @@ final class Mail
     private $subject;
     private $message;
     private $headers;
+    private $from;
 
     use \core\traits\ClassMethods;
 
@@ -15,15 +16,22 @@ final class Mail
 
         $this->headers = array();
 
-        if (MAIL_IS_HTML) {
-            $this->headers[] = 'MIME-Version: 1.0';
-            $this->headers[] = 'Content-type: text/html; charset=' . MAIL_CHARSET;
+        if (defined('MAIL_IS_HTML')) {
+            if (MAIL_IS_HTML) {
+                $this->headers[] = 'MIME-Version: 1.0';
+                $this->headers[] = 'Content-type: text/html; charset=' . (defined('MAIL_CHARSET') ? MAIL_CHARSET : 'utf-8');
+            }
         }
 
-        $this->headers[] = 'From: ' . MAIL_FROM;
-        $this->headers[] = 'Return-path: ' . MAIL_FROM;
-        $this->headers[] = 'Reply-to: ' . MAIL_FROM;
-        $this->headers[] = 'X-Mailer: PHP/' . phpversion();
+        if (defined('MAIL_FROM')) {
+
+            $this->from = MAIL_FROM;
+
+            $this->headers[] = 'From: ' . MAIL_FROM;
+            $this->headers[] = 'Return-path: ' . MAIL_FROM;
+            $this->headers[] = 'Reply-to: ' . MAIL_FROM;
+            $this->headers[] = 'X-Mailer: PHP/' . phpversion();
+        }
     }
 
     private function to($to)
@@ -69,8 +77,8 @@ final class Mail
         $this->to($to);
 
         // TODO: Define a error message when any parameter is not defined.
-        if (!is_null($this->to) and !is_null($this->subject) and !is_null($this->message)) {
-            return mail($this->to, $this->subject, $this->message, implode("\r\n", $this->headers), '-f' . MAIL_FROM);
+        if (!is_null($this->to) and !is_null($this->subject) and !is_null($this->message) and is_string($this->from)) {
+            return mail($this->to, $this->subject, $this->message, implode("\r\n", $this->headers), '-f' . $this->from);
         }
         return false;
     }
