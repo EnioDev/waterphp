@@ -2,23 +2,34 @@
 
 class Db
 {
-    private static $instance;
+    private static $instance = null;
 
     protected final static function getInstance()
     {
-		if (!isset(self::$instance) or is_null(self::$instance))
+		if (is_null(self::$instance))
         {
-            self::$instance = new \PDO(DB_DRIVER . ':host=' . DB_HOST . '; port=' .DB_PORT. '; dbname=' . DB_NAME, DB_USER, DB_PASSWORD);
-            self::$instance->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-            self::$instance->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_OBJ);
+            $driver = (defined('DB_DRIVER') ? DB_DRIVER : null);
+            $dbHost = (defined('DB_HOST') ? DB_HOST : null);
+            $dbPort = (defined('DB_PORT') ? DB_PORT : null);
+            $dbName = (defined('DB_NAME') ? DB_NAME : null);
+            $dbUser = (defined('DB_USER') ? DB_USER : null);
+            $dbPass = (defined('DB_PASSWORD') ? DB_PASSWORD : null);
+
+            if ($driver and $dbHost and $dbPort and $dbName and $dbUser) {
+                self::$instance = new \PDO($driver . ':host=' . $dbHost . '; port=' . $dbPort . '; dbname=' . $dbName, $dbUser, $dbPass);
+                self::$instance->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+                self::$instance->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_OBJ);
+            }
 		}
 	}
 
     protected final static function prepare($sql)
     {
-        $statement = null;
         self::getInstance();
-		return self::$instance->prepare($sql);
+        if (!is_null(self::$instance)) {
+            return self::$instance->prepare($sql);
+        }
+        return null;
 	}
 
     protected final static function paramType($value = null)
