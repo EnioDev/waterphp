@@ -44,7 +44,7 @@ define('ERROR_404_VIEW', 'template/404');
  * aguardar pela atividade do usuário antes da sessão expirar.
  */
 
-define('SESSION_LIFETIME', '7200'); // 7200 = 2h
+define('SESSION_LIFETIME', 7200); // 7200 = 2h
 
 /*
  * ---------------------------------------------------------------------------
