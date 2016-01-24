@@ -103,6 +103,9 @@ final class ErrorHandler
         Session::set('app_error_file', $file, true);
         Session::set('app_error_line', $line, true);
 
+        Session::forget('debug_backtrace_file');
+        Session::forget('debug_backtrace_line');
+
         $noRedirect = 0;
 
         $noRedirect += (strrpos($file, 'public' . DS . 'index.php')) ? 1 : 0;
