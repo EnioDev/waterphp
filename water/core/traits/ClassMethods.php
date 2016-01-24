@@ -2,22 +2,27 @@
 
 trait ClassMethods
 {
-    protected static function validateNumArgs($function, $numArgs, $min = 0, $max = 0)
+    private static function getClassName()
     {
-        $namespace = explode('\\', self::getClassName());
-        $class = $namespace[(count($namespace) - 1)];
+        $namespace = (strrpos(__CLASS__, 'ClassMethods')) ? '' : __CLASS__;
+        $parts = explode('\\', $namespace);
+        $class = $parts[(count($parts) - 1)];
+        return $class . '::';
+    }
 
+    public static function validateNumArgs($function, $numArgs, $min = 0, $max = 0)
+    {
         if ($numArgs >= $min and $numArgs <= $max) {
             return true;
         }
         if ($numArgs > $max) {
-            $msg = $class . "::" . $function . "() expects at most " . $max . (($max > 1) ? " parameters, " : " parameter, ") . $numArgs . " given.";
+            $msg = self::getClassName() . $function . "() expects at most " . $max . (($max > 1) ? " parameters, " : " parameter, ") . $numArgs . " given.";
         }
         if ($numArgs < $min) {
-            $msg = $class . "::" . $function . "() expects at least " . $min . (($min > 1) ? " parameters, " : " parameter, ") . $numArgs . " given.";
+            $msg = self::getClassName() . $function . "() expects at least " . $min . (($min > 1) ? " parameters, " : " parameter, ") . $numArgs . " given.";
         }
         if ($max == 0 and $numArgs > 0) {
-            $msg = $class . "::" . $function . "() doesn't expect any parameter.";
+            $msg = self::getClassName() . $function . "() doesn't expect any parameter.";
         }
 
         $_SESSION['debug_backtrace_file'] = debug_backtrace()[1]['file'];
@@ -26,18 +31,8 @@ trait ClassMethods
         trigger_error($msg, E_USER_WARNING);
     }
 
-    protected static function getClassName()
+    public static function validateArgType($function, $arg, $number, $types)
     {
-        return __CLASS__;
-    }
-
-    protected static function validateArgType($function, $arg, $number, $types)
-    {
-        $namespace = explode('\\', self::getClassName());
-        $class = $namespace[(count($namespace) - 1)];
-
-        $expects = implode(' or ', $types);
-
         $valid = false;
 
         foreach ($types as $type) {
@@ -77,14 +72,21 @@ trait ClassMethods
                         $valid = true;
                     }
                     break;
+                case 'double':
+                    if (is_double($arg)) {
+                        $valid = true;
+                    }
+                    break;
             }
         }
         if (!$valid) {
 
+            $expects = implode(' or ', $types);
+
             $_SESSION['debug_backtrace_file'] = debug_backtrace()[1]['file'];
             $_SESSION['debug_backtrace_line'] = debug_backtrace()[1]['line'];
 
-            $msg = $class . "::" . $function . "() expects parameter " . $number . " to be " . $expects . ", " . gettype($arg) . " given.";
+            $msg = self::getClassName() . $function . "() expects parameter " . $number . " to be " . $expects . ", " . gettype($arg) . " given.";
 
             trigger_error($msg, E_USER_WARNING);
         }
