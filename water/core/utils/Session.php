@@ -10,10 +10,10 @@ final class Session
             self::stop();
             return true;
         } else {
-            self::set('app_session_time', time() + SESSION_LIFETIME, true);
+            self::set('app_session_time', time() + (defined('SESSION_LIFETIME') ? SESSION_LIFETIME : 7200), true);
             self::set('app_session_token', Encryption::encode(md5(uniqid(rand(), true))));
-            self::set('app_session_encryption_key', ENCRYPTION_KEY);
-            self::set('app_session_language', DEFAULT_LANGUAGE);
+            self::set('app_session_encryption_key', (defined('ENCRYPTION_KEY') ? ENCRYPTION_KEY : null));
+            self::set('app_session_language', (defined('DEFAULT_LANGUAGE') ? DEFAULT_LANGUAGE : null));
             return false;
         }
     }
