@@ -94,7 +94,7 @@ require_once(CONFIG_PATH . 'config.php');
 $savePath = ROOT_PATH . 'storage' . DS . 'sessions';
 
 ini_set('session.save_path', $savePath);
-ini_set('session.gc_maxlifetime', SESSION_LIFETIME);
+ini_set('session.gc_maxlifetime', (defined('SESSION_LIFETIME') ? SESSION_LIFETIME : 7200));
 ini_set('session.gc_probability', 1); // Ex: probability / divisor = 1 (100%)
 ini_set('session.gc_divisor', 1);
 
@@ -104,8 +104,10 @@ ini_set('session.gc_divisor', 1);
  * ==============================================================
  */
 
-ini_set('SMTP', MAIL_SMTP_HOST);
-ini_set('smtp_port', MAIL_SMTP_PORT);
+if (defined('MAIL_SMTP_HOST') and defined('MAIL_SMTP_PORT')) {
+    ini_set('SMTP', MAIL_SMTP_HOST);
+    ini_set('smtp_port', MAIL_SMTP_PORT);
+}
 
 /*
  * ==============================================================
