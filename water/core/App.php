@@ -25,14 +25,19 @@ final class App {
 
         if (!Get::urlController())
         {
-            $controller = 'controller\\' . CONTROLLER_INDEX;
-            $controller = new $controller();
-            $controller->index();
-
+            $index = (defined('CONTROLLER_INDEX') ? CONTROLLER_INDEX : null);
+            if ($index) {
+                $controller = 'controller\\' . $index;
+                $controller = new $controller();
+                $controller->index();
+            } else {
+                Session::stop();
+                Redirect::to(Url::base());
+            }
         } else {
 
             // TODO: Create a default error 404 template to use when it is not defined by user.
-            $error404view = (defined('ERROR_404_VIEW')) ? ERROR_404_VIEW : 'template/404';
+            $error404view = (defined('ERROR_404_VIEW') ? ERROR_404_VIEW : 'template/404');
 
             $router = new Router();
 
@@ -92,16 +97,20 @@ final class App {
     
     private function verifyEncryptionKey()
     {
-        $encryptionKey = (defined('ENCRYPTION_KEY')) ? ENCRYPTION_KEY : null;
-        $debugMode = (defined('DEBUG_MODE')) ? DEBUG_MODE : 1;
+        $encryptionKey = (defined('ENCRYPTION_KEY') ? ENCRYPTION_KEY : null);
+        $debugMode = (defined('DEBUG_MODE') ? DEBUG_MODE : 1);
 
-        if (!is_null($encryptionKey) and Session::get('app_session_encryption_key') != $encryptionKey) {
-            Session::stop();
-            if ($debugMode) {
-                trigger_error('The encryption key has been changed! Your application will be restart.', E_USER_NOTICE);
-            } else {
-                Redirect::to(Url::base());
+        if ($encryptionKey) {
+            if (Session::get('app_session_encryption_key') != $encryptionKey) {
+                Session::stop();
+                if ($debugMode) {
+                    trigger_error('The encryption key has been changed! Your application will be restart.', E_USER_NOTICE);
+                } else {
+                    Redirect::to(Url::base());
+                }
             }
+        } else {
+            trigger_error('The encryption key is not defined! See your configuration file.', E_USER_ERROR);
         }
         return true;
     }
