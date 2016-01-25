@@ -3,10 +3,10 @@
 final class Mail
 {
     private $to;
+    private $from;
     private $subject;
     private $message;
     private $headers;
-    private $from;
 
     use \core\traits\ClassMethods;
 
@@ -17,21 +17,45 @@ final class Mail
         $this->headers = array();
 
         if (defined('MAIL_IS_HTML')) {
-            if (MAIL_IS_HTML) {
+
+            if (is_bool(MAIL_IS_HTML) and MAIL_IS_HTML) {
+
+                $charset = (defined('MAIL_CHARSET') ? MAIL_CHARSET : 'utf-8');
+
                 $this->headers[] = 'MIME-Version: 1.0';
-                $this->headers[] = 'Content-type: text/html; charset=' . (defined('MAIL_CHARSET') ? MAIL_CHARSET : 'utf-8');
+                $this->headers[] = 'Content-type: text/html; charset=' . $charset;
             }
         }
 
         if (defined('MAIL_FROM')) {
 
-            $this->from = MAIL_FROM;
+            if (is_string(MAIL_FROM)) {
 
-            $this->headers[] = 'From: ' . MAIL_FROM;
-            $this->headers[] = 'Return-path: ' . MAIL_FROM;
-            $this->headers[] = 'Reply-to: ' . MAIL_FROM;
-            $this->headers[] = 'X-Mailer: PHP/' . phpversion();
+                $this->headers[] = 'From: ' . MAIL_FROM;
+                $this->headers[] = 'Return-path: ' . MAIL_FROM;
+                $this->headers[] = 'Reply-to: ' . MAIL_FROM;
+                $this->headers[] = 'X-Mailer: PHP/' . phpversion();
+
+                $this->from = MAIL_FROM;
+            }
         }
+    }
+
+    private function isAllDefined() {
+
+        if (is_null($this->to)) {
+            throw new \Exception('You need to set a email recipient on send method!');
+        }
+        if (is_null($this->subject)) {
+            throw new \Exception('You need to set a email subject!');
+        }
+        if (is_null($this->message)) {
+            throw new \Exception('You need to set a email message!');
+        }
+        if (is_null($this->from)) {
+            throw new \Exception('You need to set a email sender! See your configuration file.');
+        }
+        return true;
     }
 
     private function to($to)
@@ -76,10 +100,10 @@ final class Mail
 
         $this->to($to);
 
-        // TODO: Define a error message when any parameter is not defined.
-        if (!is_null($this->to) and !is_null($this->subject) and !is_null($this->message) and is_string($this->from)) {
+        if ($this->isAllDefined()) {
             return mail($this->to, $this->subject, $this->message, implode("\r\n", $this->headers), '-f' . $this->from);
+        } else {
+            return false;
         }
-        return false;
     }
 }
