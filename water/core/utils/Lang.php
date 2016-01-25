@@ -13,6 +13,15 @@ final class Lang
         self::validateArgType(__FUNCTION__, $language, 1, ['string']);
 
         Session::set('app_session_language', (is_string($language) ? $language : DEFAULT_LANGUAGE), true);
+
+        self::load(self::getSessionLanguage());
+    }
+
+    public static function getSessionLanguage()
+    {
+        self::validateNumArgs(__FUNCTION__, func_num_args());
+
+        return Session::get('app_session_language');
     }
 
     public static function load($language = null)
@@ -25,7 +34,7 @@ final class Lang
         if ($language and is_string($language)) {
             $reload = 1;
         } else {
-            $language = Session::get('app_session_language');
+            $language = self::getSessionLanguage();
         }
 
         $file = LANGUAGE_PATH . $language . DS . 'strings.xml';

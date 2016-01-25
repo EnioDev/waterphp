@@ -15,6 +15,7 @@
                 </div>
                 <div id="navbar" class="collapse navbar-collapse">
                     <ul class="nav navbar-nav pull-right">
+                        <li><a href="<?php echo route('language'); ?>"><i class="glyphicon glyphicon-globe"></i>&nbsp;<?php echo (session_language() == 'pt-br') ? 'Português/Inglês' : 'English/Portuguese'; ?></a></li>
                         <li><a href="<?php echo base_url(); ?>"><i class="glyphicon glyphicon-home"></i>&nbsp;Home</a></li>
                         <li><a href="<?php echo route('logout'); ?>"><i class="glyphicon glyphicon-log-out"></i>&nbsp;Logout</a></li>
                     </ul>

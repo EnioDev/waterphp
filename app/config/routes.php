@@ -15,3 +15,4 @@ $router->controller('user', 'User');
  * $route->controllerMethod().
  */
 $router->controllerMethod('logout', 'User@logout'); // (name, controller@method)
+$router->controllerMethod('language', 'User@changeLanguage');

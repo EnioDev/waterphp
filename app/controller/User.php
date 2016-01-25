@@ -194,6 +194,16 @@ class User extends Controller
         return (count($this->errors) > 0) ? false : true;
     }
 
+    public function changeLanguage()
+    {
+        if (Lang::getSessionLanguage() == 'en') {
+            Lang::setSessionLanguage('pt-br');
+        } else {
+            Lang::setSessionLanguage('en');
+        }
+        Redirect::to(Url::route('user'));
+    }
+
     public function logout()
     {
         Session::stop();
