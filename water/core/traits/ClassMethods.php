@@ -7,7 +7,7 @@ trait ClassMethods
         $namespace = (strrpos(__CLASS__, 'ClassMethods')) ? '' : __CLASS__;
         $parts = explode('\\', $namespace);
         $class = $parts[(count($parts) - 1)];
-        return $class . '::';
+        return ($class) ? $class . '::' : '';
     }
 
     public static function validateNumArgs($function, $numArgs, $min = 0, $max = 0)
