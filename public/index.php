@@ -83,6 +83,7 @@ register_shutdown_function([&$errorHandler, 'waterShutdownHandler']);
  * ==============================================================
  */
 
+// TODO: Save all configuration into array.
 require_once(CONFIG_PATH . 'config.php');
 
 /*
