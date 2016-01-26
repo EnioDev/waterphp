@@ -147,7 +147,7 @@ if (!function_exists('session_language'))
     {
         core\traits\ClassMethods::validateNumArgs(__FUNCTION__, func_num_args());
 
-        return core\utils\Session::get('app_session_language');
+        return core\utils\Lang::getSessionLanguage();
     }
 }
 
