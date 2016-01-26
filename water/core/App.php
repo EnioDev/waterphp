@@ -30,9 +30,13 @@ final class App {
         {
             $index = (defined('CONTROLLER_INDEX') ? CONTROLLER_INDEX : null);
             if ($index) {
-                $controller = 'controller\\' . $index;
-                $controller = new $controller();
-                $controller->index();
+                if (file_exists(CONTROLLER_PATH . $index . '.php')) {
+                    $controller = 'controller\\' . $index;
+                    $controller = new $controller();
+                    $controller->index();
+                } else {
+                    View::load($error404view);
+                }
             } else {
                 View::load($error404view);
             }
