@@ -31,8 +31,6 @@ define('IMAGE_PATH', PUBLIC_PATH . 'images' . DS);
 
 define('LIB_PATH', ROOT_PATH . 'water' . DS);
 
-define('CORE_PATH', LIB_PATH . 'core' . DS);
-
 /*
  * ==============================================================
  * URL
@@ -45,7 +43,7 @@ define('DOMAIN', $_SERVER['HTTP_HOST']);
 
 define('SUB_FOLDER', str_replace('public', '', dirname($_SERVER['SCRIPT_NAME'])));
 
-define('BASE_URL', PROTOCOL . DOMAIN . SUB_FOLDER); // Ex: http://localhost/projeto ou http://www.projeto.com
+define('BASE_URL', PROTOCOL . DOMAIN . SUB_FOLDER);
 
 define('PUBLIC_URL', BASE_URL . 'public' . DS);
 
@@ -63,7 +61,7 @@ require_once(LIB_PATH . 'autoload.php');
  * ==============================================================
  */
 
-require_once(CORE_PATH . 'helpers.php');
+require_once(LIB_PATH . 'helpers.php');
 
 /*
  * ==============================================================
@@ -83,7 +81,6 @@ register_shutdown_function([&$errorHandler, 'waterShutdownHandler']);
  * ==============================================================
  */
 
-// TODO: Save all configuration into array.
 require_once(CONFIG_PATH . 'config.php');
 
 /*
@@ -94,10 +91,33 @@ require_once(CONFIG_PATH . 'config.php');
 
 $savePath = ROOT_PATH . 'storage' . DS . 'sessions';
 
+if (!defined('SESSION_LIFETIME')) {
+    define('SESSION_LIFETIME', 7200);
+}
 ini_set('session.save_path', $savePath);
-ini_set('session.gc_maxlifetime', (defined('SESSION_LIFETIME') ? SESSION_LIFETIME : 7200));
+ini_set('session.gc_maxlifetime', SESSION_LIFETIME);
 ini_set('session.gc_probability', 1); // Ex: probability / divisor = 1 (100%)
 ini_set('session.gc_divisor', 1);
+
+/*
+ * ==============================================================
+ * LANGUAGE
+ * ==============================================================
+ */
+
+if (!defined('DEFAULT_LANGUAGE')) {
+    define('DEFAULT_LANGUAGE', '');
+}
+
+/*
+ * ==============================================================
+ * ENCRYPTION
+ * ==============================================================
+ */
+
+if (!defined('ENCRYPTION_KEY')) {
+    define('ENCRYPTION_KEY', null);
+}
 
 /*
  * ==============================================================
@@ -105,8 +125,10 @@ ini_set('session.gc_divisor', 1);
  * ==============================================================
  */
 
-if (defined('MAIL_SMTP_HOST') and defined('MAIL_SMTP_PORT')) {
+if (defined('MAIL_SMTP_HOST')) {
     ini_set('SMTP', MAIL_SMTP_HOST);
+}
+if (defined('MAIL_SMTP_PORT')) {
     ini_set('smtp_port', MAIL_SMTP_PORT);
 }
 
