@@ -23,6 +23,9 @@ final class App {
     {
         $this->verifyCSRFToken();
 
+        // TODO: Create a default error 404 template to use when it is not defined by user.
+        $error404view = (defined('ERROR_404_VIEW') ? ERROR_404_VIEW : 'template/404');
+
         if (!Get::urlController())
         {
             $index = (defined('CONTROLLER_INDEX') ? CONTROLLER_INDEX : null);
@@ -31,13 +34,9 @@ final class App {
                 $controller = new $controller();
                 $controller->index();
             } else {
-                Session::stop();
-                Redirect::to(Url::base());
+                View::load($error404view);
             }
         } else {
-
-            // TODO: Create a default error 404 template to use when it is not defined by user.
-            $error404view = (defined('ERROR_404_VIEW') ? ERROR_404_VIEW : 'template/404');
 
             $router = new Router();
 
