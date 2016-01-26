@@ -111,7 +111,7 @@ if (!function_exists('public_path'))
     {
         core\traits\ClassMethods::validateNumArgs(__FUNCTION__, func_num_args());
 
-        return PUBLIC_PATH;
+        return (defined('PUBLIC_PATH') ? PUBLIC_PATH : '');
     }
 }
 
@@ -121,7 +121,7 @@ if (!function_exists('image_path'))
     {
         core\traits\ClassMethods::validateNumArgs(__FUNCTION__, func_num_args());
 
-        return IMAGE_PATH;
+        return (defined('IMAGE_PATH') ? IMAGE_PATH : '');
     }
 }
 
@@ -137,7 +137,7 @@ if (!function_exists('default_language'))
     {
         core\traits\ClassMethods::validateNumArgs(__FUNCTION__, func_num_args());
 
-        return DEFAULT_LANGUAGE;
+        return (defined('DEFAULT_LANGUAGE') ? DEFAULT_LANGUAGE : '');
     }
 }
 
