@@ -1,4 +1,3 @@
 .idea
 app/controller/tests/
 app/view/tests/
-storage/sessions/*
