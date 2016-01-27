@@ -85,15 +85,34 @@ require_once(CONFIG_PATH . 'config.php');
 
 /*
  * ==============================================================
+ * DEBUG
+ * ==============================================================
+ */
+
+if (!defined('DEBUG_MODE') or !(is_integer(DEBUG_MODE) or is_bool(DEBUG_MODE))) {
+    define('DEBUG_MODE', 1);
+}
+// TODO: Create a default debug template to use when it is not defined by user.
+if (!defined('DEBUG_VIEW') or !is_string(DEBUG_VIEW)) {
+    define('DEBUG_VIEW', 'template/debug');
+}
+// TODO: Create a default error 404 template to use when it is not defined by user.
+if (!defined('ERROR_404_VIEW') or !is_string(ERROR_404_VIEW)) {
+    define('ERROR_404_VIEW', 'template/404');
+}
+
+/*
+ * ==============================================================
  * SESSION
  * ==============================================================
  */
 
-$savePath = ROOT_PATH . 'storage' . DS . 'sessions';
-
-if (!defined('SESSION_LIFETIME')) {
+if (!defined('SESSION_LIFETIME') or !(is_integer(SESSION_LIFETIME) or is_string(SESSION_LIFETIME))) {
     define('SESSION_LIFETIME', 7200);
 }
+
+$savePath = ROOT_PATH . 'storage' . DS . 'sessions';
+
 ini_set('session.save_path', $savePath);
 ini_set('session.gc_maxlifetime', SESSION_LIFETIME);
 ini_set('session.gc_probability', 1); // Ex: probability / divisor = 1 (100%)
@@ -101,12 +120,22 @@ ini_set('session.gc_divisor', 1);
 
 /*
  * ==============================================================
+ * CONTROLLER
+ * ==============================================================
+ */
+
+if (!defined('CONTROLLER_INDEX') or !is_string(CONTROLLER_INDEX)) {
+    define('CONTROLLER_INDEX', null);
+}
+
+/*
+ * ==============================================================
  * LANGUAGE
  * ==============================================================
  */
 
-if (!defined('DEFAULT_LANGUAGE')) {
-    define('DEFAULT_LANGUAGE', '');
+if (!defined('DEFAULT_LANGUAGE') or !is_string(DEFAULT_LANGUAGE)) {
+    define('DEFAULT_LANGUAGE', null);
 }
 
 /*
@@ -115,7 +144,7 @@ if (!defined('DEFAULT_LANGUAGE')) {
  * ==============================================================
  */
 
-if (!defined('ENCRYPTION_KEY')) {
+if (!defined('ENCRYPTION_KEY') or !is_string(ENCRYPTION_KEY)) {
     define('ENCRYPTION_KEY', null);
 }
 
@@ -125,10 +154,10 @@ if (!defined('ENCRYPTION_KEY')) {
  * ==============================================================
  */
 
-if (defined('MAIL_SMTP_HOST')) {
+if (defined('MAIL_SMTP_HOST') and is_string(MAIL_SMTP_HOST)) {
     ini_set('SMTP', MAIL_SMTP_HOST);
 }
-if (defined('MAIL_SMTP_PORT')) {
+if (defined('MAIL_SMTP_PORT') and (is_integer(MAIL_SMTP_PORT) or is_string(MAIL_SMTP_PORT))) {
     ini_set('smtp_port', MAIL_SMTP_PORT);
 }
 
