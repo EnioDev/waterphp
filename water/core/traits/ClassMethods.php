@@ -7,6 +7,9 @@ trait ClassMethods
         $namespace = (strrpos(__CLASS__, 'ClassMethods')) ? '' : __CLASS__;
         $parts = explode('\\', $namespace);
         $class = $parts[(count($parts) - 1)];
+        if ($class === 'Crud') {
+            $class = 'Model'; // Model extends Crud
+        }
         return ($class) ? $class . '::' : '';
     }
 
