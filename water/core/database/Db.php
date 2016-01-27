@@ -20,7 +20,7 @@ class Db
                 self::$instance->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
                 self::$instance->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_OBJ);
             } else {
-                throw new \Exception('See your database configuration on config file.');
+                throw new \Exception('You must define all parameters for connecting to database. See the configuration on app/config.php.');
             }
 		}
 	}
