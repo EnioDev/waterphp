@@ -6,7 +6,14 @@
  * --------------------------------------------------------------------------
  *
  * Você pode ativar ou desativar o modo de depuração.
- * É altamente recomendado desativar em ambiente de produção.
+ *
+ * É altamente recomendado desativar em ambiente de produção, porém quando
+ * estiver desenvolvendo matenha ativado este modo para visualizar qualquer
+ * alerta de erro.
+ * .
+ * Atenção: Erros fatais ou erros de sintaxe que impedem a execução do
+ * programa serão exibidos mesmo que este modo esteja desativado.
+ *
  * 0 ou false = Desativado
  * 1 ou true = Ativado
  */
@@ -26,11 +33,10 @@ define('DEBUG_MODE', 0);
 define('DEBUG_VIEW', 'template/debug');
 
 /*
- * Você pode definir seu próprio modelo de página de erro 404.
+ * Você pode definir seu próprio modelo de página de erro 404, da mesma
+ * forma que foi citado acima.
  * Esta página será exibida sempre que o controlador ou método informado
  * na URL não existir.
- *
- * Atenção: Nunca apague um template antes de redefiní-lo.
  */
 
 define('ERROR_404_VIEW', 'template/404');
@@ -66,8 +72,8 @@ define('CONTROLLER_INDEX', 'Home');
  * ajudar o buscador a classificar seu site no idioma apropriado, orientar
  * os navegadores a exibir acentuação e caracteres especiais corretamente.
  *
- * O idioma também é usado para fazer a tradução da aplicação. Consulte
- * a classe Lang na documentação para saber mais.
+ * Atenção: O idioma também é usado para fazer a tradução da aplicação.
+ * Consulte a classe Lang na documentação para saber mais.
  *
  * Veja alguns valores possíveis:
  *
@@ -134,11 +140,11 @@ define('DB_PASSWORD', ''); // Informe a senha do usuário definido acima.
  * E-MAIL
  * --------------------------------------------------------------------------
  *
- * Atenção: Certifique-se que o PHP instalado em seu servidor está
- * corretamente configurado para enviar e-mails usando a função mail do PHP.
+ * Defina as informações abaixo para enviar e-mails através da sua aplicação.
  *
- * As informações abaixo são somente exemplos, verifique corretamente as
- * configurações do seu servidor.
+ * Atenção: Certifique-se que o PHP instalado em seu servidor (local ou
+ * remoto, como o seu servidor de hospedagem) está configurado corretamente
+ * para enviar e-mails usando a função mail do PHP.
  */
 
 define('MAIL_IS_HTML'   , true);
