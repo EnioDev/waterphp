@@ -18,27 +18,23 @@ final class App {
             $this->load();
         }
     }
-    
+
     private function load()
     {
         $this->verifyCSRFToken();
 
-        // TODO: Create a default error 404 template to use when it is not defined by user.
-        $error404view = (defined('ERROR_404_VIEW') ? ERROR_404_VIEW : 'template/404');
-
         if (!Get::urlController())
         {
-            $index = (defined('CONTROLLER_INDEX') ? CONTROLLER_INDEX : null);
-            if ($index) {
-                if (file_exists(CONTROLLER_PATH . $index . '.php')) {
-                    $controller = 'controller\\' . $index;
+            if (CONTROLLER_INDEX) {
+                if (file_exists(CONTROLLER_PATH . CONTROLLER_INDEX . '.php')) {
+                    $controller = 'controller\\' . CONTROLLER_INDEX;
                     $controller = new $controller();
                     $controller->index();
                 } else {
-                    View::load($error404view);
+                    View::load(ERROR_404_VIEW);
                 }
             } else {
-                View::load($error404view);
+                View::load(ERROR_404_VIEW);
             }
         } else {
 
@@ -77,11 +73,11 @@ final class App {
                     if (strlen($method) == 0) {
                         $controller->index();
                     } else {
-                        View::load($error404view);
+                        View::load(ERROR_404_VIEW);
                     }
                 }
             } else {
-                View::load($error404view);
+                View::load(ERROR_404_VIEW);
             }
         }
     }
@@ -97,23 +93,20 @@ final class App {
             }
         }
     }
-    
+
     private function verifyEncryptionKey()
     {
-        $encryptionKey = (defined('ENCRYPTION_KEY') ? ENCRYPTION_KEY : null);
-        $debugMode = (defined('DEBUG_MODE') ? DEBUG_MODE : 1);
-
-        if ($encryptionKey) {
-            if (Session::get('app_session_encryption_key') != $encryptionKey) {
+        if (ENCRYPTION_KEY) {
+            if (Session::get('app_session_encryption_key') != ENCRYPTION_KEY) {
                 Session::stop();
-                if ($debugMode) {
-                    trigger_error('The encryption key has been changed! Your application will be restart.', E_USER_NOTICE);
+                if (DEBUG_MODE) {
+                    trigger_error('The encryption key has been changed! The application will be restart.', E_USER_NOTICE);
                 } else {
                     Redirect::to(Url::base());
                 }
             }
         } else {
-            trigger_error('The encryption key is not defined! See your configuration file.', E_USER_ERROR);
+            trigger_error('The encryption key is not defined! See the application configuration file (config.php).', E_USER_ERROR);
         }
         return true;
     }
