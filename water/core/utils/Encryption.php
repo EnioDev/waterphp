@@ -11,10 +11,8 @@ final class Encryption implements ICrypt
         self::validateNumArgs(__FUNCTION__, func_num_args(), 1, 1);
         self::validateArgType(__FUNCTION__, $decrypted, 1, ['string']);
 
-        $encryptionKey = (defined('ENCRYPTION_KEY') ? ENCRYPTION_KEY : null);
-
-        if ($encryptionKey and is_string($decrypted)) {
-            $encrypted = mcrypt_encrypt(MCRYPT_BLOWFISH, $encryptionKey, $decrypted, MCRYPT_MODE_ECB);
+        if (ENCRYPTION_KEY and is_string($decrypted)) {
+            $encrypted = mcrypt_encrypt(MCRYPT_BLOWFISH, ENCRYPTION_KEY, $decrypted, MCRYPT_MODE_ECB);
             $encrypted = base64_encode($encrypted);
             return trim($encrypted);
         }
@@ -26,11 +24,9 @@ final class Encryption implements ICrypt
         self::validateNumArgs(__FUNCTION__, func_num_args(), 1, 1);
         self::validateArgType(__FUNCTION__, $encrypted, 1, ['string']);
 
-        $encryptionKey = (defined('ENCRYPTION_KEY') ? ENCRYPTION_KEY : null);
-
-        if ($encryptionKey and is_string($encrypted)) {
+        if (ENCRYPTION_KEY and is_string($encrypted)) {
             $encrypted = base64_decode($encrypted);
-            $decrypted = mcrypt_decrypt(MCRYPT_BLOWFISH, $encryptionKey, $encrypted, MCRYPT_MODE_ECB);
+            $decrypted = mcrypt_decrypt(MCRYPT_BLOWFISH, ENCRYPTION_KEY, $encrypted, MCRYPT_MODE_ECB);
             return trim($decrypted);
         }
         return $encrypted;
