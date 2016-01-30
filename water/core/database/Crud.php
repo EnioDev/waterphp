@@ -57,6 +57,9 @@ class Crud extends Db implements ICrud
         if (is_array($data) and isset($data['fields']) and isset($data['values'])) {
             if (count($data['fields']) === count($data['values'])) {
                 $continue = true;
+            } else {
+                $this->setDebugBacktrace(debug_backtrace()[0]['file'], debug_backtrace()[0]['line']);
+                throw new \Exception('The number of columns don\'t match the number of values.');
             }
         }
         if (!$continue) { return false; }
@@ -95,11 +98,13 @@ class Crud extends Db implements ICrud
 
         if (is_array($data) and isset($data['fields']) and isset($data['values'])) {
             if (count($data['fields']) === count($data['values'])) {
-                $continue = true;
+                if (is_string($id) or is_integer($id)) {
+                    $continue = true;
+                }
+            } else {
+                $this->setDebugBacktrace(debug_backtrace()[0]['file'], debug_backtrace()[0]['line']);
+                throw new \Exception('The number of columns don\'t match the number of values.');
             }
-        }
-        if (is_string($id) or is_integer($id)) {
-            $continue = true;
         }
         if (!$continue) { return false; }
 
@@ -201,6 +206,9 @@ class Crud extends Db implements ICrud
         if (is_array($args) and isset($args['fields']) and isset($args['values'])) {
             if (count($args['fields']) === count($args['values'])) {
                 $continue = true;
+            } else {
+                $this->setDebugBacktrace(debug_backtrace()[0]['file'], debug_backtrace()[0]['line']);
+                throw new \Exception('The number of columns don\'t match the number of values.');
             }
         }
         if (!$continue) { return []; }
