@@ -6,32 +6,24 @@ final class Router {
     private $controller = null;
     private $method = null;
 
-    public function controller($routeName, $controller)
+    private static function checkRouteName($routeName)
     {
-        if ($this->checkRouteName($routeName))
-        {
-            if (!$this->isControllerMethod($controller))
-            {
-                if (!isset(self::$routes[$routeName]))
-                {
-                    self::$routes[$routeName] = $controller;
-                }
-            }
+        $pattern = '/^([a-z]+[0-9]*[_|-]*)+([a-z0-9]*[_|-]*)*$/';
+        $result = preg_match($pattern, $routeName);
+        if ($result) {
+            return true;
+        } else {
+            trigger_error('The route name "<b>'.$routeName.'</b>" is not a valid name. You can use letters, numbers, "_" and "-" to make a route.', E_USER_ERROR);
         }
     }
 
-    public function controllerMethod($routeName, $controllerMethod)
+    private function isControllerMethod($controllerMethod)
     {
-        if ($this->checkRouteName($routeName))
-        {
-            if ($this->isControllerMethod($controllerMethod))
-            {
-                if (!isset(self::$routes[$routeName]))
-                {
-                    self::$routes[$routeName] = $controllerMethod;
-                }
-            }
+        $segments = explode('@', $controllerMethod);
+        if (is_array($segments) and count($segments) === 2) {
+            return $segments;
         }
+        return false;
     }
 
     private function setControllerMethod($controllerMethod)
@@ -46,13 +38,9 @@ final class Router {
         }
     }
 
-    private function isControllerMethod($controllerMethod)
+    public static function getRoutes()
     {
-        $segments = explode('@', $controllerMethod);
-        if (is_array($segments) and count($segments) === 2) {
-            return $segments;
-        }
-        return false;
+        return self::$routes;
     }
 
     public function getController()
@@ -95,19 +83,31 @@ final class Router {
         return null;
     }
 
-    public static function getRoutes()
+    public function controller($routeName, $controller)
     {
-        return self::$routes;
+        if ($this->checkRouteName($routeName))
+        {
+            if (!$this->isControllerMethod($controller))
+            {
+                if (!isset(self::$routes[$routeName]))
+                {
+                    self::$routes[$routeName] = $controller;
+                }
+            }
+        }
     }
 
-    private static function checkRouteName($routeName)
+    public function controllerMethod($routeName, $controllerMethod)
     {
-        $pattern = '/^([a-z]+[0-9]*[_|-]*)+([a-z0-9]*[_|-]*)*$/';
-        $result = preg_match($pattern, $routeName);
-        if ($result) {
-            return true;
-        } else {
-            trigger_error('The route name "<b>'.$routeName.'</b>" is not a valid name. You can use letters, numbers, "_" and "-" to make a route.', E_USER_ERROR);
+        if ($this->checkRouteName($routeName))
+        {
+            if ($this->isControllerMethod($controllerMethod))
+            {
+                if (!isset(self::$routes[$routeName]))
+                {
+                    self::$routes[$routeName] = $controllerMethod;
+                }
+            }
         }
     }
 }
