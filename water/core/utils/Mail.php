@@ -18,42 +18,39 @@ final class Mail
 
         if (defined('MAIL_IS_HTML')) {
 
-            if (is_bool(MAIL_IS_HTML) and MAIL_IS_HTML) {
+            if ((is_bool(MAIL_IS_HTML) or is_integer(MAIL_IS_HTML)) and MAIL_IS_HTML) {
 
-                $charset = (defined('MAIL_CHARSET') ? MAIL_CHARSET : 'utf-8');
+                $charset = ((defined('MAIL_CHARSET') and is_string(MAIL_CHARSET)) ? MAIL_CHARSET : 'utf-8');
 
                 $this->headers[] = 'MIME-Version: 1.0';
                 $this->headers[] = 'Content-type: text/html; charset=' . $charset;
             }
         }
 
-        if (defined('MAIL_FROM')) {
+        if (defined('MAIL_FROM') and is_string(MAIL_FROM)) {
 
-            if (is_string(MAIL_FROM)) {
+            $this->headers[] = 'From: ' . MAIL_FROM;
+            $this->headers[] = 'Return-path: ' . MAIL_FROM;
+            $this->headers[] = 'Reply-to: ' . MAIL_FROM;
+            $this->headers[] = 'X-Mailer: PHP/' . phpversion();
 
-                $this->headers[] = 'From: ' . MAIL_FROM;
-                $this->headers[] = 'Return-path: ' . MAIL_FROM;
-                $this->headers[] = 'Reply-to: ' . MAIL_FROM;
-                $this->headers[] = 'X-Mailer: PHP/' . phpversion();
-
-                $this->from = MAIL_FROM;
-            }
+            $this->from = MAIL_FROM;
         }
     }
 
     private function isAllDefined() {
 
         if (is_null($this->to)) {
-            throw new \Exception('You need to set a email recipient on send method!');
+            throw new \Exception('You need to pass a e-mail recipient on send method! See the documentation for more details.');
         }
         if (is_null($this->subject)) {
-            throw new \Exception('You need to set a email subject!');
+            throw new \Exception('You need to set the subject to send a e-mail! See the documentation for more details.');
         }
         if (is_null($this->message)) {
-            throw new \Exception('You need to set a email message!');
+            throw new \Exception('You need to set the message to send a e-mail! See the documentation for more details.');
         }
         if (is_null($this->from)) {
-            throw new \Exception('You need to set a email sender! See your configuration file.');
+            throw new \Exception('You need to set MAIL_FROM on app/config.php to send a e-mail!');
         }
         return true;
     }
