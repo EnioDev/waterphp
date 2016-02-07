@@ -10,7 +10,7 @@
  * É altamente recomendado desativar em ambiente de produção, porém quando
  * estiver desenvolvendo matenha ativado este modo para visualizar qualquer
  * alerta de erro.
- * .
+ *
  * Atenção: Erros fatais ou erros de sintaxe que impedem a execução do
  * programa serão exibidos mesmo que este modo esteja desativado.
  *
