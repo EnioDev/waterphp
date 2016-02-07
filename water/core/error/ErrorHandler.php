@@ -111,6 +111,7 @@ final class ErrorHandler
         $noRedirect += (strrpos($file, 'public' . DS . 'index.php')) ? 1 : 0;
         $noRedirect += (strrpos($file, 'config' . DS . 'config.php')) ? 1 : 0;
         $noRedirect += (strrpos($file, 'config' . DS . 'routes.php')) ? 1 : 0;
+        $noRedirect += (strrpos($file, 'water'  . DS . 'helpers.php')) ? 1 : 0;
         $noRedirect += (strrpos($file, 'water'  . DS . 'core')) ? 1 : 0;
 
         if(!$noRedirect) {
