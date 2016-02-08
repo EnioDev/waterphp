@@ -30,12 +30,18 @@ final class Router {
     {
         $segments = $this->isControllerMethod($controllerMethod);
         if ($segments) {
-            $this->controller = $segments[0];
+            $this->controller = $this->getOSPath($segments[0]);
             $this->method = $segments[1];
         } else {
-            $this->controller = self::$routes[Get::urlController()];
+            $this->controller = $this->getOSPath(self::$routes[Get::urlController()]);
             $this->method = null;
         }
+    }
+
+    private function getOSPath($controller)
+    {
+        $controller = str_replace('/', DS, $controller);
+        return $controller;
     }
 
     public static function getRoutes()
