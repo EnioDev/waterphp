@@ -6,6 +6,8 @@ final class Router {
     private $controller = null;
     private $method = null;
 
+    use \core\traits\ClassMethods;
+
     private static function checkRouteName($routeName)
     {
         $pattern = '/^([a-z]+[0-9]*[_|-]*)+([a-z0-9]*[_|-]*)*$/';
@@ -46,11 +48,15 @@ final class Router {
 
     public static function getRoutes()
     {
+        self::validateNumArgs(__FUNCTION__, func_num_args());
+
         return self::$routes;
     }
 
     public function getController()
     {
+        self::validateNumArgs(__FUNCTION__, func_num_args());
+
         $routeName = Get::urlController();
         if (isset(self::$routes[$routeName])) {
             $this->setControllerMethod(self::$routes[$routeName]);
@@ -67,6 +73,8 @@ final class Router {
 
     public function getMethod()
     {
+        self::validateNumArgs(__FUNCTION__, func_num_args());
+
         if ($this->getController()) {
             return $this->method;
         }
@@ -75,6 +83,8 @@ final class Router {
 
     public function getParams()
     {
+        self::validateNumArgs(__FUNCTION__, func_num_args());
+
         if ($this->getMethod())
         {
             $routeName = array_search($this->controller . '@' . $this->method, self::$routes);
@@ -91,6 +101,10 @@ final class Router {
 
     public function controller($routeName, $controller)
     {
+        self::validateNumArgs(__FUNCTION__, func_num_args(), 2, 2);
+        self::validateArgType(__FUNCTION__, $routeName, 1, ['string']);
+        self::validateArgType(__FUNCTION__, $controller, 2, ['string']);
+
         if ($this->checkRouteName($routeName))
         {
             if (!$this->isControllerMethod($controller))
@@ -105,6 +119,10 @@ final class Router {
 
     public function controllerMethod($routeName, $controllerMethod)
     {
+        self::validateNumArgs(__FUNCTION__, func_num_args(), 2, 2);
+        self::validateArgType(__FUNCTION__, $routeName, 1, ['string']);
+        self::validateArgType(__FUNCTION__, $controllerMethod, 2, ['string']);
+
         if ($this->checkRouteName($routeName))
         {
             if ($this->isControllerMethod($controllerMethod))
