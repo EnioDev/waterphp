@@ -10,7 +10,7 @@ final class View
         $total = count($parts);
         $final = $total - 1;
         $filename = VIEW_PATH;
-        for ($i = 0; $i < ($final); $i++) {
+        for ($i = 0; $i < $final; $i++) {
             $filename .= $parts[$i] . DS;
         }
         $filename .= $parts[$final] . '.php';
