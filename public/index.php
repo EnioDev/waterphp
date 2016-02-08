@@ -45,7 +45,7 @@ define('SUB_FOLDER', str_replace('public', '', dirname($_SERVER['SCRIPT_NAME']))
 
 define('BASE_URL', PROTOCOL . DOMAIN . SUB_FOLDER);
 
-define('PUBLIC_URL', BASE_URL . 'public' . DS);
+define('PUBLIC_URL', BASE_URL . 'public/');
 
 /*
  * ==============================================================
