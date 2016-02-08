@@ -108,13 +108,21 @@ final class ErrorHandler
 
         $noRedirect = 0;
 
+        // These files can't be redirected to debug.
         $noRedirect += (strrpos($file, 'public' . DS . 'index.php')) ? 1 : 0;
         $noRedirect += (strrpos($file, 'config' . DS . 'config.php')) ? 1 : 0;
         $noRedirect += (strrpos($file, 'config' . DS . 'routes.php')) ? 1 : 0;
         $noRedirect += (strrpos($file, 'water'  . DS . 'helpers.php')) ? 1 : 0;
         $noRedirect += (strrpos($file, 'water'  . DS . 'core')) ? 1 : 0;
 
-        if(!$noRedirect) {
+        $redirect = 0;
+
+        // When is missing argument in a function (warning).
+        $redirect += (strrpos($message, 'app' . DS . 'controller')) ? 1 : 0;
+        $redirect += (strrpos($message, 'app' . DS . 'model')) ? 1 : 0;
+        $redirect += (strrpos($message, 'app' . DS . 'view')) ? 1 : 0;
+
+        if(!$noRedirect or $redirect) {
             if (($debug and !$stop)) {
                 // If it's a Warning or Notice.
                 throw new \ErrorException($message, $code, 0, $file, $line);
