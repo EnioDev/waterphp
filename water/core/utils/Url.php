@@ -24,7 +24,7 @@ final class Url
         if ($segments and is_string($segments) and strlen($segments) > 0) {
             if ($params and is_array($params) and count($params) > 0) {
                 $params = implode('/', $params);
-                return BASE_URL . $segments . DS . $params;
+                return BASE_URL . $segments . '/' . $params;
             }
             return BASE_URL . $segments;
         }
