@@ -43,9 +43,9 @@ define('DOMAIN', $_SERVER['HTTP_HOST']);
 
 define('SUB_FOLDER', str_replace('public', '', dirname($_SERVER['SCRIPT_NAME'])));
 
-define('BASE_URL', PROTOCOL . DOMAIN . SUB_FOLDER);
+define('BASE_URL', PROTOCOL . DOMAIN . ((substr(SUB_FOLDER, -1, 1) == '/') ? substr(SUB_FOLDER, 0, strlen(SUB_FOLDER)-1) : SUB_FOLDER));
 
-define('PUBLIC_URL', BASE_URL . 'public/');
+define('PUBLIC_URL', BASE_URL . '/public');
 
 /*
  * ==============================================================

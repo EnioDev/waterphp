@@ -11,7 +11,7 @@ final class Url
     {
         self::validateNumArgs(__FUNCTION__, func_num_args());
 
-        $url = self::base() . Get::urlSegments();
+        $url = self::base() . '/' . Get::urlSegments();
         return $url;
     }
 
@@ -24,9 +24,9 @@ final class Url
         if ($segments and is_string($segments) and strlen($segments) > 0) {
             if ($params and is_array($params) and count($params) > 0) {
                 $params = implode('/', $params);
-                return BASE_URL . $segments . '/' . $params;
+                return BASE_URL . '/' . $segments . '/' . $params;
             }
-            return BASE_URL . $segments;
+            return BASE_URL . '/' . $segments;
         }
         return BASE_URL;
     }
@@ -69,7 +69,7 @@ final class Url
         self::validateArgType(__FUNCTION__, $resource, 1, ['string']);
 
         if (is_string($resource) and strlen($resource) > 0) {
-            return PUBLIC_URL . $resource;
+            return PUBLIC_URL . '/' . $resource;
         }
         return '';
     }
