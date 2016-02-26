@@ -11,7 +11,11 @@ final class Url
     {
         self::validateNumArgs(__FUNCTION__, func_num_args());
 
-        $url = self::base() . '/' . Get::urlSegments();
+        if (Get::urlSegments()) {
+            $url = self::base() . '/' . Get::urlSegments();
+        } else {
+            $url = self::base();
+        }
         return $url;
     }
 
