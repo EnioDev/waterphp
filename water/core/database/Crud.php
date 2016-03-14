@@ -10,6 +10,30 @@ class Crud extends Db implements ICrud
 
     use \core\traits\ClassMethods;
 
+    public function setTable($table)
+    {
+        if (is_string($table) and strlen($table) > 0) {
+            $this->table = $table;
+        }
+    }
+
+    public function getTable()
+    {
+        return $this->table;
+    }
+
+    public function setPrimaryKey($column)
+    {
+        if (is_string($column) and strlen($column) > 0) {
+            $this->primary_key = $column;
+        }
+    }
+
+    public function getPrimaryKey()
+    {
+        return $this->primary_key;
+    }
+
     private function setDebugBacktrace($file, $line)
     {
         $_SESSION['debug_backtrace_file'] = $file;
@@ -54,19 +78,25 @@ class Crud extends Db implements ICrud
 
         $continue = false;
 
+        // Validation Data
         if (is_array($data) and isset($data['fields']) and isset($data['values'])) {
+
             if (count($data['fields']) === count($data['values'])) {
                 $continue = true;
             } else {
+                // Exception
                 $this->setDebugBacktrace(debug_backtrace()[0]['file'], debug_backtrace()[0]['line']);
                 throw new \Exception('The number of columns don\'t match the number of values.');
             }
         }
-        if (!$continue) { return false; }
 
+        if (!$continue) { return false; } // Return: False
+
+        // Get Fields
         $fields = implode(',', $data['fields']);
         $total  = count($data['fields']);
 
+        // String SQL
         $this->sql = "INSERT INTO " . $this->table . " (" . $fields . ") VALUES (";
 
         foreach ($data['fields'] as $i => $field)
@@ -79,10 +109,13 @@ class Crud extends Db implements ICrud
             }
         }
 
+        // Try Insert
         try {
             $stmt = parent::prepare($this->sql);
+            // Return: True or False
             return $stmt->execute($data['values']);
         } catch (\Exception $e) {
+            // Exception
             $this->setDebugBacktrace(debug_backtrace()[0]['file'], debug_backtrace()[0]['line']);
             throw new \Exception($e->getMessage());
         }
@@ -96,20 +129,26 @@ class Crud extends Db implements ICrud
 
         $continue = false;
 
+        // Validation Data
         if (is_array($data) and isset($data['fields']) and isset($data['values'])) {
+
             if (count($data['fields']) === count($data['values'])) {
                 if (is_string($id) or is_integer($id)) {
                     $continue = true;
                 }
             } else {
+                // Exception
                 $this->setDebugBacktrace(debug_backtrace()[0]['file'], debug_backtrace()[0]['line']);
                 throw new \Exception('The number of columns don\'t match the number of values.');
             }
         }
-        if (!$continue) { return false; }
 
+        if (!$continue) { return false; } // Return: False
+
+        // Total Fields
         $total = count($data['fields']);
 
+        // String SQL
         $this->sql = "UPDATE " . $this->table . " SET ";
 
         foreach ($data['fields'] as $i => $field)
@@ -122,11 +161,14 @@ class Crud extends Db implements ICrud
         $this->sql .= " WHERE ";
         $this->sql .= $this->primary_key . " = ?";
 
+        // Try Update
         try {
             $stmt = parent::prepare($this->sql);
             array_push($data['values'], $id);
+            // Return: True or False
             return $stmt->execute($data['values']);
         } catch (\Exception $e) {
+            // Exception
             $this->setDebugBacktrace(debug_backtrace()[0]['file'], debug_backtrace()[0]['line']);
             throw new \Exception($e->getMessage());
         }
@@ -137,32 +179,41 @@ class Crud extends Db implements ICrud
         self::validateNumArgs(__FUNCTION__, func_num_args(), 1, 1);
         self::validateArgType(__FUNCTION__, $id, 1, ['string', 'integer']);
 
-        if ($id and (is_string($id) or is_integer($id))) {
+        // Validation
+        if (!$id or (!is_string($id) and !is_integer($id))) {
+            return false; // Return: False
+        }
 
-            $this->sql = "DELETE FROM " . $this->table . " WHERE id = :id";
+        // String SQL
+        $this->sql = "DELETE FROM " . $this->table . " WHERE id = :id";
 
-            try {
-                $stmt = parent::prepare($this->sql);
-                $stmt->bindParam(':id', $id, parent::paramType($id));
-                return $stmt->execute();
-            } catch (\Exception $e) {
-                $this->setDebugBacktrace(debug_backtrace()[0]['file'], debug_backtrace()[0]['line']);
-                throw new \Exception($e->getMessage());
-            }
-
-        } else { return false; }
+        // Try Delete
+        try {
+            $stmt = parent::prepare($this->sql);
+            $stmt->bindParam(':id', $id, parent::paramType($id));
+            // Return: True or False
+            return $stmt->execute();
+        } catch (\Exception $e) {
+            // Exception
+            $this->setDebugBacktrace(debug_backtrace()[0]['file'], debug_backtrace()[0]['line']);
+            throw new \Exception($e->getMessage());
+        }
     }
 
     public final function deleteAll()
     {
         self::validateNumArgs(__FUNCTION__, func_num_args());
 
+        // String SQL
         $this->sql = "DELETE FROM " . $this->table;
 
+        // Try Delete All
         try {
             $stmt = parent::prepare($this->sql);
+            // Return: True or False
             return $stmt->execute();
         } catch (\Exception $e) {
+            // Exception
             $this->setDebugBacktrace(debug_backtrace()[0]['file'], debug_backtrace()[0]['line']);
             throw new \Exception($e->getMessage());
         }
@@ -173,25 +224,31 @@ class Crud extends Db implements ICrud
         self::validateNumArgs(__FUNCTION__, func_num_args(), 1, 1);
         self::validateArgType(__FUNCTION__, $id, 1, ['string', 'integer']);
 
-        if ($id and (is_string($id) or is_integer($id))) {
+        // Validation
+        if (!$id or (!is_string($id) and !is_integer($id))) {
+            return false; // Return: False
+        }
 
-            $this->sql = "SELECT * FROM " . $this->table . " WHERE id = :id";
+        // String SQL
+        $this->sql = "SELECT * FROM " . $this->table . " WHERE id = :id";
 
-            try {
-                $stmt = parent::prepare($this->sql);
-                $stmt->bindParam(':id', $id, parent::paramType($id));
-                $result = $stmt->execute();
-                if ($result) {
-                    return $stmt->fetch();
-                } else {
-                    return false;
-                }
-            } catch (\Exception $e) {
-                $this->setDebugBacktrace(debug_backtrace()[0]['file'], debug_backtrace()[0]['line']);
-                throw new \Exception($e->getMessage());
+        // Try Find
+        try {
+            $stmt = parent::prepare($this->sql);
+            $stmt->bindParam(':id', $id, parent::paramType($id));
+            $result = $stmt->execute();
+            if ($result) {
+                // Return: Object
+                return $stmt->fetch();
+            } else {
+                // Return: False
+                return $result;
             }
-
-        } else { return null; }
+        } catch (\Exception $e) {
+            // Exception
+            $this->setDebugBacktrace(debug_backtrace()[0]['file'], debug_backtrace()[0]['line']);
+            throw new \Exception($e->getMessage());
+        }
     }
 
     public final function where($args, $column = null, $direction = null)
@@ -203,16 +260,21 @@ class Crud extends Db implements ICrud
 
         $continue = false;
 
+        // Validation Args
         if (is_array($args) and isset($args['fields']) and isset($args['values'])) {
+
             if (count($args['fields']) === count($args['values'])) {
                 $continue = true;
             } else {
+                // Exception
                 $this->setDebugBacktrace(debug_backtrace()[0]['file'], debug_backtrace()[0]['line']);
                 throw new \Exception('The number of columns don\'t match the number of values.');
             }
         }
-        if (!$continue) { return []; }
 
+        if (!$continue) { return false; } // Return: False
+
+        // String SQL
         $this->sql = "SELECT * FROM " . $this->table . " WHERE 1 = 1";
 
         foreach ($args['fields'] as $field) {
@@ -221,15 +283,19 @@ class Crud extends Db implements ICrud
 
         $this->orderBy($column, $direction);
 
+        // Try Where
         try {
             $stmt = parent::prepare($this->sql);
             $result = $stmt->execute($args['values']);
             if ($result) {
+                // Return: Array of Objects or Empty Array
                 return $stmt->fetchAll();
             } else {
-                return false;
+                // Return: False
+                return $result;
             }
         } catch (\Exception $e) {
+            // Exception
             $this->setDebugBacktrace(debug_backtrace()[0]['file'], debug_backtrace()[0]['line']);
             throw new \Exception($e->getMessage());
         }
@@ -241,19 +307,24 @@ class Crud extends Db implements ICrud
         self::validateArgType(__FUNCTION__, $column, 1, ['string', 'null']);
         self::validateArgType(__FUNCTION__, $direction, 2, ['string', 'null']);
 
+        // String SQL
         $this->sql = "SELECT * FROM " . $this->table;
 
         $this->orderBy($column, $direction);
 
+        // Try Get All
         try {
             $stmt = parent::prepare($this->sql);
             $result = $stmt->execute();
             if ($result) {
+                // Return: Array of Objects or Empty Array
                 return $stmt->fetchAll();
             } else {
-                return false;
+                // Return: False
+                return $result;
             }
         } catch (\Exception $e) {
+            // Exception
             $this->setDebugBacktrace(debug_backtrace()[0]['file'], debug_backtrace()[0]['line']);
             throw new \Exception($e->getMessage());
         }
@@ -265,10 +336,13 @@ class Crud extends Db implements ICrud
         self::validateArgType(__FUNCTION__, $sql, 1, ['string']);
         self::validateArgType(__FUNCTION__, $values, 2, ['array']);
 
-        if (!is_string($sql)) { return []; }
+        // Validation
+        if (!is_string($sql)) { return false; } // Return: False
 
+        // String SQL
         $this->sql = $sql;
 
+        // Try Query
         try {
             $stmt = parent::prepare($this->sql);
             if (count($values) > 0) {
@@ -276,13 +350,16 @@ class Crud extends Db implements ICrud
             } else {
                 $result = $stmt->execute();
             }
-            try {
+            if ($result) {
+                // Return: Array of Objects or Empty Array
                 $records = $stmt->fetchAll();
                 return $records;
-            } catch (\Exception $e) {
+            } else {
+                // Return: False
                 return $result;
             }
         } catch (\Exception $e) {
+            // Exception
             $this->setDebugBacktrace(debug_backtrace()[0]['file'], debug_backtrace()[0]['line']);
             throw new \Exception($e->getMessage());
         }
