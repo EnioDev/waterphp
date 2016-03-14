@@ -2,8 +2,6 @@
     function loadClass($className)
     {
         $fileName = '';
-        $appPath = APP_PATH;
-        $libPath = LIB_PATH;
 
         if (false !== ($lastNsPos = strripos($className, '\\')))
         {
@@ -13,14 +11,13 @@
         }
 
         $fileName .= str_replace('_', DS, $className) . '.php';
-        $fullFileName = $libPath . $fileName;
+        $fullFileName = LIB_PATH . $fileName;
 
-        if (file_exists($fullFileName))
-        {
+        if (file_exists($fullFileName)) {
             require_once($fullFileName);
         }
         else {
-            $fullFileName = $appPath . $fileName;
+            $fullFileName = APP_PATH . $fileName;
             if (file_exists($fullFileName)) {
                 require_once($fullFileName);
             }
