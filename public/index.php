@@ -39,9 +39,9 @@ define('LIB_PATH', ROOT_PATH . 'water' . DS);
 
 define('PROTOCOL', 'http://');
 
-define('DOMAIN', $_SERVER['HTTP_HOST']);
+define('DOMAIN', (isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : ''));
 
-define('SUB_FOLDER', str_replace('public', '', dirname($_SERVER['SCRIPT_NAME'])));
+define('SUB_FOLDER', str_replace('public', '', dirname((isset($_SERVER['SCRIPT_NAME']) ? $_SERVER['SCRIPT_NAME'] : ''))));
 
 define('BASE_URL', PROTOCOL . DOMAIN . ((substr(SUB_FOLDER, -1, 1) == '/') ? substr(SUB_FOLDER, 0, strlen(SUB_FOLDER)-1) : SUB_FOLDER));
 
@@ -125,7 +125,7 @@ ini_set('session.gc_divisor', 1);
  */
 
 if (!defined('CONTROLLER_INDEX') or !is_string(CONTROLLER_INDEX)) {
-    define('CONTROLLER_INDEX', null);
+    define('CONTROLLER_INDEX', 'Home');
 }
 
 /*
@@ -135,7 +135,7 @@ if (!defined('CONTROLLER_INDEX') or !is_string(CONTROLLER_INDEX)) {
  */
 
 if (!defined('DEFAULT_LANGUAGE') or !is_string(DEFAULT_LANGUAGE)) {
-    define('DEFAULT_LANGUAGE', null);
+    define('DEFAULT_LANGUAGE', 'pt-br');
 }
 
 /*
@@ -145,7 +145,7 @@ if (!defined('DEFAULT_LANGUAGE') or !is_string(DEFAULT_LANGUAGE)) {
  */
 
 if (!defined('ENCRYPTION_KEY') or !is_string(ENCRYPTION_KEY)) {
-    define('ENCRYPTION_KEY', null);
+    define('ENCRYPTION_KEY', '');
 }
 
 /*
