@@ -54,7 +54,7 @@ define('SESSION_LIFETIME', 7200); // 7200 = 2h
 
 /*
  * ---------------------------------------------------------------------------
- * CONTROLADOR
+ * CONTROLADOR PADRÃO
  * --------------------------------------------------------------------------
  *
  * Você deve definir um controlador padrão para ser executado caso nenhum
@@ -123,17 +123,25 @@ define('ENCRYPTION_KEY', 'your_secret_key');
  * será lançada sempre que tentar executar uma operação de banco de dados
  * ou se estiver usando a aplicação de exemplo com o framework.
  *
- * Consulte os drivers disponíveis na documentação do PHP para fazer a
- * conexão com os diversos bancos de dados usando o PDO (PHP Data Objects).
- * Exemplo: use 'mysql' para Mysql ou 'pgsql' para Postgresql.
+ * Consulte na documentação do PHP (php.net) os drivers de banco de dados
+ * disponíveis para PDO (PHP Data Objects), e então configure o tipo de
+ * conexão. Segue alguns exemplos:
+ *
+ * Mysql:
+ * define('DB_DBDRIVER' , 'mysql');
+ * define('DB_CONNPORT' , '3306');
+ *
+ * Postgresql:
+ * define('DB_DBDRIVER' , 'pgsql');
+ * define('DB_CONNPORT' , '5432');
  */
 
-define('DB_DRIVER'  , ''); // Informe o driver desejado para conectar-se ao banco.
-define('DB_HOST'    , ''); // Informe o nome do servidor ou domínio. Ex: localhost.
-define('DB_PORT'    , ''); // Informe a porta para conectar-se ao banco. Ex: 3306 (Mysql) ou 5432 (Postgresql).
-define('DB_NAME'    , ''); // Informe o nome do banco que você criou para usar com a aplicação.
-define('DB_USER'    , ''); // Informe o usuário para fazer a conexão com o banco.
-define('DB_PASSWORD', ''); // Informe a senha do usuário definido acima.
+define('DB_DBDRIVER' , 'mysql');
+define('DB_HOSTNAME' , 'localhost');
+define('DB_CONNPORT' , '3306');
+define('DB_DATABASE' , '');
+define('DB_USERNAME' , '');
+define('DB_PASSWORD' , '');
 
 /*
  * --------------------------------------------------------------------------

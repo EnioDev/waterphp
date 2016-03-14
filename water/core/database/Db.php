@@ -8,11 +8,11 @@ class Db
     {
 		if (is_null(self::$instance))
         {
-            $driver = (defined('DB_DRIVER') ? DB_DRIVER : null);
-            $dbHost = (defined('DB_HOST') ? DB_HOST : null);
-            $dbPort = (defined('DB_PORT') ? DB_PORT : null);
-            $dbName = (defined('DB_NAME') ? DB_NAME : null);
-            $dbUser = (defined('DB_USER') ? DB_USER : null);
+            $driver = (defined('DB_DBDRIVER') ? DB_DBDRIVER : null);
+            $dbHost = (defined('DB_HOSTNAME') ? DB_HOSTNAME : null);
+            $dbPort = (defined('DB_CONNPORT') ? DB_CONNPORT : null);
+            $dbName = (defined('DB_DATABASE') ? DB_DATABASE : null);
+            $dbUser = (defined('DB_USERNAME') ? DB_USERNAME : null);
             $dbPass = (defined('DB_PASSWORD') ? DB_PASSWORD : null);
 
             if ($driver and $dbHost and $dbPort and $dbName and $dbUser) {
