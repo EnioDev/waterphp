@@ -12,7 +12,9 @@ final class Lang
         self::validateNumArgs(__FUNCTION__, func_num_args(), 1, 1);
         self::validateArgType(__FUNCTION__, $language, 1, ['string']);
 
-        Session::set('app_session_language', (is_string($language) ? $language : DEFAULT_LANGUAGE), true);
+        $language = is_string($language) ? $language : DEFAULT_LANGUAGE;
+
+        Session::set('app_session_language', $language, true);
 
         self::load(self::getSessionLanguage());
     }
@@ -42,7 +44,9 @@ final class Lang
         if ((!self::$loaded and file_exists($file)) or $reload) {
             self::$xml = simplexml_load_file($file);
             self::$loaded = 1;
+            return true;
         }
+        return false;
     }
 
     public static function strings($node = null)
@@ -57,7 +61,6 @@ final class Lang
         } else {
             $strings = self::$xml;
         }
-
         return $strings;
     }
 }
