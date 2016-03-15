@@ -89,7 +89,7 @@ require_once(CONFIG_PATH . 'config.php');
  * ==============================================================
  */
 
-if (!defined('DEBUG_MODE') or !(is_integer(DEBUG_MODE) or is_bool(DEBUG_MODE))) {
+if (!defined('DEBUG_MODE') or (!is_integer(DEBUG_MODE) and !is_bool(DEBUG_MODE))) {
     define('DEBUG_MODE', 1);
 }
 // TODO: Create a default debug template to use when it is not defined by user.
@@ -107,7 +107,7 @@ if (!defined('ERROR_404_VIEW') or !is_string(ERROR_404_VIEW)) {
  * ==============================================================
  */
 
-if (!defined('SESSION_LIFETIME') or !(is_integer(SESSION_LIFETIME) or is_string(SESSION_LIFETIME))) {
+if (!defined('SESSION_LIFETIME') or (!is_integer(SESSION_LIFETIME) and !is_string(SESSION_LIFETIME))) {
     define('SESSION_LIFETIME', 7200);
 }
 
