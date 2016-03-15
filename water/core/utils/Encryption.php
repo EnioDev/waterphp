@@ -16,7 +16,7 @@ final class Encryption implements ICrypt
             $encrypted = base64_encode($encrypted);
             return trim($encrypted);
         }
-        return $decrypted;
+        return '';
     }
 
     public static function decode($encrypted)
@@ -29,6 +29,6 @@ final class Encryption implements ICrypt
             $decrypted = mcrypt_decrypt(MCRYPT_BLOWFISH, ENCRYPTION_KEY, $encrypted, MCRYPT_MODE_ECB);
             return trim($decrypted);
         }
-        return $encrypted;
+        return '';
     }
 }
