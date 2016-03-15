@@ -10,7 +10,7 @@
             $fileName = str_replace('\\', DS, $namespace) . DS;
         }
 
-        $fileName .= str_replace('_', DS, $className) . '.php';
+        $fileName .= $className . '.php';
         $fullFileName = LIB_PATH . $fileName;
 
         if (file_exists($fullFileName)) {
