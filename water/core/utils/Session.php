@@ -33,7 +33,9 @@ final class Session
         if (session_id()) {
             session_unset();
             session_destroy();
+            return true;
         }
+        return false;
     }
 
     public static function set($key, $value, $force = false)
@@ -55,7 +57,7 @@ final class Session
         if (is_string($key) and isset($_SESSION[$key])) {
             return $_SESSION[$key];
         }
-        return null;
+        return false;
     }
 
     public static function forget($key)
@@ -66,8 +68,10 @@ final class Session
         if (is_string($key) and substr($key, 0, 12) !== 'app_session_') {
             if (isset($_SESSION[$key])) {
                 unset($_SESSION[$key]);
+                return true;
             }
         }
+        return false;
     }
 
     public static function token()
@@ -77,6 +81,6 @@ final class Session
         if (self::get('app_session_token')) {
             return Encryption::decode(self::get('app_session_token'));
         }
-        return null;
+        return '';
     }
 }
