@@ -5,10 +5,14 @@ trait ClassMethods
     private static function getClassName()
     {
         $namespace = (strrpos(__CLASS__, 'ClassMethods')) ? '' : __CLASS__;
+
         $parts = explode('\\', $namespace);
+
         $class = $parts[(count($parts) - 1)];
+
         if ($class === 'Crud') {
-            $class = 'Model'; // Model extends Crud
+            // Model extends Crud, so user calls functions by Model.
+            $class = 'Model';
         }
         return ($class) ? $class . '::' : '';
     }
@@ -31,6 +35,9 @@ trait ClassMethods
         $_SESSION['debug_backtrace_file'] = debug_backtrace()[1]['file'];
         $_SESSION['debug_backtrace_line'] = debug_backtrace()[1]['line'];
 
+        if ($numArgs == 0) {
+            $_SESSION['app_error_redirect'] = 1;
+        }
         trigger_error($msg, E_USER_WARNING);
     }
 

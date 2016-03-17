@@ -45,7 +45,7 @@ final class ErrorHandler
     }
 
     // It will catch Warnings and Notices.
-    // It will also catch E_USER_ERROR.
+    // It will also catch E_USER_ERROR, E_USER_WARNING, E_USER...
     public function waterErrorHandler($code, $message, $file, $line)
     {
         $this->setTitle($code);
@@ -67,7 +67,7 @@ final class ErrorHandler
     public function waterShutdownHandler()
     {
         $e = error_get_last();
-        if (count($e) == 0 or (isset($e['type']) and $e['type'] == '')) {
+        if (is_null($e) or (is_array($e) and count($e) == 0) or (isset($e['type']) and $e['type'] == '')) {
             return false;
         }
         $this->waterErrorHandler($e['type'], $e['message'], $e['file'], $e['line']);
@@ -115,14 +115,25 @@ final class ErrorHandler
         $noRedirect += (strrpos($file, 'water'  . DS . 'helpers.php')) ? 1 : 0;
         $noRedirect += (strrpos($file, 'water'  . DS . 'core')) ? 1 : 0;
 
-        $redirect = 0;
-
         // When is missing argument in a function (warning).
-        $redirect += (strrpos($message, 'app' . DS . 'controller')) ? 1 : 0;
-        $redirect += (strrpos($message, 'app' . DS . 'model')) ? 1 : 0;
-        $redirect += (strrpos($message, 'app' . DS . 'view')) ? 1 : 0;
+        $pos = strrpos(strtolower($message), 'missing argument');
+        $missingArgument = (is_integer($pos)) ? true : false;
 
-        if(!$noRedirect or $redirect) {
+        if ($missingArgument) {
+            // Stop function because warning message will be
+            // defined in ClassMethods.
+            return null;
+        }
+
+        if ($noRedirect and (!(isset($_SESSION['app_error_redirect']) and $_SESSION['app_error_redirect']))) {
+            // On bootstrap, config or core files.
+            if ($debug or $stop) {
+                $d = new Debug();
+                $d->index();
+            }
+        } else {
+            Session::forget('app_error_redirect');
+
             if (($debug and !$stop)) {
                 // If it's a Warning or Notice.
                 throw new \ErrorException($message, $code, 0, $file, $line);
@@ -130,12 +141,6 @@ final class ErrorHandler
                 // If it's a Fatal Error or Parse Error.
                 // If it's a Warning or Notice called by ErrorException.
                 Redirect::to(Url::base('debug'));
-            }
-        } else {
-            // On bootstrap, config or core files.
-            if ($debug or $stop) {
-                $d = new Debug();
-                $d->index();
             }
         }
     }
