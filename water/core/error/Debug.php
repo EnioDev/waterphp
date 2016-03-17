@@ -18,6 +18,10 @@ class Debug extends Controller
             'line' => Session::get('app_error_line')
         ];
 
+        if (substr($this->data['message'], -1, 1) !== '.') {
+            $this->data['message'] .= '.';
+        }
+
         if (Session::get('app_error_stop')) {
             Session::stop();
         }
