@@ -5,33 +5,40 @@ use core\contracts\ICrud;
 class Crud extends Db implements ICrud
 {
     private $sql;
-    protected $table;
-    protected $primary_key;
+    private $table;
+    private $primaryKey;
 
     use \core\traits\ClassMethods;
 
-    public function setTable($table)
+    public function __construct()
+    {
+        $this->sql = '';
+        $this->table = '';
+        $this->primaryKey = 'id';
+    }
+
+    protected final function setTable($table)
     {
         if (is_string($table) and strlen($table) > 0) {
             $this->table = $table;
         }
     }
 
-    public function getTable()
+    public final function getTable()
     {
         return $this->table;
     }
 
-    public function setPrimaryKey($column)
+    protected final function setPrimaryKey($column)
     {
         if (is_string($column) and strlen($column) > 0) {
-            $this->primary_key = $column;
+            $this->primaryKey = $column;
         }
     }
 
-    public function getPrimaryKey()
+    public final function getPrimaryKey()
     {
-        return $this->primary_key;
+        return $this->primaryKey;
     }
 
     private function setDebugBacktrace($file, $line)
@@ -159,7 +166,7 @@ class Crud extends Db implements ICrud
             }
         }
         $this->sql .= " WHERE ";
-        $this->sql .= $this->primary_key . " = ?";
+        $this->sql .= $this->primaryKey . " = ?";
 
         // Try Update
         try {
@@ -185,7 +192,7 @@ class Crud extends Db implements ICrud
         }
 
         // String SQL
-        $this->sql = "DELETE FROM " . $this->table . " WHERE id = :id";
+        $this->sql = "DELETE FROM " . $this->table . " WHERE " . $this->primaryKey . " = :id";
 
         // Try Delete
         try {
@@ -230,7 +237,7 @@ class Crud extends Db implements ICrud
         }
 
         // String SQL
-        $this->sql = "SELECT * FROM " . $this->table . " WHERE id = :id";
+        $this->sql = "SELECT * FROM " . $this->table . " WHERE " . $this->primaryKey . " = :id";
 
         // Try Find
         try {
