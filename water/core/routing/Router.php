@@ -15,7 +15,9 @@ final class Router {
         if ($result) {
             return true;
         } else {
-            trigger_error('The route name "<b>'.$routeName.'</b>" is not a valid name. You can use letters, numbers, "_" and "-" to make a route.', E_USER_ERROR);
+            $_SESSION['debug_backtrace_file'] = debug_backtrace()[1]['file'];
+            $_SESSION['debug_backtrace_line'] = debug_backtrace()[1]['line'];
+            trigger_error('The route name "<b>'.$routeName.'</b>" is not a valid name. You can use letters, numbers, "_" (underline) and "-" (minus symbol) to make a route.', E_USER_ERROR);
         }
     }
 
