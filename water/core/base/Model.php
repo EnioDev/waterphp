@@ -4,6 +4,9 @@ use core\database\Crud;
 
 class Model extends Crud
 {
-    protected $table = null;
-    protected $primary_key = 'id';
+    public function __construct($table, $column = '')
+    {
+        parent::setTable($table);
+        parent::setPrimaryKey($column);
+    }
 }
