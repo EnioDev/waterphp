@@ -6,4 +6,4 @@
 
 ## Aprenda WaterPHP
 
-Leia a [documentação](http://waterphp.org/doc/1.2.x) e saiba como instalar a aplicação de exemplo que o framework disponibiliza para você estudar e aprender mais rápido como usar.
+Leia a [documentação](http://waterphp.org/doc/1.4.x) e saiba como instalar a aplicação de exemplo que o framework disponibiliza para você estudar e aprender mais rápido como usar.
