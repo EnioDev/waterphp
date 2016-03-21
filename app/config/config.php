@@ -148,15 +148,17 @@ define('DB_PASSWORD' , '');
  * E-MAIL
  * --------------------------------------------------------------------------
  *
- * Defina as informações abaixo para enviar e-mails através da sua aplicação.
+ * Defina as informações abaixo para enviar mensagens através da sua
+ * aplicação usando a classe Mail.
  *
- * Atenção: Certifique-se que o PHP instalado em seu servidor (local ou
- * remoto, como o seu servidor de hospedagem) está configurado corretamente
- * para enviar e-mails usando a função mail do PHP.
+ * Atenção: Se estiver em seu ambiente de desenvolvimento, certifique-se
+ * que o servidor local e o php estão corretamente configurados para enviar
+ * e-mails.
+ *
+ * Dica: Consulte como instalar e configurar o postfix ou sendmail em seu SO.
  */
 
 define('MAIL_IS_HTML'   , true);
-define('MAIL_CHARSET'   , ''); // utf-8
-define('MAIL_FROM'      , ''); // user@domain.com
-define('MAIL_SMTP_HOST' , ''); // smtp.domain.com
-define('MAIL_SMTP_PORT' , ''); // 465
+define('MAIL_CHARSET'   , 'utf-8');
+define('MAIL_FROM'      , ''); // Seu E-mail: user@yourdomain.com
+define('MAIL_FROM_NAME' , ''); // Seu Nome

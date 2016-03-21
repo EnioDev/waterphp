@@ -14,22 +14,33 @@ final class Mail
     {
         self::validateNumArgs(__FUNCTION__, func_num_args());
 
+        $this->to = '';
+        $this->from = '';
+        $this->subject = '';
+        $this->message = '';
         $this->headers = array();
 
-        if (defined('MAIL_IS_HTML')) {
-
-            if ((is_bool(MAIL_IS_HTML) or is_integer(MAIL_IS_HTML)) and MAIL_IS_HTML) {
-
-                $charset = ((defined('MAIL_CHARSET') and is_string(MAIL_CHARSET)) ? MAIL_CHARSET : 'utf-8');
-
-                $this->headers[] = 'MIME-Version: 1.0';
-                $this->headers[] = 'Content-type: text/html; charset=' . $charset;
-            }
+        if (defined('MAIL_CHARSET') and is_string(MAIL_CHARSET) and !empty(MAIL_CHARSET)) {
+            $charset = MAIL_CHARSET;
+        } else {
+            $charset = 'iso-8859-1';
         }
 
-        if (defined('MAIL_FROM') and is_string(MAIL_FROM)) {
+        $this->headers[] = 'MIME-Version: 1.0';
 
-            $this->headers[] = 'From: ' . MAIL_FROM;
+        if (defined('MAIL_IS_HTML') and is_bool(MAIL_IS_HTML) and MAIL_IS_HTML) {
+            $this->headers[] = 'Content-type: text/html; charset=' . $charset;
+        } else {
+            $this->headers[] = 'Content-type: text/plain; charset=' . $charset;
+        }
+
+        if (defined('MAIL_FROM') and is_string(MAIL_FROM) and !empty(MAIL_FROM)) {
+
+            if (defined('MAIL_FROM_NAME') and is_string(MAIL_FROM_NAME) and !empty(MAIL_FROM_NAME)) {
+                $this->headers[] = 'From: ' . MAIL_FROM_NAME . ' <' . MAIL_FROM . '>';
+            } else {
+                $this->headers[] = 'From: ' . MAIL_FROM;
+            }
             $this->headers[] = 'Return-path: ' . MAIL_FROM;
             $this->headers[] = 'Reply-to: ' . MAIL_FROM;
             $this->headers[] = 'X-Mailer: PHP/' . phpversion();
@@ -40,16 +51,16 @@ final class Mail
 
     private function isAllDefined() {
 
-        if (is_null($this->to)) {
+        if (empty($this->to)) {
             throw new \Exception('You need to pass a e-mail recipient on send method! See the documentation for more details.');
         }
-        if (is_null($this->subject)) {
+        if (empty($this->subject)) {
             throw new \Exception('You need to set the subject to send a e-mail! See the documentation for more details.');
         }
-        if (is_null($this->message)) {
+        if (empty($this->message)) {
             throw new \Exception('You need to set the message to send a e-mail! See the documentation for more details.');
         }
-        if (is_null($this->from)) {
+        if (empty($this->from)) {
             throw new \Exception('You need to set MAIL_FROM on app/config.php to send a e-mail!');
         }
         return true;
@@ -57,8 +68,6 @@ final class Mail
 
     private function to($to)
     {
-        $this->to = null;
-
         if (is_array($to) and count($to) > 0) {
             $this->to = implode(',', $to);
         } else if (is_string($to) and strlen($to) > 0) {
@@ -71,8 +80,6 @@ final class Mail
         self::validateNumArgs(__FUNCTION__, func_num_args(), 1, 1);
         self::validateArgType(__FUNCTION__, $subject, 1, ['string']);
 
-        $this->subject = null;
-
         if (is_string($subject) and strlen($subject) > 0) {
             $this->subject = substr(trim($subject), 0, 70);
         }
@@ -82,8 +89,6 @@ final class Mail
     {
         self::validateNumArgs(__FUNCTION__, func_num_args(), 1, 1);
         self::validateArgType(__FUNCTION__, $message, 1, ['string']);
-
-        $this->message = null;
 
         if (is_string($message) and strlen($message) > 0) {
             $this->message = wordwrap(trim($message), 70);

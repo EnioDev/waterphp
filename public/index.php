@@ -150,19 +150,6 @@ if (!defined('ENCRYPTION_KEY') or !is_string(ENCRYPTION_KEY)) {
 
 /*
  * ==============================================================
- * SMTP
- * ==============================================================
- */
-
-if (defined('MAIL_SMTP_HOST') and is_string(MAIL_SMTP_HOST)) {
-    ini_set('SMTP', MAIL_SMTP_HOST);
-}
-if (defined('MAIL_SMTP_PORT') and (is_integer(MAIL_SMTP_PORT) or is_string(MAIL_SMTP_PORT))) {
-    ini_set('smtp_port', MAIL_SMTP_PORT);
-}
-
-/*
- * ==============================================================
  * ROUTES
  * ==============================================================
  */
