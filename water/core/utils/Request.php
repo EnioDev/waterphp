@@ -8,8 +8,15 @@ final class Request
     {
         self::validateNumArgs(__FUNCTION__, func_num_args());
 
-        if (count($_POST) > 0)
-        {
+        $object = json_decode(file_get_contents("php://input"));
+
+        if (is_object($object)) {
+            $input = get_object_vars($object);
+            return (is_array($input) and count($input) > 0) ? $input : null;
+        }
+
+        if (count($_POST) > 0) {
+
             $post_fields = array_keys($_POST);
             $post_values = array_values($_POST);
 
