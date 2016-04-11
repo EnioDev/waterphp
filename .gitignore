@@ -1,4 +1,5 @@
 .idea
 water/core/database/tests
 water/core/error/tests
+water/core/routing/tests
 water/core/utils/tests
