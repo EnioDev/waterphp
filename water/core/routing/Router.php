@@ -10,14 +10,14 @@ final class Router {
 
     private static function checkRouteName($routeName)
     {
-        $pattern = '/^([a-z]+[0-9]*[_|-]*)+([a-z0-9]*[_|-]*)*$/';
+        $pattern = '/^([a-z]+[0-9]*[_|.|-]{0,1})+$/';
         $result = preg_match($pattern, $routeName);
         if ($result) {
             return true;
         } else {
             $_SESSION['debug_backtrace_file'] = debug_backtrace()[1]['file'];
             $_SESSION['debug_backtrace_line'] = debug_backtrace()[1]['line'];
-            trigger_error('The route name "<b>'.$routeName.'</b>" is not a valid name. You can use letters, numbers, "_" (underline) and "-" (minus symbol) to make a route.', E_USER_ERROR);
+            trigger_error('The route name "<b>'.$routeName.'</b>" is not a valid name. You must use letters, if you want numbers and "_" (underscore), "-" (dash) and "." (dot) to separate words.', E_USER_ERROR);
         }
     }
 
