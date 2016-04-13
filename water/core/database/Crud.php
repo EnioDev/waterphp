@@ -85,15 +85,23 @@ class Crud extends Db implements ICrud
 
         $continue = false;
 
-        // Validation Data
-        if (is_array($data) and isset($data['fields']) and isset($data['values'])) {
+        // Validation
+        if (is_array($data) and count($data) > 0) {
 
-            if (count($data['fields']) === count($data['values'])) {
-                $continue = true;
-            } else {
-                // Exception
-                $this->setDebugBacktrace(debug_backtrace()[0]['file'], debug_backtrace()[0]['line']);
-                throw new \Exception('The number of columns don\'t match the number of values.');
+            if (!isset($data['fields']) and !isset($data['values'])) {
+                $aux['fields'] = array_keys($data);
+                $aux['values'] = array_values($data);
+                $data = $aux;
+            }
+
+            if (isset($data['fields']) and isset($data['values'])) {
+                if (count($data['fields']) === count($data['values'])) {
+                    $continue = true;
+                } else {
+                    // Exception
+                    $this->setDebugBacktrace(debug_backtrace()[0]['file'], debug_backtrace()[0]['line']);
+                    throw new \Exception('The number of columns don\'t match the number of values.');
+                }
             }
         }
 
@@ -136,17 +144,25 @@ class Crud extends Db implements ICrud
 
         $continue = false;
 
-        // Validation Data
-        if (is_array($data) and isset($data['fields']) and isset($data['values'])) {
+        // Validation
+        if (is_array($data) and count($data) > 0) {
 
-            if (count($data['fields']) === count($data['values'])) {
-                if (is_string($id) or is_integer($id)) {
-                    $continue = true;
+            if (!isset($data['fields']) and !isset($data['values'])) {
+                $aux['fields'] = array_keys($data);
+                $aux['values'] = array_values($data);
+                $data = $aux;
+            }
+
+            if (isset($data['fields']) and isset($data['values'])) {
+                if (count($data['fields']) === count($data['values'])) {
+                    if (is_string($id) or is_integer($id)) {
+                        $continue = true;
+                    }
+                } else {
+                    // Exception
+                    $this->setDebugBacktrace(debug_backtrace()[0]['file'], debug_backtrace()[0]['line']);
+                    throw new \Exception('The number of columns don\'t match the number of values.');
                 }
-            } else {
-                // Exception
-                $this->setDebugBacktrace(debug_backtrace()[0]['file'], debug_backtrace()[0]['line']);
-                throw new \Exception('The number of columns don\'t match the number of values.');
             }
         }
 
@@ -267,15 +283,23 @@ class Crud extends Db implements ICrud
 
         $continue = false;
 
-        // Validation Args
-        if (is_array($args) and isset($args['fields']) and isset($args['values'])) {
+        // Validation
+        if (is_array($args) and count($args) > 0) {
 
-            if (count($args['fields']) === count($args['values'])) {
-                $continue = true;
-            } else {
-                // Exception
-                $this->setDebugBacktrace(debug_backtrace()[0]['file'], debug_backtrace()[0]['line']);
-                throw new \Exception('The number of columns don\'t match the number of values.');
+            if (!isset($args['fields']) and !isset($args['values'])) {
+                $aux['fields'] = array_keys($args);
+                $aux['values'] = array_values($args);
+                $args = $aux;
+            }
+
+            if (isset($args['fields']) and isset($args['values'])) {
+                if (count($args['fields']) === count($args['values'])) {
+                    $continue = true;
+                } else {
+                    // Exception
+                    $this->setDebugBacktrace(debug_backtrace()[0]['file'], debug_backtrace()[0]['line']);
+                    throw new \Exception('The number of columns don\'t match the number of values.');
+                }
             }
         }
 
