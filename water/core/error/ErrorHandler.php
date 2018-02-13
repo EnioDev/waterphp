@@ -48,18 +48,24 @@ final class ErrorHandler
     // It will also catch E_USER_ERROR, E_USER_WARNING, E_USER...
     public function waterErrorHandler($code, $message, $file, $line)
     {
-        $this->setTitle($code);
+        // TODO: Melhorar tratamento para não exibir mensagens
+        // de funções depreciadas. Esta condição é provisória 
+        // para funcionar nas versões mais atuais do PHP (7.x).
+        if ($code != '8192') {
 
-        $this->clearPrevious();
+            $this->setTitle($code);
 
-        Session::set('app_error_title', $this->title);
-        Session::set('app_error_code', $code);
-        Session::set('app_error_message', $message);
-        Session::set('app_error_file', $file);
-        Session::set('app_error_line', $line);
-        Session::set('app_error_stop', $this->stop);
+            $this->clearPrevious();
 
-        $this->avoidTooManyRedirects($this->debug, $this->stop);
+            Session::set('app_error_title', $this->title);
+            Session::set('app_error_code', $code);
+            Session::set('app_error_message', $message);
+            Session::set('app_error_file', $file);
+            Session::set('app_error_line', $line);
+            Session::set('app_error_stop', $this->stop);
+
+            $this->avoidTooManyRedirects($this->debug, $this->stop);
+        }
     }
 
     // It will always be called at the end of any script execution.
