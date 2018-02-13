@@ -10,4 +10,4 @@ Leia a [documentação](https://github.com/waterphp/doc) e saiba como instalar a
 
 ## Nota sobre a versão do PHP
 
-O framework foi desenvolvido e testado na versão 5.5 do php, portanto pode não funcionar em outras versões, principalmente na versões mais recentes 7.x.
+O framework foi desenvolvido e testado na versão 5.5 do php, portanto pode não funcionar em outras versões, principalmente nas versões mais recentes 7.x.
