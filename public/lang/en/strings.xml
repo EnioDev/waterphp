@@ -1,8 +1,8 @@
 <strings>
     <message>
         <welcome>Welcome</welcome>
-        <create>The user has been created with success.</create>
-        <update>The user has been updated with success.</update>
+        <create>The user has been created successfully.</create>
+        <update>The user has been updated successfully.</update>
     </message>
 
     <button>
@@ -16,9 +16,9 @@
     </button>
 
     <error>
-        <name>The name is required and must be between 5 to 30 characters.</name>
+        <name>The name is required and must contain from 5 to 30 characters.</name>
         <email>Type a valid email.</email>
-        <password>The password can be letters, numbers or _(underscore) and must be between 6 to 20 characters.</password>
+        <password>The password can be set with letters, numbers and _(underscore) and must contain from 6 to 20 characters.</password>
         <create>Sorry! Could not create the user.</create>
         <update>Sorry! Could not update the user.</update>
         <delete>Sorry! Could not remove the user.</delete>

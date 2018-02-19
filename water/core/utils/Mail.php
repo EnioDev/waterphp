@@ -1,5 +1,8 @@
 <?php namespace core\utils;
 
+/*
+ * This class is deprecated and it's been removed from documentation and configuration file.
+ */
 final class Mail
 {
     private $to;
@@ -52,16 +55,16 @@ final class Mail
     private function isAllDefined() {
 
         if (empty($this->to)) {
-            throw new \Exception('You need to pass a e-mail recipient on send method! See the documentation for more details.');
+            throw new \Exception('You need to set an e-mail recipient! See the documentation for more details.');
         }
         if (empty($this->subject)) {
-            throw new \Exception('You need to set the subject to send a e-mail! See the documentation for more details.');
+            throw new \Exception('You need to set a subject for sending an e-mail! See the documentation for more details.');
         }
         if (empty($this->message)) {
-            throw new \Exception('You need to set the message to send a e-mail! See the documentation for more details.');
+            throw new \Exception('You need to set a message for sending an e-mail! See the documentation for more details.');
         }
         if (empty($this->from)) {
-            throw new \Exception('You need to set MAIL_FROM on app/config.php to send a e-mail!');
+            throw new \Exception('You need to set the constant "MAIL_FROM" on app/config.php for sending an e-mail!');
         }
         return true;
     }

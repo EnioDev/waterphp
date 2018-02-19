@@ -13,6 +13,7 @@ final class Session
             self::set('app_session_time', time() + SESSION_LIFETIME, true);
             self::set('app_session_token', Encryption::encode(md5(uniqid(rand(), true))));
             self::set('app_session_encryption_key', ENCRYPTION_KEY);
+            self::set('app_session_secret_word', SECRET_WORD);
             self::set('app_session_language', DEFAULT_LANGUAGE);
             return false;
         }

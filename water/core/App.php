@@ -88,7 +88,7 @@ final class App {
             $token = Request::get('_token');
             if ($token) {
                 if (Session::token() != trim($token)) {
-                    trigger_error('The given token is not a valid token! See <b>CSRF</b> protection in the documentation for more details.', E_USER_ERROR);
+                    trigger_error('The given token is not a valid token! See <b>CSRF</b> protection on documentation for more details.', E_USER_ERROR);
                 }
             }
         }
@@ -96,17 +96,18 @@ final class App {
 
     private function verifyEncryptionKey()
     {
-        if (ENCRYPTION_KEY) {
-            if (Session::get('app_session_encryption_key') != ENCRYPTION_KEY) {
+        if (ENCRYPTION_KEY && SECRET_WORD) {
+            if (Session::get('app_session_encryption_key') != ENCRYPTION_KEY or
+                Session::get('app_session_secret_word') != SECRET_WORD) {
                 Session::stop();
                 if (DEBUG_MODE) {
-                    trigger_error('The encryption key has been changed! The application will be restart.', E_USER_NOTICE);
+                    trigger_error('Either encryption key or secret word has been changed! The application will be restarted.', E_USER_NOTICE);
                 } else {
                     Redirect::to(Url::base());
                 }
             }
         } else {
-            trigger_error('The encryption key is not defined! See the application configuration file (config.php).', E_USER_ERROR);
+            trigger_error('Both ENCRYPTION_KEY and SECRET_WORD must be defined! See the configuration file (config.php).', E_USER_ERROR);
         }
         return true;
     }

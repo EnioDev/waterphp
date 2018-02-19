@@ -44,32 +44,26 @@ final class ErrorHandler
         }
     }
 
-    // It will catch Warnings and Notices.
-    // It will also catch E_USER_ERROR, E_USER_WARNING, E_USER...
+    // It will handle Warnings and Notices.
+    // It will also handle E_USER_ERROR, E_USER_WARNING, E_USER...
     public function waterErrorHandler($code, $message, $file, $line)
     {
-        // TODO: Melhorar tratamento para não exibir mensagens
-        // de funções depreciadas. Esta condição é provisória 
-        // para funcionar nas versões mais atuais do PHP (7.x).
-        if ($code != '8192') {
+        $this->setTitle($code);
 
-            $this->setTitle($code);
+        $this->clearPrevious();
 
-            $this->clearPrevious();
+        Session::set('app_error_title', $this->title);
+        Session::set('app_error_code', $code);
+        Session::set('app_error_message', $message);
+        Session::set('app_error_file', $file);
+        Session::set('app_error_line', $line);
+        Session::set('app_error_stop', $this->stop);
 
-            Session::set('app_error_title', $this->title);
-            Session::set('app_error_code', $code);
-            Session::set('app_error_message', $message);
-            Session::set('app_error_file', $file);
-            Session::set('app_error_line', $line);
-            Session::set('app_error_stop', $this->stop);
-
-            $this->avoidTooManyRedirects($this->debug, $this->stop);
-        }
+        $this->avoidTooManyRedirects($this->debug, $this->stop);
     }
 
     // It will always be called at the end of any script execution.
-    // It will also catch Fatal Errors and Parse Errors.
+    // It will also handle Fatal Errors and Parse Errors.
     public function waterShutdownHandler()
     {
         $e = error_get_last();
@@ -126,8 +120,7 @@ final class ErrorHandler
         $missingArgument = (is_integer($pos)) ? true : false;
 
         if ($missingArgument) {
-            // Stop function because warning message will be
-            // defined in ClassMethods.
+            // It stops this function 'coz warning message will be defined in ClassMethods.
             return null;
         }
 
@@ -141,11 +134,11 @@ final class ErrorHandler
             Session::forget('app_error_redirect');
 
             if (($debug and !$stop)) {
-                // If it's a Warning or Notice.
+                // If it's a Warning or a Notice.
                 throw new \ErrorException($message, $code, 0, $file, $line);
             } else if ($stop) {
-                // If it's a Fatal Error or Parse Error.
-                // If it's a Warning or Notice called by ErrorException.
+                // If it's a Fatal Error or a Parse Error.
+                // If it's a Warning or a Notice called by ErrorException.
                 Redirect::to(Url::base('debug'));
             }
         }

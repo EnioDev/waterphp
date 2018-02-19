@@ -100,8 +100,10 @@ define('DEFAULT_LANGUAGE', 'pt-br');
  * --------------------------------------------------------------------------
  *
  * Para usar a classe Session ou Auth você deve definir uma chave para
- * criptografar os dados, uma sequência de caracteres que será usada
- * para identificar sua aplicação.
+ * criptografar os dados, uma sequência de 32 caracteres (recomendado) que 
+ * será usado para identificar sua aplicação.
+ * 
+ * Para maior segurança, informe também uma palavra que defina sua aplicação.
  *
  * Atenção: Se você já estiver usando a aplicação de exemplo com o framework
  * e alterar esta chave, você deverá redefinir a senha de todos os usuários
@@ -109,7 +111,8 @@ define('DEFAULT_LANGUAGE', 'pt-br');
  * efetuar o login novamente.
  */
 
-define('ENCRYPTION_KEY', 'your_secret_key');
+define('ENCRYPTION_KEY', '5d41402abc4b2a76b9719d911017c592');
+define('SECRET_WORD', 'jaspion');
 
 /*
  * --------------------------------------------------------------------------
@@ -142,23 +145,3 @@ define('DB_CONNPORT' , '3306');
 define('DB_DATABASE' , '');
 define('DB_USERNAME' , '');
 define('DB_PASSWORD' , '');
-
-/*
- * --------------------------------------------------------------------------
- * E-MAIL
- * --------------------------------------------------------------------------
- *
- * Defina as informações abaixo para enviar mensagens através da sua
- * aplicação usando a classe Mail.
- *
- * Atenção: Se estiver em seu ambiente de desenvolvimento, certifique-se
- * que o servidor local e o php estão corretamente configurados para enviar
- * e-mails.
- *
- * Dica: Consulte como instalar e configurar o postfix ou sendmail em seu SO.
- */
-
-define('MAIL_IS_HTML'   , true);
-define('MAIL_CHARSET'   , 'utf-8');
-define('MAIL_FROM'      , ''); // Seu E-mail: user@yourdomain.com
-define('MAIL_FROM_NAME' , ''); // Seu Nome
